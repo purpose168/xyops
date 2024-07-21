@@ -317,10 +317,10 @@ Page.Base = class Base extends Page {
 		var icon = '<i class="mdi mdi-' + (item.offline ? 'close-network-outline' : (item.icon || 'router-network')) + '">&nbsp;</i>';
 		if (link) {
 			html += '<a href="#Servers?sub=view&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + this.formatHostname(item.hostname) + '</span></a>';
+			html += icon + '<span style="text-decoration:underline">' + (item.title || this.formatHostname(item.hostname)) + '</span></a>';
 		}
 		else {
-			html += icon + this.formatHostname(item.hostname);
+			html += icon + (item.title || this.formatHostname(item.hostname));
 		}
 		
 		html += '</span>';
@@ -420,7 +420,7 @@ Page.Base = class Base extends Page {
 		// get formatted hostname with icon, plus optional link
 		if (!hostname) return '(None)';
 		
-		// TODO: all this shit is from performa:
+		// TODO: all this shit is from performa: -- also, this function is UNUSED!
 		var query = { hostname: hostname };
 		if (this.args && this.args.sys) query.sys = this.args.sys;
 		if (this.args && this.args.date) query.date = this.args.date;
@@ -460,6 +460,35 @@ Page.Base = class Base extends Page {
 	getNiceOS(os) {
 		// get nice server operating system for display
 		return '<i class="mdi mdi-harddisk">&nbsp;</i>' + os.platform + ' ' + os.distro + ' ' + os.release;
+	}
+	
+	getNiceVirtualization(virt) {
+		// get nice virtualization summary
+		if (!virt || !virt.vendor) return 'n/a';
+		var html = virt.vendor;
+		if (virt.type || virt.location) {
+			html += '(';
+			var items = [];
+			if (virt.type) items.push( virt.type );
+			if (virt.location) items.push( virt.location );
+			html += items.join(', ') + ')';
+		}
+		return '<i class="mdi mdi-layers-outline">&nbsp;</i>' + html;
+	}
+	
+	getNiceMemory(bytes) {
+		// format bytes with memory-ish icon
+		return '<i class="mdi mdi-memory">&nbsp;</i>' + get_text_from_bytes(bytes || 0);
+	}
+	
+	getNiceCPUType(cpu) {
+		// get nice cpu type with icon
+		return '<i class="mdi mdi-developer-board">&nbsp;</i>' + cpu.vendor + ' ' + cpu.brand;
+	}
+	
+	getNiceUptime(secs) {
+		// get nice server uptime
+		return '<i class="mdi mdi-battery-clock-outline">&nbsp;</i>' + get_text_from_seconds(secs, false, true);
 	}
 	
 	getNiceDate(epoch) {
