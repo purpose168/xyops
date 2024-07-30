@@ -69,7 +69,7 @@ Page.Masters = class Masters extends Page.Base {
 				'<div class="td_big">' + self.getNiceMaster(item) + '</div>',
 				status,
 				'<div style="">' + (item.version || '-') + '</div>',
-				'<div style="">' + (item.stats.load || '-') + '</div>',
+				'<div style="">' + (item.stats.load ? short_float(item.stats.load) : '-') + '</div>',
 				'<div style="">' + item.ping + ' ms</div>',
 				'<div style="">' + (item.date ? get_text_from_seconds( app.epoch - item.date, false, true ) : '-') + '</div>',
 				item.online ? actions.join(' | ') : '-'
