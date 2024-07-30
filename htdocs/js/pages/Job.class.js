@@ -1540,7 +1540,7 @@ Page.Job = class Job extends Page.Base {
 			return;
 		}
 		
-		if (!updates || (updates.state == 'complete')) {
+		if (!updates) {
 			// job has completed under our noses!  reload page!
 			Debug.trace('job', "Job has completed, refreshing page");
 			Nav.refresh();
