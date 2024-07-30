@@ -470,16 +470,16 @@ Page.ServerUtils = class ServerUtils extends Page.Base {
 			sort_by: 'state',
 			sort_dir: 1,
 			filter: '',
-			column_ids: ['type', 'state', 'local_addr', 'remote_addr', 'command', 'bytes_in', 'bytes_out'],
-			column_labels: ['Protocol', 'State', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out']
+			column_ids: ['state', 'type', 'local_addr', 'remote_addr', 'command', 'bytes_in', 'bytes_out'],
+			column_labels: ['State', 'Protocol', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out']
 		};
 		
 		return this.getSortableTable( snapshot.data.conns, conn_opts, function(conn) {
 			var nice_state = conn.state.toString().split(/_/).map( function(word) { return ucfirst(word); } ).join(' ');
 			var proc = conn.pid ? find_object(snapshot.data.processes.list, { pid: conn.pid }) : null;
 			return [
-				'<i class="mdi mdi-network-outline">&nbsp;</i>' + conn.type.toUpperCase(),
-				nice_state,
+				'<i class="mdi mdi-network-outline">&nbsp;</i>' + nice_state,
+				conn.type.toUpperCase(),
 				conn.local_addr,
 				conn.remote_addr,
 				proc ? self.getNiceProcess(proc, true) : (conn.pid || '(None)'),
@@ -772,6 +772,76 @@ Page.ServerUtils = class ServerUtils extends Page.Base {
 		html += '</div>'; // grid
 		
 		return html;
+	}
+	
+	// 
+	// Date/Time stuff for historical views
+	// 
+	
+	getYearOptions() {
+		// get locale-formatted year numbers for menu
+		var start_year = yyyy( this.server.created );
+		var cur_year = yyyy();
+		var options = [];
+		
+		for (var year = start_year; year <= cur_year; year++) {
+			var date = new Date( year, 5, 15, 12, 30, 30, 0 );
+			var label = this.formatDate( date.getTime() / 1000, { year: 'numeric' } );
+			options.push([ ''+year, label ]);
+		}
+		
+		return options;
+	}
+	
+	getMonthOptions() {
+		// get locale-formatted month names for menu
+		var cur_year = yyyy();
+		var options = [];
+		
+		for (var month = 1; month <= 12; month++) {
+			var date = new Date( cur_year, month - 1, 15, 12, 30, 30, 0 );
+			// var label = this.formatDate( date.getTime() / 1000, { month: 'short' } );
+			// options.push([ ''+month, label ]);
+			options.push({
+				id: '' + month,
+				title: this.formatDate( date.getTime() / 1000, { month: 'long' } ),
+				abbrev: this.formatDate( date.getTime() / 1000, { month: 'short' } )
+			});
+		}
+		
+		return options;
+	}
+	
+	getDayOptions() {
+		// get locale-formatted month days for a 31-day month
+		var cur_year = yyyy();
+		var options = [];
+		
+		var date = new Date( cur_year, 6, 1, 12, 30, 30, 0 );
+		var num = 1;
+		while (options.length < 31) {
+			var label = this.formatDate( date.getTime() / 1000, { day: 'numeric', timeZone: false } );
+			options.push([ ''+num, label ]);
+			date.setTime( date.getTime() + 86400000 );
+			num++;
+		}
+		
+		return options;
+	}
+	
+	getHourOptions() {
+		// get locale-formatted hours for a full day
+		var cur_year = yyyy();
+		var options = [];
+		
+		var date = new Date( cur_year, 6, 1, 0, 30, 30, 0 );
+		while (options.length < 24) {
+			var label = this.formatDate( date.getTime() / 1000, { hour: 'numeric', timeZone: false } );
+			options.push([ ''+options.length, label ]);
+			date.setTime( date.getTime() + 3600000 );
+		}
+		
+		return options;
 	}
 	
 };
