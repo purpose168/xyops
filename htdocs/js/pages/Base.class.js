@@ -464,7 +464,8 @@ Page.Base = class Base extends Page {
 	
 	getNiceVirtualization(virt) {
 		// get nice virtualization summary
-		if (!virt || !virt.vendor) return 'n/a';
+		if (!virt || !virt.vendor) return 'None';
+		var icon = virt.cloud ? 'cloud-outline' : 'layers-outline';
 		var html = virt.vendor;
 		if (virt.type || virt.location) {
 			html += '(';
@@ -473,7 +474,7 @@ Page.Base = class Base extends Page {
 			if (virt.location) items.push( virt.location );
 			html += items.join(', ') + ')';
 		}
-		return '<i class="mdi mdi-layers-outline">&nbsp;</i>' + html;
+		return '<i class="mdi mdi-' + icon + '">&nbsp;</i>' + html;
 	}
 	
 	getNiceMemory(bytes) {
@@ -1531,11 +1532,18 @@ Page.Base = class Base extends Page {
 					nice_icon = 'bullhorn-outline';
 				break;
 				
+				case 'snapshot':
+					nice_type = "Take Snapshot";
+					nice_desc = "(Current Server)";
+					nice_icon = 'monitor-screenshot';
+				break;
+				
 				case 'disable':
 					nice_type = "Disable Event";
 					nice_desc = "(Current Event)";
 					nice_icon = 'cancel';
 				break;
+				
 			} // switch item.type
 			
 			var tds = [
@@ -1612,7 +1620,8 @@ Page.Base = class Base extends Page {
 					['web_hook', "Web Hook"],
 					['run_event', "Run Job"],
 					['channel', "Notify Channel"],
-					['disable', "Disable Event"]
+					['snapshot', "Take Snapshot"],
+					['disable', "Disable Event"],
 				],
 				value: action.type
 			}),
@@ -1743,6 +1752,13 @@ Page.Base = class Base extends Page {
 					$('#d_eja_web_hook').hide();
 					$('#d_eja_run_job').hide();
 					$('#d_eja_channel').show();
+				break;
+				
+				case 'snapshot':
+					$('#d_eja_email').hide();
+					$('#d_eja_web_hook').hide();
+					$('#d_eja_run_job').hide();
+					$('#d_eja_channel').hide();
 				break;
 				
 				case 'disable':
@@ -2131,6 +2147,24 @@ Page.Base = class Base extends Page {
 				$elem.find('i').removeClass().addClass('mdi mdi-clipboard-check-outline success');
 			});
 		}); // snapshot
+	}
+	
+	getQuickMonChartData(rows, id) {
+		// format quickmon data to be compat with pixl-chart
+		var data = [];
+		rows.forEach( function(row) {
+			data.push({ x: row.date, y: row[id] });
+		} );
+		return data;
+	}
+	
+	getMonitorChartData(rows, id) {
+		// format monitor timeline data to be compat with pixl-chart
+		var data = [];
+		rows.forEach( function(row) {
+			if (row.date && row.totals) data.push({ x: row.date, y: (row.totals[id] || 0) / (row.count || 1) });
+		} );
+		return data;
 	}
 	
 };
