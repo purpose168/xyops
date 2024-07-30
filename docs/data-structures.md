@@ -357,7 +357,7 @@ echo '{ "push": { "actions": [ { "trigger":"success", "type":"email", "email":"y
 
 ## Snapshot.source
 
-alert, watch, user (username)
+alert, watch, user (username), job
 
 
 
@@ -416,6 +416,7 @@ Each action has a `type` property which dictates what will happen when the trigg
 | `run_event` | Run a custom job for the action.  The Event ID should be specified in a property named `event_id`. |
 | `channel` | Activate a notification channel for the action.  The Channel ID should be specified in a property named `channel_id`. |
 | `disable` | Disable the event for the action (no extra properties defined). |
+| `snapshot` | Take a server snapshot for the action (no extra properties defined). |
 
 ## Limit
 
