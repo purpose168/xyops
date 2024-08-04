@@ -25,20 +25,16 @@ div.header > div.header_title > i {
 } */
 
 div.header_clock {
-	position: relative;
-	float: right;
-	height: 30px;
-	margin-top: 9px;
-	margin-left: 12px;
 	padding-left: 7px;
 	padding-right: 7px;
-	color: var(--label-color);
-	background: var(--box-background-color);
-	border: 1px solid var(--border-color);
-	border-radius: 4px;
 	font-size: 12px;
 	line-height: 29px;
-	cursor: default;
+}
+.header_clock i.mdi {
+	padding-right: 5px;
+}
+.header_clock i.mdi:before {
+	transform: scale(1.25);
 }
 
 div.box_title {
