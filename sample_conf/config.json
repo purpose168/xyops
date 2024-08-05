@@ -128,6 +128,7 @@
 		],
 		
 		"items_per_page": 50,
+		"alt_items_per_page": 25,
 		"events_per_page": 500,
 		
 		"new_event_template": { 
@@ -155,28 +156,15 @@
 		"first_year": 2020,
 		"max_legend_size": 16,
 		
-		"graph_overrides": {
-			"all_sizes": {
-				"stroke.curve": "smooth",
-				"markers.style": "hollow",
-				"title.align": "center",
-				"grid.show": true
-			},
-			"full": {
-				"chart.height": 400,
-				"title.fontSize": 16,
-				"stroke.width": 3
-			},
-			"half": {
-				"chart.height": 300,
-				"title.fontSize": 15,
-				"stroke.width": 2
-			},
-			"third": {
-				"chart.height": 200,
-				"title.fontSize": 14,
-				"stroke.width": 2
-			}
+		"chart_defaults": {
+			"lineWidth": 2,
+			"lineJoin": "round",
+			"lineCap": "butt",
+			"stroke": true,
+			"fill": 0.5,
+			"horizTicks": 6,
+			"vertTicks": 6,
+			"smoothingMaxSamples": 100
 		}
 	},
 	
