@@ -17,11 +17,11 @@ Page.Base = class Base extends Page {
 		if ((link === true) && !item.id) link = false;
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'key') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'key') + '"></i>';
 		if (link) {
 			if (link === true) link = '#APIKeys?sub=edit&id=' + item.id;
-			html += '<a href="' + link + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + title + '</span></a>';
+			html += '<a href="' + link + '">';
+			html += icon + '<span>' + title + '</span></a>';
 		}
 		else {
 			html += icon + title;
@@ -64,11 +64,11 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'server-network') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'server-network') + '"></i>';
 		if (link) {
 			if (link === true) link = '#Groups?sub=edit&id=' + item.id;
-			html += '<a href="' + link + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="' + link + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -84,11 +84,11 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'folder-open-outline') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'folder-open-outline') + '"></i>';
 		if (link) {
 			if (link === true) link = '#Categories?sub=edit&id=' + item.id;
-			html += '<a href="' + link + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="' + link + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -104,10 +104,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'chart-line') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'chart-line') + '"></i>';
 		if (link) {
-			html += '<a href="#Monitors?sub=edit&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="#Monitors?sub=edit&id=' + item.id + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -123,10 +123,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon ? item.icon : (item.enabled ? 'bell-outline' : 'bell-off-outline')) + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon ? item.icon : (item.enabled ? 'bell-outline' : 'bell-off-outline')) + '"></i>';
 		if (link) {
-			html += '<a href="#AlertSetup?sub=edit&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="#AlertSetup?sub=edit&id=' + item.id + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -151,10 +151,10 @@ Page.Base = class Base extends Page {
 	getNiceAlertID(item, link) {
 		// get formatted alert id
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.active ? 'progress-alert' : 'alert-circle-outline') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.active ? 'progress-alert' : 'alert-circle-outline') + '"></i>';
 		if (link) {
-			html += '<a href="#Alerts?sub=view&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.id + '</span></a>';
+			html += '<a href="#Alerts?sub=view&id=' + item.id + '">';
+			html += icon + '<span>' + item.id + '</span></a>';
 		}
 		else {
 			html += icon + item.id;
@@ -167,10 +167,10 @@ Page.Base = class Base extends Page {
 	getNiceSnapshotID(item, link) {
 		// get formatted snap id
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-monitor-screenshot">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-monitor-screenshot"></i>';
 		if (link) {
-			html += '<a href="#Snapshots?sub=view&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.id + '</span></a>';
+			html += '<a href="#Snapshots?sub=view&id=' + item.id + '">';
+			html += icon + '<span>' + item.id + '</span></a>';
 		}
 		else {
 			html += icon + item.id;
@@ -192,10 +192,10 @@ Page.Base = class Base extends Page {
 	getNiceProcess(item, link) {
 		// get formatted process cmd
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.job ? 'console' : 'console') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.job ? 'console' : 'console') + '"></i>';
 		if (link) {
-			html += '<span class="link" onClick="$P().showProcessInfo(' + item.pid + ')" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.command + '</span></span>';
+			html += '<span class="link" onClick="$P().showProcessInfo(' + item.pid + ')">';
+			html += icon + '<span>' + item.command + '</span></span>';
 		}
 		else {
 			html += icon + item.command;
@@ -211,10 +211,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'console') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'console') + '"></i>';
 		if (link) {
-			html += '<a href="#Commands?sub=edit&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="#Commands?sub=edit&id=' + item.id + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -230,10 +230,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'bullhorn-outline') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'bullhorn-outline') + '"></i>';
 		if (link) {
-			html += '<a href="#Channels?sub=edit&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="#Channels?sub=edit&id=' + item.id + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -249,10 +249,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'power-plug-outline') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'power-plug-outline') + '"></i>';
 		if (link) {
-			html += '<a href="#Plugins?sub=edit&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="#Plugins?sub=edit&id=' + item.id + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -268,10 +268,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'file-clock-outline') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'file-clock-outline') + '"></i>';
 		if (link) {
-			html += '<a href="#Events?sub=view&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="#Events?sub=view&id=' + item.id + '">';
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -287,10 +287,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.icon || 'clipboard-list-outline') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.icon || 'clipboard-list-outline') + '"></i>';
 		if (link) {
-			html += '<a href="#Events?sub=edit&id=' + item.id + '" style="text-decoration:none">'; // TODO: is this the correct link?  #Events?
-			html += icon + '<span style="text-decoration:underline">' + item.title + '</span></a>';
+			html += '<a href="#Events?sub=edit&id=' + item.id + '">'; // TODO: is this the correct link?  #Events?
+			html += icon + '<span>' + item.title + '</span></a>';
 		}
 		else {
 			html += icon + item.title;
@@ -314,10 +314,10 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (item.offline ? 'close-network-outline' : (item.icon || 'router-network')) + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (item.offline ? 'close-network-outline' : (item.icon || 'router-network')) + '"></i>';
 		if (link) {
-			html += '<a href="#Servers?sub=view&id=' + item.id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + (item.title || this.formatHostname(item.hostname)) + '</span></a>';
+			html += '<a href="#Servers?sub=view&id=' + item.id + '">';
+			html += icon + '<span>' + (item.title || this.formatHostname(item.hostname)) + '</span></a>';
 		}
 		else {
 			html += icon + (item.title || this.formatHostname(item.hostname));
@@ -370,14 +370,14 @@ Page.Base = class Base extends Page {
 		}
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (tag.icon || 'tag-outline') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (tag.icon || 'tag-outline') + '"></i>';
 		
 		if (link) {
 			if (link === true) {
 				link = '#Tags?sub=edit&id=' + tag.id;
 			}
-			html += '<a href="' + link + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + tag.title + '</span></a>';
+			html += '<a href="' + link + '">';
+			html += icon + '<span>' + tag.title + '</span></a>';
 		}
 		else {
 			html += icon + tag.title;
@@ -403,16 +403,18 @@ Page.Base = class Base extends Page {
 		else if (ext.match(/(xls|xlsx)/)) icon = 'file-table-outline';
 		else if (ext.match(/(doc|docx)/)) icon = 'file-word-outline';
 		
-		icon = '<i class="mdi mdi-' + icon + '">&nbsp;</i>';
+		html += '<span class="nowrap">';
+		icon = '<i class="mdi mdi-' + icon + '"></i>';
 		
 		if (link) {
-			html += '<a href="' + link + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + filename + '</span></a>';
+			html += '<a href="' + link + '">';
+			html += icon + '<span>' + filename + '</span></a>';
 		}
 		else {
 			html += icon + filename;
 		}
 		
+		html += '</span>';
 		return html;
 	}
 	
@@ -428,10 +430,10 @@ Page.Base = class Base extends Page {
 		if (this.args && this.args.length) query.length = this.args.length;
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-desktop-classic">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-desktop-classic"></i>';
 		if (link) {
-			html += '<a href="#Server' + compose_query_string(query) + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + this.formatHostname(hostname) + '</span></a>';
+			html += '<a href="#Server' + compose_query_string(query) + '">';
+			html += icon + '<span>' + this.formatHostname(hostname) + '</span></a>';
 		}
 		else {
 			html += icon + this.formatHostname(hostname);
@@ -829,11 +831,11 @@ Page.Base = class Base extends Page {
 		}
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-' + (user.icon || 'account') + '">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-' + (user.icon || 'account') + '"></i>';
 		if (link && user.full_name) {
 			if (link === true) link = '#Users?sub=edit&username=' + username;
-			html += '<a href="' + link + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + (user.full_name || username) + '</span></a>';
+			html += '<a href="' + link + '">';
+			html += icon + '<span>' + (user.full_name || username) + '</span></a>';
 		}
 		else {
 			if (username == 'api') username = 'API';
@@ -848,8 +850,8 @@ Page.Base = class Base extends Page {
 		// get nice color label with icon for certain colors
 		var icon = '';
 		switch (color) {
-			case 'green': icon = '<i class="mdi mdi-check-circle">&nbsp;</i>'; break;
-			case 'red': icon = '<i class="mdi mdi-alert-circle">&nbsp;</i>'; break;
+			case 'green': icon = '<i class="mdi mdi-check-circle"></i>'; break;
+			case 'red': icon = '<i class="mdi mdi-alert-circle"></i>'; break;
 		}
 		return '<span class="color_label ' + color + ' nowrap">' + icon + text + '</span>';
 	}
@@ -859,10 +861,10 @@ Page.Base = class Base extends Page {
 		if (!id) return '(None)';
 		
 		var html = '<span class="nowrap">';
-		var icon = '<i class="mdi mdi-timer-outline">&nbsp;</i>';
+		var icon = '<i class="mdi mdi-timer-outline"></i>';
 		if (link) {
-			html += '<a href="#Job?id=' + id + '" style="text-decoration:none">';
-			html += icon + '<span style="text-decoration:underline">' + id + '</span></a>';
+			html += '<a href="#Job?id=' + id + '">';
+			html += icon + '<span>' + id + '</span></a>';
 		}
 		else {
 			html += icon + id;
@@ -1018,7 +1020,7 @@ Page.Base = class Base extends Page {
 	getNiceJobResult(job) {
 		// color label + icon for job result
 		var args = this.getJobResultArgs(job);
-		return '<span class="color_label ' + args.color + ' nowrap"><i class="mdi mdi-' + args.icon + '">&nbsp;</i>' + args.text + '</span>';
+		return '<span class="color_label ' + args.color + ' nowrap"><i class="mdi mdi-' + args.icon + '"></i>' + args.text + '</span>';
 	}
 	
 	getNiceJobSource(job) {

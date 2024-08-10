@@ -195,7 +195,7 @@ Page.Events = class Events extends Page.Base {
 		// color label + icon for job result
 		var args = this.getJobResultArgs(job);
 		var url = '#Job?id=' + job.id;
-		return '<span class="color_label ' + args.color + ' nowrap linky" onClick="Nav.go(\'' + url + '\')"><i class="mdi mdi-' + args.icon + '">&nbsp;</i>' + args.text + '</span>';
+		return '<span class="color_label ' + args.color + ' nowrap linky" onClick="Nav.go(\'' + url + '\')"><i class="mdi mdi-' + args.icon + '"></i>' + args.text + '</span>';
 	}
 	
 	getNiceEventStatus(event) {
@@ -211,7 +211,7 @@ Page.Events = class Events extends Page.Base {
 		
 		if (num_jobs) {
 			var url = (num_jobs > 1) ? ('#Events?sub=view&id=' + event.id) : ('#Job?id=' + last_job_id);
-			nice_status = '<span class="color_label blue nowrap linky" onClick="Nav.go(\'' + url + '\')"><i class="mdi mdi-autorenew mdi-spin">&nbsp;</i>' + num_jobs + ' Active</span>';
+			nice_status = '<span class="color_label blue nowrap linky" onClick="Nav.go(\'' + url + '\')"><i class="mdi mdi-autorenew mdi-spin"></i>' + num_jobs + ' Active</span>';
 		}
 		else if (!num_jobs && event_state && event_state.last_job) {
 			nice_status = this.getNiceJobResultLink({ id: event_state.last_job, code: event_state.last_code });
@@ -412,12 +412,18 @@ Page.Events = class Events extends Page.Base {
 		if (!event) return this.doFullPageError("Event not found: " + args.id);
 		var icon = event.icon || 'file-clock-outline';
 		
-		app.setHeaderTitle( '<i class="mdi mdi-calendar-search">&nbsp;</i>Event Details' );
-		app.setWindowTitle( "Viewing Event \"" + (this.event.title) + "\"" );
+		app.setHeaderNav([
+			{ icon: 'calendar-multiple', loc: '#Events?sub=list', title: 'Events' },
+			{ icon: icon, title: event.title }
+		]);
+		
+		// app.setHeaderTitle( '<i class="mdi mdi-calendar-search">&nbsp;</i>Event Details' );
+		app.setWindowTitle( "Viewing Event \"" + event.title + "\"" );
 		
 		html += '<div class="box">';
 			html += '<div class="box_title">';
-				html += '<i class="mdi mdi-' + icon + '">&nbsp;</i>' + event.title;
+				// html += '<i class="mdi mdi-' + icon + '">&nbsp;</i>' + event.title;
+				html += 'Event Summary';
 				
 				// html += '<div class="button right danger" onMouseUp="$P().show_delete_event_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i>Delete...</div>';
 				html += '<div class="button secondary right" onMouseUp="$P().do_edit_from_view()"><i class="mdi mdi-file-edit-outline">&nbsp;</i>Edit Event...</div>';

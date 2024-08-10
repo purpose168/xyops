@@ -604,6 +604,10 @@ div.td_big {
 	white-space: nowrap;
 }
 
+.nowrap i.mdi {
+	padding-right: 5px !important;
+}
+
 .dialog.inline {
 	margin-top: 60px;
 	margin-bottom: 60px;
