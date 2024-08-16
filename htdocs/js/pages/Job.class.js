@@ -43,9 +43,13 @@ Page.Job = class Job extends Page.Base {
 		if (!job.timelines.second) job.timelines.second = [];
 		if (!job.timelines.minute) job.timelines.minute = [];
 		
+		var event = find_object(app.events, { id: job.event }) || { title: job.event };
+		var icon = '';
+		
 		if (job.state == 'complete') {
 			// complete
-			app.setHeaderTitle( '<i class="mdi mdi-timer-' + (job.code ? 'alert' : 'check') + '-outline">&nbsp;</i>Completed Job' );
+			icon = 'timer-' + (job.code ? 'alert' : 'check') + '-outline';
+			// app.setHeaderTitle( '<i class="mdi mdi-timer-' + (job.code ? 'alert' : 'check') + '-outline">&nbsp;</i>Completed Job' );
 			app.setWindowTitle( "Completed Job: #" + job.id );
 			
 			if (job.timelines && job.timelines.minute && job.timelines.minute.length) {
@@ -55,9 +59,16 @@ Page.Job = class Job extends Page.Base {
 		}
 		else {
 			// in progress
-			app.setHeaderTitle( '<i class="mdi mdi-timer-play-outline">&nbsp;</i>Live Job Progress' );
+			icon = 'timer-play-outline';
+			// app.setHeaderTitle( '<i class="mdi mdi-timer-play-outline">&nbsp;</i>Live Job Progress' );
 			app.setWindowTitle( "Live Job Progress: #" + job.id );
 		}
+		
+		app.setHeaderNav([
+			{ icon: 'calendar-multiple', loc: '#Events?sub=list', title: 'Events' },
+			{ icon: event.icon || 'file-clock-outline', loc: '#Events?sub=view&id=' + job.event, title: event.title },
+			{ icon: icon, title: "Job #" + job.id }
+		]);
 		
 		var html = '';
 		
@@ -134,75 +145,95 @@ Page.Job = class Job extends Page.Base {
 			
 			html += '<div class="box_content table">';
 				html += '<div class="summary_grid">';
-					
-					// column 1
+				
+					// row 1
 					html += '<div>';
 						html += '<div class="info_label">Job ID</div>';
 						html += '<div class="info_value">' + this.getNiceJob(job.id) + '</div>';
-						
-						html += '<div class="info_label">Event</div>';
-						html += '<div class="info_value">' + this.getNiceEvent(job.event, true) + '</div>';
-						
-						html += '<div class="info_label">Workflow</div>';
-						html += '<div class="info_value">' + this.getNiceWorkflow(job.workflow, true) + '</div>';
-						
-						html += '<div class="info_label">Source</div>';
-						html += '<div class="info_value">' + this.getNiceJobSource(job) + '</div>';
 					html += '</div>';
 					
-					// column 2
 					html += '<div>';
 						html += '<div class="info_label">Category</div>';
 						html += '<div class="info_value">' + this.getNiceCategory(job.category, true) + '</div>';
-						
-						html += '<div class="info_label">Plugin</div>';
-						html += '<div class="info_value">' + this.getNicePlugin(job.plugin, true) + '</div>';
-						
-						html += '<div class="info_label">Tags</div>';
-						html += '<div class="info_value">' + this.getNiceTagList(job.tags, true, ', ') + '</div>';
-						
-						html += '<div class="info_label">Attempt</div>';
-						html += '<div class="info_value">' + nice_retry_count + '</div>';
 					html += '</div>';
 					
-					// column 3
 					html += '<div>';
 						html += '<div class="info_label">Targets</div>';
 						html += '<div class="info_value">' + this.getNiceTargetList(job.targets, ', ', 3) + '</div>';
-						
-						html += '<div class="info_label">Server</div>';
-						html += '<div class="info_value">' + this.getNiceServer(job.server, true) + '</div>';
-						
-						html += '<div class="info_label">Avg CPU</div>';
-						html += '<div class="info_value" id="d_live_cpu"><i class="mdi mdi-chip">&nbsp;</i>' + this.getNiceJobAvgCPU(job) + '</div>';
-						
-						html += '<div class="info_label">Avg Mem</div>';
-						html += '<div class="info_value" id="d_live_mem"><i class="mdi mdi-memory">&nbsp;</i>' + this.getNiceJobAvgMem(job) + '</div>';
-						
-						// html += '<div class="info_label">Process ID</div>';
-						// html += '<div class="info_value"><i class="mdi mdi-console">&nbsp;</i>' + (job.pid || 'n/a') + '</div>';
 					html += '</div>';
 					
-					// column 4
 					html += '<div>';
 						html += '<div class="info_label">Job State</div>';
 						html += '<div class="info_value" id="d_live_state">' + this.getNiceJobState(job) + '</div>';
-						
+					html += '</div>';
+					
+					// row 2
+					html += '<div>';
+						html += '<div class="info_label">Event</div>';
+						html += '<div class="info_value">' + this.getNiceEvent(job.event, true) + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
+						html += '<div class="info_label">Plugin</div>';
+						html += '<div class="info_value">' + this.getNicePlugin(job.plugin, true) + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
+						html += '<div class="info_label">Server</div>';
+						html += '<div class="info_value">' + this.getNiceServer(job.server, true) + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
 						html += '<div class="info_label">Job Started</div>';
 						html += '<div class="info_value">' + this.getNiceDateTime( job.started ) + '</div>';
-						
+					html += '</div>';
+					
+					// row 3
+					html += '<div>';
+						html += '<div class="info_label">Workflow</div>';
+						html += '<div class="info_value">' + this.getNiceWorkflow(job.workflow, true) + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
+						html += '<div class="info_label">Tags</div>';
+						html += '<div class="info_value">' + this.getNiceTagList(job.tags, true, ', ') + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
+						html += '<div class="info_label">Avg CPU</div>';
+						html += '<div class="info_value" id="d_live_cpu"><i class="mdi mdi-chip">&nbsp;</i>' + this.getNiceJobAvgCPU(job) + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
 						if (job.state == 'complete') {
 							html += '<div class="info_label">Job Completed</div>';
 							html += '<div class="info_value">' + this.getNiceDateTime( job.completed ) + '</div>';
 						}
-						
-						html += '<div class="info_label">Elapsed Time</div>';
-						html += '<div class="info_value"><span id="s_live_elapsed">' + this.getNiceJobElapsedTime(job) + '</span></div>';
-						
-						if (job.state != 'complete') {
+						else {
 							html += '<div class="info_label">Remaining Time</div>';
 							html += '<div class="info_value"><span id="s_live_remain"></span></div>';
 						}
+					html += '</div>';
+					
+					// row 4
+					html += '<div>';
+						html += '<div class="info_label">Source</div>';
+						html += '<div class="info_value">' + this.getNiceJobSource(job) + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
+						html += '<div class="info_label">Attempt</div>';
+						html += '<div class="info_value">' + nice_retry_count + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
+						html += '<div class="info_label">Avg Mem</div>';
+						html += '<div class="info_value" id="d_live_mem"><i class="mdi mdi-memory">&nbsp;</i>' + this.getNiceJobAvgMem(job) + '</div>';
+					html += '</div>';
+					
+					html += '<div>';
+						html += '<div class="info_label">Elapsed Time</div>';
+						html += '<div class="info_value"><span id="s_live_elapsed">' + this.getNiceJobElapsedTime(job) + '</span></div>';
 					html += '</div>';
 					
 				html += '</div>';
@@ -444,6 +475,7 @@ Page.Job = class Job extends Page.Base {
 			
 			var html = '';
 			html += this.getBasicTable({
+				attribs: { class: 'data_table' },
 				compact: true,
 				cols: job.table.header,
 				rows: job.table.rows,
@@ -654,7 +686,7 @@ Page.Job = class Job extends Page.Base {
 		if (!$cont.length) return; // user may have navigated away from page
 		
 		var chunk = this.logSpool.splice(0, 256); // render 256 lines at a time
-		$cont.append( chunk.map( function(line) { return '<p>' + self.converter.ansi_to_html(line) + '</p>'; } ).join("\n") );
+		$cont.append( chunk.map( function(line) { return '<p>' + (self.converter.ansi_to_html(line) || ' ') + '</p>'; } ).join("\n") );
 		
 		if (this.logSpool.length) requestAnimationFrame( this.spoolNextLogChunk.bind(this) );
 		else delete this.logSpool;
@@ -694,7 +726,7 @@ Page.Job = class Job extends Page.Base {
 		}
 		
 		var html = this.converter.ansi_to_html(text);
-		$cont.append( html.split(/\n/).map( function(line) { return '<p>' + line + '</p>'; } ).join("\n") );
+		$cont.append( html.split(/\n/).map( function(line) { return '<p>' + (line || ' ') + '</p>'; } ).join("\n") );
 		
 		// only keep latest 1K chunks
 		var $children = $cont.children();
@@ -724,8 +756,8 @@ Page.Job = class Job extends Page.Base {
 		}
 		
 		return [
-			nice_timestamp,
-			nice_server,
+			'<span class="nowrap">' + nice_timestamp + '</span>',
+			'<span class="nowrap">' + nice_server + '</span>',
 			row.msg
 		];
 	}
@@ -738,6 +770,7 @@ Page.Job = class Job extends Page.Base {
 		var html = '';
 		
 		html += this.getBasicTable({
+			attribs: { class: 'data_table' },
 			compact: true,
 			cols: ['Timestamp', 'Server', 'Message'],
 			rows: activity,
