@@ -73,7 +73,7 @@
 			"id": "urlplug",
 			"title": "HTTP Request",
 			"enabled": 1,
-			"command": "bin/url-plugin.js",
+			"command": "bin/http-plugin.js",
 			"username": "admin",
 			"modified": 1434125333,
 			"created": 1434125333,
