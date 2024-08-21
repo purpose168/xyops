@@ -207,17 +207,23 @@ app.extend({
 		
 		html += '<div class="header_widget icon"><i class="mdi mdi-power-standby" onClick="app.doUserLogout()" title="Logout"></i></div>';
 		html += '<div class="header_widget user" style="background-image:url(' + this.getUserAvatarURL( this.retina ? 64 : 32, bust ) + ')" onClick="app.doMyAccount()" title="My Account (' + app.username + ')"></div>';
-		html += '<div class="header_widget icon"><i class="mdi mdi-tune-vertical-variant" onClick="app.doMySettings()" title="Edit Settings"></i></div>';
+		html += '<div class="header_widget icon"><i class="mdi mdi-tune-vertical-variant" onClick="app.doMySettings()" title="My Preferences"></i></div>';
 		html += '<div id="d_theme_ctrl" class="header_widget icon" onClick="app.openThemeSelector()" title="Select Theme"></div>';
 		html += '<div id="d_header_clock" class="header_widget combo" onClick="app.openScheduleSelector()" title="Toggle Scheduler">...</div>';
 		
-		html += '<div id="d_job_counter" class="header_widget combo" onClick="app.goJobs()" title="Active Jobs" style="display:none">...</div>';
+		html += '<div id="d_job_counter" class="header_widget combo marquee" onClick="app.goJobs()" title="Active Jobs" style="display:none">...</div>';
 		html += '<div id="d_alert_counter" class="header_widget combo red" onClick="app.goAlerts()" title="Active Alerts" style="display:none">...</div>';
 		
 		// html += '<div class="header_search_widget"><i class="mdi mdi-magnify">&nbsp;</i><input type="text" size="15" id="fe_header_search" placeholder="Quick Search" onKeyDown="app.qsKeyDown(this,event)"/></div>';
 		$('#d_header_user_container').html( html );
 		
-		this.initTheme();
+		this.$headerClock = $('#d_header_clock');
+		this.$alertCounter = $('#d_alert_counter');
+		this.$jobCounter = $('#d_job_counter');
+		
+		// reapply theme so header widget is updated
+		this.setTheme( this.getPref('theme') || 'auto' );
+		
 		this.initSidebarTabs();
 		this.updateHeaderClock();
 		
@@ -238,10 +244,10 @@ app.extend({
 		var num_alerts = num_keys( this.activeAlerts || {} );
 		
 		if (num_alerts) {
-			$('#d_alert_counter').show().html( '<i class="mdi mdi-bell-ring-outline"></i><span><b>' + commify(num_alerts) + '</b></span>' );
+			this.$alertCounter.show().html( '<i class="mdi mdi-bell-ring-outline"></i><span><b>' + commify(num_alerts) + ' ' + pluraluze('Alert', num_alerts) + '</b></span>' );
 		}
 		else {
-			$('#d_alert_counter').hide();
+			this.$alertCounter.hide();
 		}
 	},
 	
@@ -250,25 +256,27 @@ app.extend({
 		var num_jobs = num_keys( this.activeJobs || {} );
 		
 		if (num_jobs) {
-			$('#d_job_counter').show().html( '<i class="mdi mdi-timer-outline"></i><span><b>' + commify(num_jobs) + '</b></span>' );
+			this.$jobCounter.show().html( '<i class="mdi mdi-run-fast"></i><span><b>' + commify(num_jobs) + ' ' + pluralize('Job', num_jobs) + '</b></span>' );
 		}
 		else {
-			$('#d_job_counter').hide();
+			this.$jobCounter.hide();
 		}
 	},
 	
 	updateHeaderClock: function() {
 		// redraw header clock (called every 1s by server status update)
-		var html = '';
-		
 		if (this.state.scheduler.enabled) {
-			html += '<i class="mdi mdi-clock-time-four-outline"></i><span>' + app.formatDate(app.epoch, { hour: 'numeric', minute: '2-digit', second: '2-digit' }) + '</span>';
+			this.$headerClock.html( 
+				'<i class="mdi mdi-clock-time-four-outline"></i><span>' + 
+				app.formatDate(app.epoch, { hour: 'numeric', minute: '2-digit', second: '2-digit' }) + 
+				'</span>' 
+			);
+			if (this.$headerClock.hasClass('yellow')) this.$headerClock.removeClass('yellow');
 		}
 		else {
-			html += '<i class="mdi mdi-pause-circle"></i><span>Paused</span>';
+			this.$headerClock.html( '<i class="mdi mdi-pause-circle"></i><span><b>Paused</b></span>' );
+			if (!this.$headerClock.hasClass('yellow')) this.$headerClock.addClass('yellow');
 		}
-		
-		$('#d_header_clock').html( html );
 	},
 	
 	openScheduleSelector: function() {
@@ -279,8 +287,8 @@ app.extend({
 			elem: '#d_header_clock',
 			title: 'Job Scheduler',
 			items: [
-				{ id: 'enabled', title: 'Active', icon: 'play-circle' },
-				{ id: 'disabled', title: 'Paused', icon: 'pause-circle' }
+				{ id: 'enabled', title: 'Active', icon: 'play-circle-outline' },
+				{ id: 'disabled', title: 'Paused', icon: 'pause-circle-outline' }
 			],
 			value: this.state.scheduler.enabled ? 'enabled' : 'disabled',
 			
@@ -290,10 +298,7 @@ app.extend({
 				app.api.post( 'app/update_master_state', { 'scheduler.enabled': enabled }, function(resp) {
 					self.state.scheduler.enabled = enabled;
 					self.updateHeaderClock();
-					
-					// add temp local flare if disabled
-					if (!enabled) $('#d_header_clock').addClass('red');
-					else $('#d_header_clock').removeClass('red');
+					if (enabled) self.showMessage(enabled ? 'success' : 'warning', "Scheduler has been " + (enabled ? 'resumed.' : 'paused.'), 8);
 				} ); // api.post
 			} // callback
 		}); // popupQuickMenu
