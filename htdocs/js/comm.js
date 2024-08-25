@@ -178,6 +178,9 @@ app.comm = {
 			app[key] = data[key];
 		}
 		
+		// bust cache if jobs changed
+		if (data.jobsChanged) app.cacheBust = hires_time_now();
+		
 		// delete jobsChanged flag from app
 		delete app.jobsChanged;
 		
@@ -239,6 +242,9 @@ app.comm = {
 	handleActivity: function(item) {
 		// something was logged to the activity log, show notification
 		Debug.trace('debug', "Activity log update: " + item.action + ": " + JSON.stringify(item));
+		
+		// bust cache for this
+		app.cacheBust = hires_time_now();
 		
 		// determine activity type (icon, label)
 		var item_type = null;
