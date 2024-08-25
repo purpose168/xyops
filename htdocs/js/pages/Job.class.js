@@ -57,6 +57,7 @@ Page.Job = class Job extends Page.Base {
 		
 		if (job.state == 'complete') {
 			// complete
+			this.live = false;
 			icon = 'timer-' + (job.code ? 'alert' : 'check') + '-outline';
 			// app.setHeaderTitle( '<i class="mdi mdi-timer-' + (job.code ? 'alert' : 'check') + '-outline">&nbsp;</i>Completed Job' );
 			app.setWindowTitle( "Completed Job: #" + job.id );
@@ -68,6 +69,7 @@ Page.Job = class Job extends Page.Base {
 		}
 		else {
 			// in progress
+			this.live = true;
 			icon = 'timer-play-outline';
 			// app.setHeaderTitle( '<i class="mdi mdi-timer-play-outline">&nbsp;</i>Live Job Progress' );
 			app.setWindowTitle( "Live Job Progress: #" + job.id );
@@ -701,6 +703,9 @@ Page.Job = class Job extends Page.Base {
 		var job = this.job;
 		var $cont = this.div.find('#d_live_job_log');
 		
+		if (job.state != 'complete') return; // sanity
+		if (this.live) return; // more sanity
+		
 		if (!job.log_file_size) {
 			$cont.html('<div class="log_message">(Job log is empty.)</div>');
 			return;
@@ -725,6 +730,7 @@ Page.Job = class Job extends Page.Base {
 			.then(function(text) {
 				// use setTimeout to avoid insanity with the stupid fetch promise
 				setTimeout( function() {
+					if (!self.active) return; // sanity
 					$cont.html('');
 					
 					if (text.length) {
@@ -1726,11 +1732,11 @@ Page.Job = class Job extends Page.Base {
 			return;
 		}
 		
-		if (!updates || ((old_state != 'complete') && (this.job.state == 'complete'))) {
-			// job has completed under our noses!  reload page!
-			Debug.trace('job', "Job has completed, refreshing page");
-			Nav.refresh();
-		}
+		// if (!updates || ((old_state != 'complete') && (this.job.state == 'complete'))) {
+		// 	// job has completed under our noses!  reload page!
+		// 	Debug.trace('job', "Job has completed, refreshing page");
+		// 	Nav.refresh();
+		// }
 	}
 	
 	onPageUpdate(pcmd, pdata) {
@@ -1740,7 +1746,12 @@ Page.Job = class Job extends Page.Base {
 		switch (pcmd) {
 			case 'log_append':
 				var text = pdata.text;
-				if (this.liveLogReady) this.appendLiveJobLog(text);
+				if (this.live && this.liveLogReady) this.appendLiveJobLog(text);
+			break;
+			
+			case 'job_completed':
+				Debug.trace('job', "Job has completed, refreshing page");
+				Nav.refresh();
 			break;
 			
 			case 'log_uploaded':
@@ -1764,6 +1775,13 @@ Page.Job = class Job extends Page.Base {
 		// called when page is deactivated
 		delete this.job;
 		delete this.logSpool;
+		delete this.converter;
+		delete this.liveLogReady;
+		delete this.snapEpoch;
+		delete this.emptyLogMessage;
+		delete this.redraw;
+		delete this.metaRowCount;
+		delete this.live;
 		
 		// destroy charts if applicable
 		if (this.charts) {
