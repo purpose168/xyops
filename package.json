@@ -29,6 +29,7 @@
 	"dependencies": {
 		"@mdi/font": "6.9.96",
 		"@mdi/svg": "6.9.96",
+		"@highlightjs/cdn-assets": "11.10.0",
 		"async": "2.6.4",
 		"bcrypt-node": "0.1.0",
 		"cash-dom": "8.1.5",
