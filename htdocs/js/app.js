@@ -53,6 +53,7 @@ app.extend({
 		'^event': { icon: 'file-clock-outline', label: 'Event' },
 		'^workflow': { icon: 'clipboard-flow-outline', label: 'Workflow' },
 		'^channel': { icon: 'bullhorn-outline', label: 'Channel' },
+		'^web_hook': { icon: 'webhook', label: 'Web Hook' },
 		'^plugin': { icon: 'power-plug-outline', label: 'Plugin' },
 		'^job': { icon: 'timer-outline', label: 'Job' },
 		'^queue': { icon: 'tray-full', label: 'Queue' },
@@ -103,6 +104,7 @@ app.extend({
 			{ ID: 'AlertSetup' },
 			{ ID: 'Categories' },
 			{ ID: 'Channels' },
+			{ ID: 'WebHooks' },
 			{ ID: 'Plugins' },
 			{ ID: 'Tags' },
 			{ ID: 'Users' },
@@ -785,11 +787,15 @@ app.extend({
 		return last_day;
 	},
 	
-	highlightAuto: function(text) {
+	highlightAuto: function(text, formats) {
 		var results = '';
+		if (formats && (typeof(formats) == 'string')) formats = [formats];
+		
+		// perform our own JSON-detection, because hljs gets it wrong
+		if (!formats && text.match(/^\s*\{[\S\s]+\}\s*$/)) formats = ['json'];
 		
 		// highlighted code or markup (auto-detect format)
-		try { results = hljs.highlightAuto( text ); }
+		try { results = hljs.highlightAuto( text, formats ); }
 		catch (err) {
 			// fallback to monospace with no hightlight
 			results = { value: encode_entities(text) };
