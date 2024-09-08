@@ -1828,7 +1828,8 @@ Page.Job = class Job extends Page.Base {
 		
 		var new_job = deep_copy_object(event);
 		new_job.params = job.params;
-		new_job.parent = job.parent;
+		if (job.parent) new_job.parent = job.parent;
+		if (job.input) new_job.input = job.input;
 		
 		Dialog.showProgress( 1.0, "Launching Job..." );
 		
