@@ -248,13 +248,20 @@ A string ID indicating what spawned the job.  This will be one of:
 
 ## Job.parent
 
-When the job was launched from another job (custom action or workflow step), this will be a reference to the parent job which spawned the current job.  The object is only sparsely populated, with the following properties:
+When the job was launched from another job (custom action or workflow step), this will be a reference to the parent job which spawned the current job.
+
+## Job.input
+
+When another job passes data to the current job, the `input` object is sued.  The object has the following properties:
 
 | Property Name | Description |
 |---------------|-------------|
-| `id` | The ID of the parent job which spawned the current job. |
 | `data` | A copy of the data object from the parent job, if one was populated (user-supplied). |
 | `files` | A copy of the files uploaded from the parent job, if applicable. |
+
+## Job.retried
+
+Boolean, will be set to `true` when a job was retried, and another job exists in the same set.
 
 ## Job.retry_count
 
@@ -332,6 +339,12 @@ echo '{ "push": { "actions": [ { "trigger":"success", "type":"email", "email":"y
 
 
 ## Job.timelines
+
+
+
+## Job.flags
+
+An internal object used to track CPU/Mem thresholds.
 
 
 
