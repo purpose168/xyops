@@ -49,5 +49,27 @@
 		{ "id": "delete_web_hooks", "title": "Delete Web Hooks", "icon": "webhook" },
 		
 		{ "id": "create_snapshots", "title": "Create Snapshots", "icon": "camera-outline" }
+	],
+	
+	"list_list": [
+		{ "id": "alerts", "title": "Alerts", "icon": "bell-outline" },
+		{ "id": "api_keys", "title": "API Keys", "icon": "key-chain" },
+		{ "id": "categories", "title": "Categories", "icon": "folder-open-outline" },
+		{ "id": "channels", "title": "Channels", "icon": "bullhorn-outline" },
+		{ "id": "commands", "title": "Commands", "icon": "console" },
+		{ "id": "events", "title": "Events", "icon": "calendar-clock" },
+		{ "id": "groups", "title": "Groups", "icon": "server-network" },
+		{ "id": "monitors", "title": "Monitors", "icon": "chart-areaspline" },
+		{ "id": "plugins", "title": "Plugins", "icon": "power-plug-outline" },
+		{ "id": "tags", "title": "Tags", "icon": "tag-outline" },
+		{ "id": "users", "title": "Users", "icon": "account" },
+		{ "id": "web_hooks", "title": "Web Hooks", "icon": "web" }
+	],
+	
+	"database_list": [
+		{ "id": "alerts", "title": "Alerts", "icon": "bell-outline" },
+		{ "id": "jobs", "title": "Jobs", "icon": "timer-outline" },
+		{ "id": "servers", "title": "Servers", "icon": "router-network" },
+		{ "id": "snapshots", "title": "Snapshots", "icon": "camera-outline" }
 	]
 }
