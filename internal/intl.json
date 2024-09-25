@@ -2498,6 +2498,8 @@
 		
 		"user_update": "User updated: [description]",
 		
-		"state_update": "Master state updated: [description]"
+		"state_update": "Master state updated: [description]",
+		
+		"internal_job": "Internal job completed: [description]"
 	}
 }
