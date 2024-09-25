@@ -1960,13 +1960,13 @@ Page.Events = class Events extends Page.Base {
 			case 'range':
 				nice_icon = '<i class="mdi mdi-cog-outline">&nbsp;</i>';
 				nice_type = 'Option';
-				nice_desc = '<i class="mdi mdi-calendar-range-outline">&nbsp;</i><b>Range:</b> ' + self.summarizeTimingRange(item);
+				nice_desc = '<i class="mdi mdi-calendar-range-outline">&nbsp;</i><b>Range:</b> ' + this.summarizeTimingRange(item);
 			break;
 			
 			case 'blackout':
 				nice_icon = '<i class="mdi mdi-cog-outline">&nbsp;</i>';
 				nice_type = 'Option';
-				nice_desc = '<i class="mdi mdi-circle">&nbsp;</i><b>Blackout:</b> ' + self.summarizeTimingRange(item);
+				nice_desc = '<i class="mdi mdi-circle">&nbsp;</i><b>Blackout:</b> ' + this.summarizeTimingRange(item);
 			break;
 			
 			case 'delay':
