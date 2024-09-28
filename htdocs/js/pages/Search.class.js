@@ -266,7 +266,7 @@ Page.Search = class Search extends Page.Base {
 			}
 			html += '<div id="btn_s_save" class="button secondary mobile_collapse" onMouseUp="$P().doSavePreset()"><i class="mdi mdi-floppy">&nbsp;</i><span>' + (preset ? 'Edit' : 'Save') + ' Preset...</span></div>';
 			// html += '<div class="button" id="btn_s_download" onMouseUp="$P().doDownload()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i>Download All...</div>';
-			html += '<div class="button primary" onMouseUp="$P().navSearch()"><i class="mdi mdi-magnify">&nbsp;</i>Search</div>';
+			html += '<div class="button primary" onMouseUp="$P().navSearch(true)"><i class="mdi mdi-magnify">&nbsp;</i>Search</div>';
 			// html += '<div class="clear"></div>';
 		html += '</div>'; // box_buttons
 		
@@ -292,7 +292,7 @@ Page.Search = class Search extends Page.Base {
 			// capture enter key
 			if (event.keyCode == 13) {
 				event.preventDefault();
-				self.navSearch();
+				self.navSearch(true);
 			}
 		});
 		
@@ -344,7 +344,7 @@ Page.Search = class Search extends Page.Base {
 		return args;
 	}
 	
-	navSearch() {
+	navSearch(force = false) {
 		// convert form into query and redirect
 		app.clearError();
 		
@@ -359,7 +359,7 @@ Page.Search = class Search extends Page.Base {
 		// save editing state across searches
 		if (this.args.preset) args.preset = this.args.preset;
 		
-		Nav.go( this.selfNav(args) );
+		Nav.go( this.selfNav(args), force );
 	}
 	
 	getSearchQuery(args) {
