@@ -358,7 +358,7 @@ Page.Dashboard = class Dashboard extends Page.Base {
 				self.getNiceUser(job.username),
 				
 				'<div id="d_sys_job_progress_' + job.id + '">' + self.getNiceJobProgressBar(job) + '</div>',
-				'<div id="d_sys_job_elapsed_' + job.id + '">' + self.getNiceJobElapsedTime(job, false) + '</div>',
+				'<div id="d_sys_job_elapsed_' + job.id + '">' + self.getNiceJobElapsedTime(job, false, true) + '</div>',
 				'<div id="d_sys_job_remaining_' + job.id + '">' + self.getNiceJobRemainingTime(job, false) + '</div>'
 			];
 		} );
@@ -378,7 +378,7 @@ Page.Dashboard = class Dashboard extends Page.Base {
 			var $cont = div.find('#d_sys_job_progress_' + job.id + ' > div.progress_bar_container');
 			if (!$cont.length) return; // hidden job for current user
 			
-			div.find('#d_sys_job_elapsed_' + job.id).html( self.getNiceJobElapsedTime(job, false) );
+			div.find('#d_sys_job_elapsed_' + job.id).html( self.getNiceJobElapsedTime(job, false, true) );
 			div.find('#d_sys_job_remaining_' + job.id).html( self.getNiceJobRemainingTime(job, false) );
 			
 			// update progress bar without redrawing it (so animation doesn't jitter)
