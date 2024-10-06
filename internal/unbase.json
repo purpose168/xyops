@@ -218,6 +218,30 @@
 					"type": "number"
 				}
 			]
+		},
+		
+		"activity": {
+			"default_search_field": "keywords",
+			"fields": [
+				{
+					"id": "action",
+					"source": "/action"
+				},
+				{
+					"id": "keywords",
+					"source": "/keywords",
+					"min_word_length": 1,
+					"max_word_length": 128,
+					"use_remove_words": false,
+					"use_stemmer": false
+				},
+				{
+					"id": "date",
+					"source": "/epoch",
+					"type": "number",
+					"divide": 3600
+				}
+			]
 		}
 		
 	}
