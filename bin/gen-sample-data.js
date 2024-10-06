@@ -44,6 +44,7 @@ request.json( 'https://random-data-api.com/api/company/random_company?size=100',
 		var now = Tools.timeNow(true) - Math.floor( Math.random() * 864000 );
 		var event = {
 			"id": "event" + idx,
+			"revision": 1,
 			"title": phrases.shift(),
 			"enabled": true,
 			"username": "admin",

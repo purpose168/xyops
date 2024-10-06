@@ -1580,6 +1580,7 @@ Page.Events = class Events extends Page.Base {
 		var idx = find_object_idx(app.events, { id: this.event.id });
 		if (idx > -1) {
 			this.event.modified = app.epoch;
+			this.event.revision++;
 			merge_hash_into( app.events[idx], this.event );
 		}
 		
