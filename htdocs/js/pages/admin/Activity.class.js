@@ -270,7 +270,7 @@ Page.ActivityLog = class ActivityLog extends Page.Base {
 		
 		var grid_args = {
 			resp: resp,
-			cols: ['Date/Time', 'Type', 'Description', 'User / Key', 'IP Address', 'Actions'],
+			cols: ['Date/Time', 'Type', 'Description', 'User', 'IP Address', 'Actions'],
 			data_type: 'item',
 			offset: this.args.offset || 0,
 			limit: this.args.limit,
@@ -501,7 +501,7 @@ Page.ActivityLog = class ActivityLog extends Page.Base {
 		
 		// user info
 		md += "\n### Client Info\n\n";
-		md += '- **User / Key:** ' + this.getNiceUser(item.username, true) + "\n";
+		md += '- **User:** ' + this.getNiceUser(item.username, true) + "\n";
 		md += '- **IP Addresses:** ' + item.ips.join(', ') + "\n";
 		md += '- **User Agent:** ' + (item.useragent || 'Unknown') + "\n";
 		
