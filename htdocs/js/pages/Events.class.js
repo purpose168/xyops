@@ -1390,10 +1390,10 @@ Page.Events = class Events extends Page.Base {
 			
 			return [
 				nice_rev,
-				'<div class="activity_desc"><i class="mdi mdi-' + item_type.icon + '">&nbsp;</i>' + desc + '</div>',
-				'<div style="white-space:nowrap;">' + self.getNiceUser(item.username, true) + '</div>',
-				'<div class="wrap_mobile">' + self.getRelativeDateTime( item.epoch ) + '</div>',
-				'<div style="white-space:nowrap;">' + actions.join(' | ') + '</div>'
+				'<i class="mdi mdi-' + item_type.icon + '">&nbsp;</i>' + desc + '',
+				'' + self.getNiceUser(item.username, true) + '',
+				'' + self.getRelativeDateTime( item.epoch ) + '',
+				'' + actions.join(' | ') + ''
 			];
 		}); // getPaginatedGrid
 		
