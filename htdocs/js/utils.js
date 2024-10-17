@@ -49,7 +49,6 @@ function summarize_event_timings(event) {
 	
 	var opts = [];
 	if (find_object(timings, { type: 'catchup' })) opts.push("Catch-Up");
-	if (find_object(timings, { type: 'destruct' })) opts.push("Self-Destruct");
 	if (find_object(timings, { type: 'range' })) opts.push("Date Range");
 	if (find_object(timings, { type: 'blackout' })) opts.push("Blackout");
 	if (find_object(timings, { type: 'delay' })) opts.push("Delay");

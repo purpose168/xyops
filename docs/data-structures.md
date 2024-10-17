@@ -539,7 +539,6 @@ Each timing rule has a `type` property which describes its behavior.  The differ
 | `continuous` | Run the event continuously, forever. |
 | `single` | Set a single future exact date/time to run.  Requires an additional `epoch` property, set to the [Epoch timestamp](https://en.wikipedia.org/wiki/Unix_time) at which to run. |
 | `catchup` | Ensure that *every* scheduled job runs, even if it has to run late. |
-| `destruct` | Self-destruct (delete the event) after the first run. |
 | `range` | Set a starting and/or ending date for a repeating event.  Requires additional `start` and/or `end` properties, set to [Epoch timestamps](https://en.wikipedia.org/wiki/Unix_time). |
 | `blackout` | Set a blackout date/time range when the event *cannot* run.  Requires additional `start` and `end` properties, set to [Epoch timestamps](https://en.wikipedia.org/wiki/Unix_time). |
 | `delay` | Set an optional starting delay for all scheduled jobs.  Requires an additional `duration` property, set to the number of seconds to delay each job by. |

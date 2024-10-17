@@ -1606,6 +1606,12 @@ Page.Base = class Base extends Page {
 				disp.icon = 'cancel';
 			break;
 			
+			case 'delete':
+				disp.type = "Delete Event";
+				disp.text = disp.desc = "(Current Event)";
+				disp.icon = 'trash-can-outline';
+			break;
+			
 			case 'plugin':
 				disp.type = "Plugin";
 				var plugin = find_object( app.plugins, { id: action.plugin_id, type: 'action' } );
@@ -1723,6 +1729,7 @@ Page.Base = class Base extends Page {
 					{ id: 'channel', title: "Notify Channel", icon: 'bullhorn-outline' },
 					{ id: 'snapshot', title: "Take Snapshot", icon: 'monitor-screenshot' },
 					{ id: 'disable', title: "Disable Event", icon: 'cancel' },
+					{ id: 'delete', title: "Delete Event", icon: 'trash-can-outline' },
 					{ id: 'plugin', title: "Plugin", icon: 'power-plug' }
 				],
 				value: action.type
@@ -1885,6 +1892,10 @@ Page.Base = class Base extends Page {
 				break;
 				
 				case 'disable':
+					// hide all
+				break;
+				
+				case 'delete':
 					// hide all
 				break;
 				

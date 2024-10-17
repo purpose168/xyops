@@ -2127,12 +2127,6 @@ Page.Events = class Events extends Page.Base {
 				nice_desc = '<i class="mdi mdi-run-fast">&nbsp;</i>Catch-Up';
 			break;
 			
-			case 'destruct':
-				nice_icon = '<i class="mdi mdi-cog-outline">&nbsp;</i>';
-				nice_type = 'Option';
-				nice_desc = '<i class="mdi mdi-fire">&nbsp;</i>Self-Destruct';
-			break;
-			
 			case 'range':
 				nice_icon = '<i class="mdi mdi-cog-outline">&nbsp;</i>';
 				nice_type = 'Option';
@@ -2315,14 +2309,13 @@ Page.Events = class Events extends Page.Base {
 					{ id: 'plugin', title: "Plugin", icon: 'power-plug' },
 					
 					{ id: 'catchup', title: "Catch-Up", icon: 'run-fast', group: "Options" },
-					{ id: 'destruct', title: "Self-Destruct", icon: 'fire' },
 					{ id: 'range', title: "Range", icon: 'calendar-range-outline' },
 					{ id: 'blackout', title: "Blackout", icon: 'circle' },
 					{ id: 'delay', title: "Delay", icon: 'chat-sleep-outline' }
 				],
 				value: tmode,
 				'data-shrinkwrap': 1,
-				'data-nudgeheight': 1
+				// 'data-nudgeheight': 1
 			}),
 			caption: 'Select the desired type for the timing rule.'
 		});
@@ -2475,13 +2468,6 @@ Page.Events = class Events extends Page.Base {
 				value: ''
 			}),
 			caption: 'Optionally adjust the internal clock for this event, to either repeat past jobs, or jump over a backlog.  Select a date/time in your local timezone (' + this.getUserTimezone() + ').  <span class="link" onClick="$P().resetTimeMachine()">Reset to Now</span>'
-		});
-		
-		// self-destruct
-		html += this.getFormRow({
-			id: 'd_et_destruct_desc',
-			label: 'Description:',
-			content: 'Add this timing rule to automatically delete the event after the next job run.  This is designed to accompany other timing rules.'
 		});
 		
 		// range
@@ -2687,13 +2673,6 @@ Page.Events = class Events extends Page.Base {
 					}
 				break;
 				
-				case 'destruct':
-					// self-destruct (no options)
-					if ((idx == -1) && find_object(self.event.timings, { type: 'destruct' })) {
-						return app.doError("Sorry, you can only have one self-destruct rule defined per event.");
-					}
-				break;
-				
 				case 'range':
 					timing.start = self.parseDateTZ( $('#fe_et_range_start').val(), self.getUserTimezone() ) || 0;
 					timing.end = self.parseDateTZ( $('#fe_et_range_end').val(), self.getUserTimezone() ) || 0;
@@ -2805,10 +2784,6 @@ Page.Events = class Events extends Page.Base {
 				case 'catchup':
 					$('#d_et_catchup_desc').show();
 					$('#d_et_time_machine').show();
-				break;
-				
-				case 'destruct':
-					$('#d_et_destruct_desc').show();
 				break;
 				
 				case 'range':
