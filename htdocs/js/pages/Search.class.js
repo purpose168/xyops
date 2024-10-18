@@ -621,6 +621,11 @@ Page.Search = class Search extends Page.Base {
 		} ); // Dialog.confirm
 	}
 	
+	onStatusUpdate(data) {
+		// refresh search results if jobsChanged
+		if (data.jobsChanged) this.doSearch();
+	}
+	
 	onDeactivate() {
 		// called when page is deactivated
 		this.div.html( '' );
