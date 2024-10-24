@@ -207,7 +207,7 @@ The duration of the job run in seconds (calculated as the difference between [Jo
 
 ## Job.remote
 
-Set to `true` when the job has an active remote connection (job request sent to remote server).
+Set to `true` when the job has an active remote server connection (job request was sent to remote server).
 
 ## Job.until
 
@@ -240,6 +240,7 @@ A string ID indicating what spawned the job.  This will be one of:
 | Source | Description |
 |--------|-------------|
 | `scheduler` | Job was spawned normally via the scheduler. |
+| `plugin` | Job was spawned from a Scheduler Plugin. |
 | `key` | Job was spawned via a HTTP request to the `run_event` API using an API Key.  There will be an additional property named `key` containing the internal API Key ID (non-secret). |
 | `user` | Job was spawned manually via user request in the UI.  There will be an additional property named `username` containing the username of the user who initiated the action. |
 | `action` | Job was spawned by a custom job action (i.e. start, complete, success or fail action trigger).  [Job.parent](#job-parent) will also be present in this case. |
