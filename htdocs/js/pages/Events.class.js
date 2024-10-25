@@ -207,7 +207,7 @@ Page.Events = class Events extends Page.Base {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons" style="padding:0">';
-			html += '<div id="btn_el_reset" class="button danger" style="display:none" onClick="$P().resetFilters()"><i class="mdi mdi-undo-variant">&nbsp;</i>Reset Filters</div>';
+			html += '<div id="btn_el_reset" class="button" style="display:none" onClick="$P().resetFilters()"><i class="mdi mdi-undo-variant">&nbsp;</i>Reset Filters</div>';
 			html += '<div class="button primary" onClick="$P().applyTableFilters(true)"><i class="mdi mdi-magnify">&nbsp;</i>Search</div>';
 		html += '</div>'; // box_buttons
 		

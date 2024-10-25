@@ -258,7 +258,7 @@ Page.Search = class Search extends Page.Base {
 		// buttons at bottom
 		html += '<div class="box_buttons" style="padding:0">';
 			// html += '<div class="search_help"><a href="http://source.dev.ca.admission.net/doc/codepress/#searching" target="_blank">Search Help<i class="mdi mdi-open-in-new"></i></a></div>';
-			html += '<div id="btn_s_reset" class="button danger" style="display:none" onClick="$P().resetFilters()"><i class="mdi mdi-undo-variant">&nbsp;</i>Reset Filters</div>';
+			html += '<div id="btn_s_reset" class="button" style="display:none" onClick="$P().resetFilters()"><i class="mdi mdi-undo-variant">&nbsp;</i>Reset Filters</div>';
 			
 			if (preset) {
 				html += '<div class="button danger" onMouseUp="$P().doDeletePreset()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete Preset...</span></div>';
