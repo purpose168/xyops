@@ -166,6 +166,16 @@
 			"horizTicks": 6,
 			"vertTicks": 6,
 			"smoothingMaxSamples": 100
+		},
+		
+		"editor_defaults": {
+			"lineNumbers": false,
+			"matchBrackets": false,
+			"indentWithTabs": true,
+			"tabSize": 4,
+			"indentUnit": 4,
+			"lineWrapping": true,
+			"dragDrop": false
 		}
 	},
 	

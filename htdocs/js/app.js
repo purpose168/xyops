@@ -25,6 +25,21 @@ app.extend({
 	
 	colors: ["#008FFB", "#00E396", "#FEB019", "#FF4560", "#775DD0", "#3F51B5", "#4CAF50", "#546E7A", "#D4526E", "#A5978B", "#C7F464", "#81D4FA", "#2B908F", "#F9A3A4", "#90EE7E", "#FA4443", "#449DD1", "#F86624", "#69D2E7", "#EA3546", "#662E9B", "#C5D86D", "#D7263D", "#1B998B", "#2E294E", "#F46036", "#E2C044", "#662E9B", "#F86624", "#F9C80E", "#EA3546", "#43BCCD", "#5C4742", "#A5978B", "#8D5B4C", "#5A2A27", "#C4BBAF", "#A300D6", "#7D02EB", "#5653FE", "#2983FF", "#00B1F2", "#03A9F4", "#33B2DF", "#4ECDC4", "#13D8AA", "#FD6A6A", "#F9CE1D", "#FF9800"],
 	
+	cmLangMap: {
+		"go": "text/x-go",
+		"javascript": "application/javascript",
+		"json": "application/json",
+		"perl": "text/x-perl",
+		"php": "text/x-php",
+		"python": "text/x-python",
+		"shell": "text/x-sh",
+		"xml": "text/xml"
+	},
+	cmThemeMap: {
+		"light": "default",
+		"dark": "shadowfox"
+	},
+	
 	receiveConfig: function(resp) {
 		// receive config from server
 		delete resp.code;
@@ -727,6 +742,75 @@ app.extend({
 		this.lastMonthDayCache[cache_key] = last_day;
 		
 		return last_day;
+	},
+	
+	getLangFromBinary(bin) {
+		// sniff language from binary path, e.g. `/bin/sh`
+		var cmd = basename( bin.trim() ).replace(/\s+.+$/, '').replace(/\d+$/, '');
+		switch (cmd) {
+			case 'sh':
+			case 'csh':
+			case 'ksh':
+			case 'tcsh':
+			case 'fish':
+			case 'zsh':
+			case 'bash':
+				cmd = 'shell';
+			break;
+			
+			case 'node':
+			case 'deno':
+			case 'bun':
+				cmd = 'javascript';
+			break;
+		}
+		return hljs.listLanguages().includes(cmd) ? cmd : null;
+	},
+	
+	detectHighlightFormat: function(text, formats) {
+		// auto-detect format using hljs
+		var results = null;
+		if (formats && (typeof(formats) == 'string')) formats = [formats];
+		
+		// perform our own JSON-detection, because hljs gets it wrong
+		if ((!formats || formats.includes('json')) && text.match(/^\s*\{[\S\s]+\}\s*$/)) return 'json';
+		
+		// check for shebang, and honor that above hljs
+		if (text.match(/^\#\!(\/\S+)/)) {
+			var shebang = RegExp.$1;
+			var lang = this.getLangFromBinary(shebang);
+			if (lang && (!formats || formats.includes(lang))) return lang;
+		}
+		
+		// highlighted code or markup (auto-detect format)
+		try { results = hljs.highlightAuto( text, formats ); }
+		catch (err) {
+			// fallback to monospace with no hightlight
+			results = null;
+		}
+		
+		return (results && results.language) ? results.language : null;
+	},
+	
+	detectCodemirrorMode: function(text) {
+		// detect format specifically for codemirror
+		var lang = this.detectHighlightFormat( text, Object.keys(this.cmLangMap) );
+		if (!lang) return null;
+		
+		return this.cmLangMap[lang];
+	},
+	
+	getCodemirrorModeFromBinary(bin) {
+		// try to guess codemirror mode from binary (e.g. `/bin/sh`)
+		var cmd = this.getLangFromBinary(bin);
+		if (!cmd) return null;
+		
+		return this.cmLangMap[cmd] || null;
+	},
+	
+	getCodemirrorTheme: function() {
+		// get appropriate theme for cm, based on orchestra theme
+		return this.cmThemeMap[ this.getPref('theme') ];
 	},
 	
 	highlightAuto: function(text, formats) {

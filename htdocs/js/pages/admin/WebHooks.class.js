@@ -187,6 +187,7 @@ Page.WebHooks = class WebHooks extends Page.Base {
 		// this.updateAddRemoveMe('#fe_ewh_email');
 		$('#fe_ewh_title').focus();
 		this.setupBoxButtonFloater();
+		this.setupEditor();
 	}
 	
 	cancel_web_hook_edit() {
@@ -263,6 +264,7 @@ Page.WebHooks = class WebHooks extends Page.Base {
 		SingleSelect.init( this.div.find('#fe_ewh_icon') );
 		// this.updateAddRemoveMe('#fe_ewh_email');
 		this.setupBoxButtonFloater();
+		this.setupEditor();
 	}
 	
 	do_test_web_hook() {
@@ -429,9 +431,10 @@ Page.WebHooks = class WebHooks extends Page.Base {
 		
 		// body
 		html += this.getFormRow({
+			id: 'd_editor',
 			label: 'Request Body:',
 			content: this.getFormTextarea({
-				id: 'fe_ewh_body',
+				id: 'fe_editor',
 				rows: 5,
 				class: 'monospace',
 				spellcheck: 'false',
@@ -632,7 +635,7 @@ Page.WebHooks = class WebHooks extends Page.Base {
 		
 		web_hook.url = $('#fe_ewh_url').val();
 		web_hook.method = $('#fe_ewh_method').val();
-		web_hook.body = $('#fe_ewh_body').val();
+		web_hook.body = this.editor.getValue();
 		web_hook.timeout = parseInt( $('#fe_ewh_timeout').val() );
 		web_hook.retries = parseInt( $('#fe_ewh_retries').val() );
 		web_hook.follow = $('#fe_ewh_follow').is(':checked') ? true : false;
@@ -684,6 +687,16 @@ Page.WebHooks = class WebHooks extends Page.Base {
 		}
 	}
 	
+	onResize() {
+		// resize codemirror to match
+		this.handleEditorResize();
+	}
+	
+	onThemeChange(theme) {
+		// change codemirror theme too
+		this.handleEditorThemeChange(theme);
+	}
+	
 	onDataUpdate(key, data) {
 		// refresh list if web_hooks were updated
 		if ((key == 'web_hooks') && (this.args.sub == 'list')) this.gosub_list(this.args);
@@ -691,6 +704,7 @@ Page.WebHooks = class WebHooks extends Page.Base {
 	
 	onDeactivate() {
 		// called when page is deactivated
+		this.killEditor();
 		this.div.html( '' );
 		return true;
 	}

@@ -1963,6 +1963,23 @@ Page.Base = class Base extends Page {
 					html += self.getFormText({ id: elem_id, value: elem_value, disabled: elem_dis });
 				break;
 				
+				case 'code':
+					// limit code editor to event plugins, as it uses a dialog
+					if (plugin.type == 'event') {
+						html += self.getFormTextarea({ id: elem_id, value: elem_value, rows: 5, disabled: elem_dis, style: 'display:none' });
+						if (elem_dis) {
+							html += '<div class="button small secondary" onClick="$P().viewPluginParamCode(\'' + plugin_id + '\',\'' + param.id + '\')">View Code...</div>';
+						}
+						else {
+							html += '<div class="button small secondary" onClick="$P().editPluginParamCode(\'' + plugin_id + '\',\'' + param.id + '\')">Edit Code...</div>';
+						}
+					}
+					else {
+						// for non-event plugin types just show a monospace textarea
+						html += self.getFormTextarea({ id: elem_id, value: elem_value, rows: 5, class: 'monospace', disabled: elem_dis });
+					}
+				break;
+				
 				case 'textarea':
 					html += self.getFormTextarea({ id: elem_id, value: elem_value, rows: 5, disabled: elem_dis });
 				break;
@@ -1981,6 +1998,36 @@ Page.Base = class Base extends Page {
 		} ); // foreach param
 		
 		return html;
+	}
+	
+	viewPluginParamCode(plugin_id, param_id) {
+		// show plugin param code (no editing)
+		var elem_id = 'fe_pp_' + param_id;
+		var elem_value = $('#' + elem_id).val();
+		
+		var plugin = find_object( app.plugins, { id: plugin_id } );
+		if (!plugin) return; // sanity
+		
+		var param = find_object( plugin.params, { id: param_id } );
+		if (!param) return; // sanity
+		
+		this.viewCodeAuto(param.title, elem_value);
+	}
+	
+	editPluginParamCode(plugin_id, param_id) {
+		// open editor for code plugin param
+		var elem_id = 'fe_pp_' + param_id;
+		var elem_value = $('#' + elem_id).val();
+		
+		var plugin = find_object( app.plugins, { id: plugin_id } );
+		if (!plugin) return; // sanity
+		
+		var param = find_object( plugin.params, { id: param_id } );
+		if (!param) return; // sanity
+		
+		this.editCodeAuto(param.title, elem_value, function(new_value) {
+			$('#' + elem_id).val( new_value );
+		});
 	}
 	
 	getPluginParamValues(plugin_id) {
@@ -2446,6 +2493,7 @@ Page.Base = class Base extends Page {
 		var ctype_icons = {
 			text: "form-textbox",
 			textarea: "form-textarea",
+			code: "code-json",
 			checkbox: "checkbox-marked-outline",
 			select: "form-dropdown",
 			hidden: "eye-off-outline"
@@ -2473,6 +2521,7 @@ Page.Base = class Base extends Page {
 				break;
 				
 				case 'textarea':
+				case 'code':
 					if (elem_value.toString().length) {
 						html += '<i class="link mdi mdi-' + elem_icon + '" onClick="$P().copyPluginParamValue(' + idx + ')" title="Copy to Clipboard">&nbsp;</i>';
 						html += '<span class="link" onClick="$P().viewPluginParamValue(' + idx + ')">Click to View...</span>';
@@ -2648,6 +2697,143 @@ Page.Base = class Base extends Page {
 		}
 		
 		return html;
+	}
+	
+	setupEditor() {
+		// codemirror go!
+		var self = this;
+		var mode = null;
+		var elem = document.getElementById("fe_editor");
+		
+		if (elem.value.length) {
+			mode = app.detectCodemirrorMode(elem.value) || this.defaultEditorMode || null;
+			Debug.trace('debug', "Detected initial language: " + mode);
+		}
+		
+		this.editor = CodeMirror.fromTextArea(elem, merge_objects( config.editor_defaults, {
+			mode: mode,
+			theme: app.getCodemirrorTheme(),
+			viewportMargin: Infinity
+		}));
+		
+		this.setupEditorAutoDetect();
+		
+		// required for auto-sizing to fit width
+		setTimeout( function() { self.handleEditorResize(); }, 100 );
+		setTimeout( function() { self.handleEditorResize(); }, 200 );
+		setTimeout( function() { self.handleEditorResize(); }, 300 );
+		setTimeout( function() { self.handleEditorResize(); }, 400 );
+		setTimeout( function() { self.handleEditorResize(); }, 500 );
+	}
+	
+	setupEditorAutoDetect() {
+		// setup change/paste listeners to sniff for content format
+		var self = this;
+		
+		this.editor.on('change', debounce(function() {
+			// debounce to 1000ms as to not cause high CPU while typing
+			// also, do not auto-detect beyond 1K of text, for same reason
+			var value = self.editor.getValue();
+			if (value.length < 4096) {
+				var mode = app.detectCodemirrorMode(value) || self.defaultEditorMode || null;
+				if (mode != self.editor.getOption('mode')) {
+					Debug.trace('debug', "Detected language: " + mode);
+					self.editor.setOption('mode', mode);
+					self.editor.refresh();
+				}
+			}
+		}, 1000));
+		
+		this.editor.on('paste', function() {
+			// delay 1ms so we can get the full editor content
+			setTimeout( function() { 
+				var value = self.editor.getValue();
+				var mode = app.detectCodemirrorMode(value) || self.defaultEditorMode || null;
+				if (mode != self.editor.getOption('mode')) {
+					Debug.trace('debug', "Detected language: " + mode);
+					self.editor.setOption('mode', mode);
+					self.editor.refresh();
+				}
+			}, 1 );
+		});
+	}
+	
+	handleEditorResize() {
+		// fix ze codemirrorz
+		if (this.editor) {
+			this.div.find('.CodeMirror').css('width', '' + this.div.find('div.fr_content').first().width() + 'px' );
+			this.editor.refresh();
+		}
+	}
+	
+	handleEditorThemeChange(theme) {
+		if (this.editor) {
+			this.editor.setOption( 'theme', app.cmThemeMap[theme] );
+		}
+	}
+	
+	killEditor() {
+		// shutdown codemirror safely
+		if (this.editor) {
+			this.editor.setOption("mode", 'text');
+			this.editor.toTextArea();
+			delete this.editor;
+		}
+	}
+	
+	editCodeAuto(title, code, callback) {
+		// show dialog with codemirror for editing code (auto-highlight)
+		var self = this;
+		var html = '';
+		
+		// start with a "fake" codemirror element so the dialog can auto-size itself
+		html += '<div id="fe_dialog_editor"><div class="CodeMirror"></div></div>';
+		
+		var buttons_html = "";
+		buttons_html += '<div id="btn_dialog_cancel" class="button" onClick="Dialog.hide()">Cancel</div>';
+		buttons_html += '<div id="btn_dialog_confirm" class="button primary">Apply Changes</div>';
+		
+		Dialog.showSimpleDialog(title, html, buttons_html);
+		
+		// special mode for key capture (esc only)
+		Dialog.active = 'editor';
+		
+		Dialog.onHide = function() {
+			// clean shutdown of codemirror
+			self.editor.setOption('mode', 'text');
+			delete self.editor;
+		};
+		
+		// now setup the editor itself
+		var elem = document.getElementById("fe_dialog_editor");
+		var mode = null;
+		
+		if (code.length) {
+			mode = app.detectCodemirrorMode(code) || this.defaultEditorMode || null;
+			Debug.trace('debug', "Detected initial language: " + mode);
+		}
+		
+		this.editor = CodeMirror(
+			function(cm_elem) {
+				// replace fake codemirror with real one
+				elem.firstChild.replaceWith(cm_elem);
+			}, 
+			merge_objects( config.editor_defaults, {
+				mode: mode,
+				theme: app.getCodemirrorTheme(),
+				scrollbarStyle: "simple",
+				value: code
+			} )
+		);
+		
+		this.setupEditorAutoDetect();
+		
+		// handle apply button
+		$('#btn_dialog_confirm').on('click', function() {
+			var value = self.editor.getValue();
+			Dialog.hide();
+			callback(value);
+		});
 	}
 	
 	// 

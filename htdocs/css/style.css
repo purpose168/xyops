@@ -786,6 +786,11 @@ div.td_big {
 	display: none;
 }
 
+body.dark .box_buttons.floater {
+	border-top: 1px solid var(--border-color);
+	box-shadow: 0px -2px 8px var(--background-color);
+}
+
 /* Plugin Params */
 
 .plugin_param_editor_cont {
@@ -824,6 +829,16 @@ div.td_big {
 
 body.dark .plugin_param_editor_cont textarea, body.dark .plugin_param_editor_cont input, body.dark .plugin_param_editor_cont select {
 	background: var(--border-color) !important;
+}
+body.dark .plugin_param_editor_cont div.button {
+	background: var(--border-color);
+}
+
+body.dark .plugin_param_editor_cont div.button.secondary {
+	border-color: var(--icon-color-half);
+}
+body.dark .plugin_param_editor_cont div.button.secondary:hover {
+	border-color: var(--green-highlight);
 }
 
 #dialog .plugin_param_editor_cont {
@@ -1164,6 +1179,116 @@ div.box.toggle.expanded > div.box_title > div {
 	display: block;
 }
 
+/* CodeMirror */
+
+#d_measure {
+	position: relative;
+	width: 100%;
+}
+
+#d_editor {
+	position: relative;
+	width: 100%;
+}
+
+.CodeMirror {
+	cursor: text;
+	letter-spacing: 0px;
+	font-family: var(--font-family-monospace) !important;
+	line-height: 16px !important;
+	font-size: 12px !important;
+	color: var(--body-text-color);
+	/* font-family: "Inconsolata", "Courier New", monospace !important; */
+	/* -webkit-font-smoothing: subpixel-antialiased; */
+}
+
+#d_editor .CodeMirror {
+	height: auto !important;
+	min-height: 150px;
+}
+
+#fe_dialog_editor {
+	position: relative;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#fe_dialog_editor .CodeMirror {
+	width: 60vw;
+	height: 75vh;
+}
+
+.CodeMirror-selected, .CodeMirror-focused .CodeMirror-selected { 
+	background: rgb(180, 213, 254) !important; 
+}
+body.dark .CodeMirror-selected, body.dark .CodeMirror-focused .CodeMirror-selected { 
+	background: rgb(90, 90, 90) !important; 
+}
+
+.cm-s-default span.cm-tag { font-weight:normal; }
+.cm-s-default span.cm-comment { color: var(--label-color); }
+.cm-s-default span.cm-header { color: var(--theme-color); }
+.cm-s-default span.cm-property { color: var(--purple); }
+
+.cm-s-shadowfox span.cm-comment { color: var(--label-color); }
+.cm-s-shadowfox span.cm-header { color: var(--theme-color); }
+
+.CodeMirror-wrap {
+	box-shadow: 0px 0px 1px var(--label-color);
+}
+
+.CodeMirror .cm-spell-error {
+	background: url("../images/red-wavy-underline.gif") bottom repeat-x;
+}
+
+.cm-s-shadowfox.CodeMirror {
+	background: var(--form-background-color) !important;
+}
+
+body.dark .CodeMirror-simplescroll-vertical {
+	background: #334 !important;
+	cursor: default !important;
+}
+body.dark .CodeMirror-simplescroll-vertical div {
+	background: #445 !important;
+	border-color: #445 !important;
+	cursor: default !important;
+}
+
+div.code_viewer {
+	min-width: 400px; 
+	max-width: 50vw; 
+	max-height: 50vh; 
+	margin: 20px; 
+	overflow-x: hidden; 
+	overflow-y: scroll;
+}
+
+div.code_viewer pre {
+	margin-top: 0;
+}
+
+div.code_viewer pre code.hljs {
+	padding: 0;
+}
+
+pre code.hljs {
+	background: transparent !important;
+	font-family: var(--font-family-monospace);
+	font-size: 13px;
+	line-height: 16px;
+	tab-size: 4;
+	overflow-x: hidden;
+	white-space: pre-wrap;
+}
+
+span.hljs-number {
+	color: #0184bb;
+}
+body.dark span.hljs-number {
+	color: #56b6c2;
+}
+
 /* Basic Responsive Overrides */
 
 @media only screen and (min-width: 1451px) and (max-width: 1600px) {
@@ -1243,6 +1368,11 @@ div.box.toggle.expanded > div.box_title > div {
 	
 	.chart_grid_horiz {
 		grid-template-columns: 1fr;
+	}
+	
+	#fe_dialog_editor .CodeMirror {
+		width: 70vw;
+		height: 75vh;
 	}
 	
 	.data_grid.event_grid { grid-template-columns: auto auto 0px 0px auto auto auto auto !important; }
@@ -1471,6 +1601,11 @@ div.box.toggle.expanded > div.box_title > div {
 	
 	.maint_grid {
 		grid-template-columns: repeat(2, 1fr);
+	}
+	
+	#fe_dialog_editor .CodeMirror {
+		width: 80vw;
+		height: 75vh;
 	}
 	
 	.data_grid.event_grid { grid-template-columns: auto auto 0px 0px 0px auto auto auto !important; }
@@ -1827,6 +1962,11 @@ div.box.toggle.expanded > div.box_title > div {
 		grid-template-columns: repeat(1, 1fr);
 	}
 	
+	#fe_dialog_editor .CodeMirror {
+		width: 88vw;
+		height: 80vh;
+	}
+	
 	.data_grid.event_grid { grid-template-columns: auto auto 0px 0px 0px 0px auto auto !important; }
 	.data_grid.event_grid > ul > div:nth-child(3) { visibility: hidden; }
 	.data_grid.event_grid > ul > div:nth-child(4) { visibility: hidden; }
@@ -2090,90 +2230,4 @@ div.box.toggle.expanded > div.box_title > div {
 		max-width: 500px;
 	}
 	
-}
-
-/* CodeMirror */
-
-#d_measure {
-	position: relative;
-	width: 100%;
-}
-
-#d_editor {
-	position: relative;
-	width: 100%;
-}
-
-.CodeMirror {
-	cursor: text;
-	letter-spacing: 0px;
-}
-.CodeMirror {
-	font-family: var(--font-family-monospace) !important;
-	line-height: 16px !important;
-	font-size: 12px !important;
-	color: var(--body-text-color);
-	/* font-family: "Inconsolata", "Courier New", monospace !important; */
-	/* -webkit-font-smoothing: subpixel-antialiased; */
-}
-
-.CodeMirror-selected, .CodeMirror-focused .CodeMirror-selected { 
-	background: rgb(180, 213, 254) !important; 
-}
-body.dark .CodeMirror-selected, body.dark .CodeMirror-focused .CodeMirror-selected { 
-	background: rgb(90, 90, 90) !important; 
-}
-
-.cm-s-default span.cm-tag { font-weight:normal; }
-.cm-s-default span.cm-comment { color: var(--label-color); }
-.cm-s-default span.cm-header { color: var(--theme-color); }
-.cm-s-default span.cm-property { color: var(--purple); }
-
-.cm-s-shadowfox span.cm-comment { color: var(--label-color); }
-.cm-s-shadowfox span.cm-header { color: var(--theme-color); }
-
-.CodeMirror-wrap {
-	box-shadow: 0px 0px 1px var(--label-color);
-}
-
-.CodeMirror .cm-spell-error {
-	background: url("../images/red-wavy-underline.gif") bottom repeat-x;
-}
-
-.cm-s-shadowfox.CodeMirror {
-	background: var(--form-background-color) !important;
-}
-
-div.code_viewer {
-	min-width: 400px; 
-	max-width: 50vw; 
-	max-height: 50vh; 
-	margin: 20px; 
-	overflow-x: hidden; 
-	overflow-y: scroll;
-}
-
-div.code_viewer pre {
-	margin-top: 0;
-}
-
-div.code_viewer pre code.hljs {
-	padding: 0;
-}
-
-pre code.hljs {
-	background: transparent !important;
-	font-family: var(--font-family-monospace);
-	font-size: 13px;
-	line-height: 16px;
-	tab-size: 4;
-	overflow-x: hidden;
-	white-space: pre-wrap;
-}
-
-span.hljs-number {
-	color: #0184bb;
-}
-body.dark span.hljs-number {
-	color: #56b6c2;
 }

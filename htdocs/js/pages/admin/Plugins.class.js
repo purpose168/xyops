@@ -9,6 +9,7 @@ Page.Plugins = class Plugins extends Page.Base {
 		this.ctype_labels = {
 			text: "Text Field",
 			textarea: "Text Box",
+			code: "Code Editor",
 			checkbox: "Checkbox",
 			select: "Menu",
 			hidden: "Hidden"
@@ -16,6 +17,7 @@ Page.Plugins = class Plugins extends Page.Base {
 		this.ctype_icons = {
 			text: "form-textbox",
 			textarea: "form-textarea",
+			code: "code-json",
 			checkbox: "checkbox-marked-outline",
 			select: "form-dropdown",
 			hidden: "eye-off-outline"
@@ -194,6 +196,7 @@ Page.Plugins = class Plugins extends Page.Base {
 		$('#fe_ep_title').focus();
 		this.setPluginType();
 		this.setupBoxButtonFloater();
+		this.setupEditor();
 		
 		this.setupDraggableGrid({
 			table_sel: this.div.find('div.data_grid'), 
@@ -281,6 +284,8 @@ Page.Plugins = class Plugins extends Page.Base {
 		MultiSelect.init( this.div.find('select[multiple]') );
 		// this.updateAddRemoveMe('#fe_ep_email');
 		this.setPluginType();
+		this.setDefaultEditorMode();
+		this.setupEditor();
 		this.setupBoxButtonFloater();
 		
 		this.setupDraggableGrid({
@@ -424,19 +429,21 @@ Page.Plugins = class Plugins extends Page.Base {
 				id: 'fe_ep_command',
 				class: 'monospace',
 				spellcheck: 'false',
-				value: plugin.command || ''
+				value: plugin.command || '',
+				onChange: '$P().setDefaultEditorMode()'
 			}),
 			caption: 'Enter the filesystem path to your executable, including any command-line arguments you require.  This can be an interpreter like <code>/bin/sh</code> or <code>/usr/bin/python</code>, or your own custom binary.  Do not include any pipes or redirects here.'
 		});
 		
-		// script
+		// script (codemirror)
 		html += this.getFormRow({
+			id: 'd_editor',
 			label: 'Script:',
 			content: this.getFormTextarea({
-				id: 'fe_ep_script',
+				id: 'fe_editor',
 				class: 'monospace',
 				rows: 5,
-				value: plugin.script || ''
+				value: (plugin.script || '') + "\n"
 			}),
 			caption: 'Optionally enter your Plugin source code here, which will be written to a temporary file and passed as an argument to your executable.  Leave this blank if your Plugin executable should run standalone.'
 		});
@@ -552,7 +559,7 @@ Page.Plugins = class Plugins extends Page.Base {
 	}
 	
 	renderParamEditor() {
-		// render job action editor
+		// render plugin param editor
 		var html = this.getParamsTable();
 		this.div.find('#d_ep_params_table').html( html );
 		
@@ -597,8 +604,17 @@ Page.Plugins = class Plugins extends Page.Base {
 			var pairs = [];
 			switch (param.type) {
 				case 'text':
-				case 'textarea':
 					if (param.value.length) pairs.push([ 'Default', '&ldquo;' + param.value + '&rdquo;' ]);
+					else pairs.push([ "(No default)" ]);
+				break;
+				
+				case 'textarea':
+					if (param.value.length) pairs.push([ 'Default', '(' + param.value.length + ' chars)' ]);
+					else pairs.push([ "(No default)" ]);
+				break;
+				
+				case 'code':
+					if (param.value.length) pairs.push([ 'Default', '(' + param.value.length + ' chars)' ]);
 					else pairs.push([ "(No default)" ]);
 				break;
 				
@@ -653,6 +669,11 @@ Page.Plugins = class Plugins extends Page.Base {
 		var param = (idx > -1) ? this.params[idx] : { type: 'text', value: '' };
 		var title = (idx > -1) ? "Editing Parameter" : "New Parameter";
 		var btn = (idx > -1) ? "Apply Changes" : "Add Param";
+		var plugin_type = $('#fe_ep_type').val();
+		
+		// hide code type if non-event plugin
+		var ctypes = Object.keys(this.ctype_labels).map (function(key) { return { id: key, title: self.ctype_labels[key] }; } );
+		sort_by( ctypes, 'title' );
 		
 		var html = '<div class="dialog_box_content">';
 		
@@ -684,7 +705,7 @@ Page.Plugins = class Plugins extends Page.Base {
 			label: 'Control Type:',
 			content: this.getFormMenu({
 				id: 'fe_epa_type',
-				options: this.ctype_labels,
+				options: ctypes,
 				value: param.type
 			}),
 			caption: 'Select the desired control type for the parameter.'
@@ -704,12 +725,25 @@ Page.Plugins = class Plugins extends Page.Base {
 		html += this.getFormRow({
 			id: 'd_epa_value_textarea',
 			label: 'Default Value:',
-			content: this.getFormText({
+			content: this.getFormTextarea({
 				id: 'fe_epa_value_textarea',
+				rows: 5,
 				spellcheck: 'false',
-				value: (param.value || '').toString().replace(/\n/g, "\\n")
+				value: (param.value || '').toString()
 			}),
-			caption: "Enter the default value for the text box.  Use <code>\\n</code> to enter a line break."
+			caption: "Enter the default value for the text box."
+		});
+		html += this.getFormRow({
+			id: 'd_epa_value_code',
+			label: 'Default Value:',
+			content: this.getFormTextarea({
+				id: 'fe_epa_value_code',
+				rows: 5,
+				class: 'monospace',
+				spellcheck: 'false',
+				value: (param.value || '').toString()
+			}),
+			caption: "Enter the default value for the code editor."
 		});
 		html += this.getFormRow({
 			id: 'd_epa_value_checkbox',
@@ -769,7 +803,11 @@ Page.Plugins = class Plugins extends Page.Base {
 				break;
 				
 				case 'textarea':
-					param.value = $('#fe_epa_value_textarea').val().replace(/\\n/g, "\n");
+					param.value = $('#fe_epa_value_textarea').val();
+				break;
+				
+				case 'code':
+					param.value = $('#fe_epa_value_code').val();
 				break;
 				
 				case 'checkbox':
@@ -795,8 +833,9 @@ Page.Plugins = class Plugins extends Page.Base {
 		} ); // Dialog.confirm
 		
 		var change_param_type = function(new_type) {
-			$('#d_epa_value_text, #d_epa_value_textarea, #d_epa_value_checkbox, #d_epa_value_select, #d_epa_value_hidden').hide();
+			$('#d_epa_value_text, #d_epa_value_textarea, #d_epa_value_code, #d_epa_value_checkbox, #d_epa_value_select, #d_epa_value_hidden').hide();
 			$('#d_epa_value_' + new_type).show();
+			Dialog.autoResize();
 		}; // change_action_type
 		
 		change_param_type(param.type);
@@ -826,7 +865,7 @@ Page.Plugins = class Plugins extends Page.Base {
 		plugin.type = $('#fe_ep_type').val();
 		plugin.icon = $('#fe_ep_icon').val();
 		plugin.command = $('#fe_ep_command').val().trim();
-		plugin.script = $('#fe_ep_script').val().trim();
+		plugin.script = this.editor.getValue().trim();
 		plugin.cwd = $('#fe_ep_cwd').val();
 		plugin.uid = $('#fe_ep_uid').val();
 		plugin.gid = $('#fe_ep_gid').val();
@@ -890,6 +929,27 @@ Page.Plugins = class Plugins extends Page.Base {
 		}
 	}
 	
+	setDefaultEditorMode() {
+		// set default editor mode from command text field
+		this.defaultEditorMode = app.getCodemirrorModeFromBinary( $('#fe_ep_command').val() );
+		
+		if (this.defaultEditorMode && this.editor && this.editor.options && (this.editor.options.mode === null)) {
+			Debug.trace('debug', "Setting default language: " + this.defaultEditorMode);
+			this.editor.setOption('mode', this.defaultEditorMode);
+			this.editor.refresh();
+		}
+	}
+	
+	onResize() {
+		// resize codemirror to match
+		this.handleEditorResize();
+	}
+	
+	onThemeChange(theme) {
+		// change codemirror theme too
+		this.handleEditorThemeChange(theme);
+	}
+	
 	onDataUpdate(key, data) {
 		// refresh list if plugins were updated
 		if ((key == 'plugins') && (this.args.sub == 'list')) this.gosub_list(this.args);
@@ -900,6 +960,8 @@ Page.Plugins = class Plugins extends Page.Base {
 		delete this.plugins;
 		delete this.plugin;
 		delete this.params;
+		delete this.defaultEditorMode;
+		this.killEditor();
 		this.div.html( '' );
 		return true;
 	}
