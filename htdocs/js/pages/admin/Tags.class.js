@@ -72,6 +72,7 @@ Page.Tags = class Tags extends Page.PageUtils {
 		html += '</div>'; // box_content
 		
 		html += '<div class="box_buttons">';
+			html += '<div class="button" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i>Import File...</div>';
 			html += '<div class="button secondary" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i>Revision History...</div>';
 			html += '<div class="button secondary" onClick="$P().edit_tag(-1)"><i class="mdi mdi-tag-plus-outline">&nbsp;</i>New Tag...</div>';
 		html += '</div>'; // box_buttons

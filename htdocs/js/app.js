@@ -366,6 +366,44 @@ app.extend({
 		this.comm.sendCommand('user_nav', { loc });
 	},
 	
+	setupDragDrop: function() {
+		// setup drag n' drop file upload for import
+		$(document).off('dragenter').on('dragenter', function(e) {
+			$(this).addClass('dragover');
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		})
+		.off('dragover').on('dragover', function(e) {
+			$(this).addClass('dragover');
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		})
+		.off('dragleave').on('dragleave', function(e) {
+			$(this).removeClass('dragover');
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		})
+		.off('drop').on('drop', function(e) {
+			$(this).removeClass('dragover');
+			
+			if (e.originalEvent.dataTransfer.files.length) {
+				e.preventDefault();
+				e.stopPropagation();
+				
+				var file = e.originalEvent.dataTransfer.files[0];
+				if (app.page_manager && app.page_manager.current_page_id) {
+					var page = app.page_manager.find(app.page_manager.current_page_id);
+					if (page && page.doPrepImportFile) page.doPrepImportFile( file );
+				}
+				
+				return false;
+			}
+		});
+	},
+	
 	doUserLogin: function(resp) {
 		// user login, called from login page, or session recover
 		// overriding this from base.js
@@ -380,6 +418,7 @@ app.extend({
 		
 		this.presortTables();
 		this.updateHeaderInfo();
+		this.setupDragDrop();
 		this.pruneData();
 		
 		// show admin tab if user is worthy
@@ -418,6 +457,7 @@ app.extend({
 			
 			self.setPref('session_id', '');
 			$('#d_header_user_container').html( '' );
+			$(document).off('dragenter').off('dragover').off('dragleave').off('drop');
 			
 			// kill websocket
 			self.comm.disconnect();

@@ -358,10 +358,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		this._temp_export = opts;
 		
 		var md = '';
-		// md += `Here is a pure JSON representation of the current ${opts.name}:` + "\n";
 		md += `Please select how you would like to export the ${opts.name}'s JSON data.` + "\n";
 		md += "\n```json\n" + JSON.stringify(opts.data, null, "\t") + "\n```\n";
-		// md += "\n" + `Please select how you would like to export the ${opts.name}.` + "\n";
 		
 		html += '<div class="code_viewer">';
 		html += '<div class="markdown-body">';
@@ -434,5 +432,20 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		// cleanup
 		URL.revokeObjectURL(url);
 		Dialog.hide();
+	}
+	
+	doFileImportPrompt() {
+		// show file selection dialog
+		var self = this;
+		var $file = $('#fe_file_import');
+		if ($file.length) $file.remove();
+		$file = $('<input type="file" id="fe_file_import" accept=".json" style="display:none">').appendTo('body');
+		
+		$file.on('change', function() {
+			if (this.files && this.files.length) self.doPrepImportFile( this.files[0] );
+			$file.remove();
+		});
+		
+		$file[0].click();
 	}
 };

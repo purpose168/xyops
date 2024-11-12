@@ -870,7 +870,7 @@ Page.Base = class Base extends Page {
 	getNiceUser(user, link) {
 		if (!user) return 'n/a';
 		if (typeof(user) == 'string') {
-			user = find_object( app.users, { username: user } ) || find_object( app.keys, { id: user } ) || user;
+			user = find_object( app.users, { username: user } ) || find_object( app.api_keys, { id: user } ) || user;
 		}
 		if ((typeof(user) == 'object') && user.key) {
 			return this.getNiceAPIKey(user, link);
@@ -2840,6 +2840,84 @@ Page.Base = class Base extends Page {
 			Dialog.hide();
 			callback(value);
 		});
+	}
+	
+	doPrepImportFile(file) {
+		// start importing a file from a upload or drop
+		var self = this;
+		var reader = new FileReader();
+		
+		reader.onload = function(e) {
+			var json = null;
+			try { json = JSON.parse(e.target.result); } 
+			catch (err) { return app.doError("Failed to parse JSON in uploaded file: " + err); }
+			
+			if (!json.version || (json.version !== '1.0') || !json.type || !json.data || (typeof(json.data) != 'object')) {
+				return app.doError("Unknown Format: Uploaded file is not an Orchestra Portable Data Object.");
+			}
+			
+			var opts = config.ui.data_types[ json.type ];
+			if (!opts) return app.doError("Unknown Data Type: " + json.type);
+			
+			var all_objs = app[ opts.list ];
+			
+			// cleanup
+			var obj = json.data;
+			delete obj.created;
+			delete obj.modified;
+			delete obj.revision;
+			delete obj.sort_order;
+			
+			var title = 'Import ' + opts.name;
+			var do_replace = false;
+			var prefix = opts.name.match(/^[aeiou]/i) ? 'an' : 'a';
+			
+			var md = '';
+			md += `You are about to import ${prefix} ${opts.name} from an uploaded file.  Please confirm the data is what you expect:` + "\n";
+			md += "\n```json\n" + JSON.stringify(obj, null, "\t") + "\n```\n";
+			
+			if (find_object(all_objs, { id: obj.id })) {
+				do_replace = true;
+				md += "\n" + `**WARNING:** That ${opts.name} already exists.  If you proceed, it will be replaced with the uploaded version.` + "\n";
+			}
+			
+			var html = '';
+			html += '<div class="code_viewer">';
+			html += '<div class="markdown-body">';
+			
+			html += marked(md, config.ui.marked_config);
+			
+			html += '</div>'; // markdown-body
+			html += '</div>'; // code_viewer
+			
+			var buttons_html = "";
+			buttons_html += '<div class="button mobile_collapse" onClick="Dialog.hide()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			buttons_html += '<div class="button primary" onClick="Dialog.confirm_click(true)"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i>Confirm Import</div>';
+			
+			Dialog.showSimpleDialog(title, html, buttons_html);
+			
+			// special mode for key capture
+			Dialog.active = 'confirmation';
+			Dialog.confirm_callback = function(result) { 
+				if (!result) return;
+				Dialog.hide();
+				
+				var api_name = do_replace ? 'app/update' : 'app/create';
+				api_name += '_' + json.type;
+				
+				Dialog.showProgress( 1.0, "Importing " + opts.name + "..." );
+				
+				app.api.post( api_name, obj, function(resp) {
+					app.cacheBust = hires_time_now();
+					app.showMessage('success', `The ${opts.name} was imported successfully.`);
+					Nav.go( opts.page );
+				} ); // api.post
+			};
+			
+			self.highlightCodeBlocks('#dialog .markdown-body');
+		}; // onload
+		
+		reader.readAsText(file);
 	}
 	
 	// 
