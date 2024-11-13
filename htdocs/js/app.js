@@ -390,13 +390,15 @@ app.extend({
 			$(this).removeClass('dragover');
 			
 			if (e.originalEvent.dataTransfer.files.length) {
+				var files = e.originalEvent.dataTransfer.files;
+				
 				e.preventDefault();
 				e.stopPropagation();
 				
-				var file = e.originalEvent.dataTransfer.files[0];
 				if (app.page_manager && app.page_manager.current_page_id) {
 					var page = app.page_manager.find(app.page_manager.current_page_id);
-					if (page && page.doPrepImportFile) page.doPrepImportFile( file );
+					if (page && page.onDragDrop) page.onDragDrop( files );
+					else if (page && page.doPrepImportFile) page.doPrepImportFile( files[0] );
 				}
 				
 				return false;
