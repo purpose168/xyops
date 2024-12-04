@@ -169,7 +169,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		
 		html += '<div class="box_buttons">';
 			html += '<div class="button secondary" onMouseUp="$P().go_server_search()"><i class="mdi mdi-magnify">&nbsp;</i>Search History...</div>';
-			html += '<div class="button secondary" onMouseUp="$P().go_add_server()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i>Add Server...</div>';
+			html += '<div class="button default" onMouseUp="$P().go_add_server()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i>Add Server...</div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

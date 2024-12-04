@@ -84,7 +84,7 @@ Page.Users = class Users extends Page.Base {
 		
 		html += '<div class="box_buttons">';
 			html += '<div class="button secondary" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i>Revision History...</div>';
-			html += '<div class="button secondary ' + (app.config.external_users ? 'disabled' : '') + '" onClick="$P().edit_user(-1)"><i class="mdi mdi-account-plus">&nbsp;</i>New User...</div>';
+			html += '<div class="button default ' + (app.config.external_users ? 'disabled' : '') + '" onClick="$P().edit_user(-1)"><i class="mdi mdi-account-plus">&nbsp;</i>New User...</div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

@@ -348,7 +348,7 @@ Page.Events = class Events extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			html += '<div class="button" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i>Import File...</div>';
 			html += '<div class="button secondary" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i>Revision History...</div>';
-			html += '<div class="button secondary" onClick="$P().edit_event(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i>New Event...</div>';
+			html += '<div class="button default" onClick="$P().edit_event(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i>New Event...</div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -680,7 +680,7 @@ Page.Events = class Events extends Page.PageUtils {
 				else html += 'Event Summary';
 				
 				// html += '<div class="button right danger" onClick="$P().show_delete_event_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i>Delete...</div>';
-				html += '<div class="button secondary right" onClick="$P().do_edit_from_view()"><i class="mdi mdi-file-edit-outline">&nbsp;</i>Edit Event...</div>';
+				html += '<div class="button default right" onClick="$P().do_edit_from_view()"><i class="mdi mdi-file-edit-outline">&nbsp;</i>Edit Event...</div>';
 				if (event.enabled) html += '<div class="button right" onClick="$P().do_confirm_run_from_view()"><i class="mdi mdi-run-fast">&nbsp;</i>Run Now</div>';
 				html += '<div class="clear"></div>';
 			html += '</div>'; // title
