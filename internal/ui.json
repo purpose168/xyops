@@ -105,6 +105,7 @@
 		"group_update": "Server group updated: [description] ([group.id])",
 		"group_delete": "Server group deleted: [description] ([group.id])",
 		"group_multi_update": "Multiple server groups updated ([updated]).",
+		"group_watch": "A watch for [duration] was set on the group: [group.title] ([group.id])",
 		
 		"monitor_create": "Monitor created: [description] ([monitor.id])",
 		"monitor_update": "Monitor updated: [description] ([monitor.id])",
@@ -135,6 +136,8 @@
 		
 		"server_add": "Server connected to the network: [hostname]",
 		"server_delete": "Server disconnected from the network: [hostname]",
+		"server_update": "Server information was updated: [hostname]",
+		"server_watch": "A watch for [duration] was set on the server: [hostname]",
 		
 		"peer_add": "Conductor added to the network: [host]",
 		"peer_disconnect": "Conductor disconnected from the network: [host]",
@@ -177,7 +180,7 @@
 		"^warning": { "icon": "alert", "label": "Warning" },
 		"^notice": { "icon": "information-outline", "label": "Notice" },
 		"^group": { "icon": "server-network", "label": "Group" },
-		"^server": { "icon": "server", "label": "Server" },
+		"^server": { "icon": "router-network", "label": "Server" },
 		"^master": { "icon": "database", "label": "Master" },
 		"^peer": { "icon": "database", "label": "Master" },
 		"^monitor": { "icon": "chart-line", "label": "Monitor" },
