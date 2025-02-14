@@ -211,6 +211,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		
 		// MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_ewh_icon') );
+		RelativeTime.init( $('#fe_ewh_timeout') );
 		// this.updateAddRemoveMe('#fe_ewh_email');
 		$('#fe_ewh_title').focus();
 		this.setupBoxButtonFloater();
@@ -298,6 +299,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		// lock ID for editing
 		$('#fe_ewh_id').attr('disabled', true);
 		SingleSelect.init( this.div.find('#fe_ewh_icon') );
+		RelativeTime.init( $('#fe_ewh_timeout') );
 		// this.updateAddRemoveMe('#fe_ewh_email');
 		this.setupBoxButtonFloater();
 		this.setupEditor();
