@@ -25,7 +25,7 @@ var packages_to_rescue = {};
 
 // Check if Node.js version is old
 if (process.version.match(/^v?(\d+)/) && (parseInt(RegExp.$1) < 16) && !process.env['ORCHESTRA_OLD']) {
-	console.error("\nERROR: You are using an incompatible version of Node.js (" + process.version + ").  Please upgrade to v16 or later.  Instructions: https://nodejs.org/en/download/package-manager\n\nTo ignore this error and run unsafely, set an ORCHESTRA_OLD environment variable.  Do this at your own risk.\n");
+	console.error("\nERROR: You are using an incompatible version of Node.js (" + process.version + ").  Please upgrade to v16 or later.  Instructions: https://nodejs.org/en/download/\n\nTo ignore this error and run unsafely, set an ORCHESTRA_OLD environment variable.  Do this at your own risk.\n");
 	process.exit(1);
 }
 
