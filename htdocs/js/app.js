@@ -340,6 +340,33 @@ app.extend({
 	
 	initSidebarTabs: function() {
 		// setup dynamic tabs
+		$('.sidebar .section .section_item').addClass('enabled').show();
+		if (!this.hasAnyPrivilege('create_categories', 'edit_categories', 'delete_categories')) $('#tab_Categories').removeClass('enabled').hide();
+		if (!this.hasAnyPrivilege('create_tags', 'edit_tags', 'delete_tags')) $('#tab_Tags').removeClass('enabled').hide();
+		
+		// admin section
+		if (!this.hasAnyPrivilege('create_alerts', 'edit_alerts', 'delete_alerts')) $('#tab_AlertSetup').removeClass('enabled').hide();
+		if (!this.hasAnyPrivilege('create_channels', 'edit_channels', 'delete_channels')) $('#tab_Channels').removeClass('enabled').hide();
+		if (!this.hasAnyPrivilege('create_monitors', 'edit_monitors', 'delete_monitors')) $('#tab_Monitors').removeClass('enabled').hide();
+		if (!this.hasAnyPrivilege('create_plugins', 'edit_plugins', 'delete_plugins')) $('#tab_Plugins').removeClass('enabled').hide();
+		if (!this.hasAnyPrivilege('create_web_hooks', 'edit_web_hooks', 'delete_web_hooks')) $('#tab_WebHooks').removeClass('enabled').hide();
+		
+		if (!this.isAdmin()) {
+			$('#tab_ActivityLog').removeClass('enabled').hide();
+			$('#tab_APIKeys').removeClass('enabled').hide();
+			$('#tab_Masters').removeClass('enabled').hide();
+			$('#tab_System').removeClass('enabled').hide();
+			$('#tab_Users').removeClass('enabled').hide();
+			$('#tab_Roles').removeClass('enabled').hide();
+		}
+		
+		// possibly hide entire admin section
+		if ($('#d_sidebar_admin_group > .section > .section_item.enabled').length) $('#d_sidebar_admin_group').show();
+		else $('#d_sidebar_admin_group').hide();
+		
+		// add hint to body tag for admin UI hints
+		if (this.isAdmin()) $('body').addClass('admin');
+		else $('body').removeClass('admin');
 		
 		// user searches
 		var $section = $('#d_section_my_searches').empty();
@@ -455,16 +482,6 @@ app.extend({
 		this.updateHeaderInfo();
 		this.setupDragDrop();
 		this.pruneData();
-		
-		// show admin tab if user is worthy
-		if (this.isAdmin()) {
-			$('#d_sidebar_admin_group').show();
-			$('body').addClass('admin');
-		}
-		else {
-			$('#d_sidebar_admin_group').hide();
-			$('body').removeClass('admin');
-		}
 		
 		// websocket connect
 		this.comm.init();
@@ -783,6 +800,13 @@ app.extend({
 		if (!app.user || !app.user.privileges) return false;
 		if (app.user.privileges.admin) return true;
 		return( !!app.user.privileges[priv_id] );
+	},
+	
+	hasAnyPrivilege(...privs) {
+		// check if user has priv, show full page error if not
+		if (!app.user || !app.user.privileges) return false;
+		if (app.user.privileges.admin) return true;
+		return !!privs.filter( (priv_id) => this.hasPrivilege(priv_id) ).length;
 	},
 	
 	requirePrivilege: function(priv_id) {
