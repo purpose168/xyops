@@ -1246,6 +1246,7 @@ div.box.toggle.expanded > div.box_title > div {
 #d_editor .CodeMirror {
 	height: auto !important;
 	min-height: 150px;
+	background: var(--form-background-color);
 }
 
 #fe_dialog_editor {
