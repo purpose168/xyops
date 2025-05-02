@@ -1257,6 +1257,7 @@ Page.Job = class Job extends Page.Base {
 			"dataSuffix": "/sec",
 			"fill": false,
 			"delta": true,
+			"deltaMinValue": 0,
 			"divideByDelta": true,
 			"legend": !!app.getPref('job_chart_layers_disk'),
 			
