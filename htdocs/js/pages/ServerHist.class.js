@@ -398,6 +398,7 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 				"dataSuffix": def.suffix,
 				"showDataGaps": true,
 				"delta": def.delta || false,
+				"deltaMinValue": def.delta_min_value ?? false,
 				"divideByDelta": def.divide_by_delta || false,
 				"minVertScale": def.min_vert_scale || 0,
 				"legend": false // single layer, no legend needed
@@ -432,7 +433,7 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 				
 				chart.addLayer({
 					id: server.id,
-					title: app.formatHostname(server.hostname),
+					title: self.getNiceServerText(server),
 					data: self.getMonitorChartData(resp.rows, def.id),
 					color: app.colors[ idx % app.colors.length ]
 				});
