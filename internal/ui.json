@@ -135,7 +135,8 @@
 		"role_delete": "Role deleted: [description] ([role.id])",
 		
 		"server_add": "Server connected to the network: [hostname]",
-		"server_delete": "Server disconnected from the network: [hostname]",
+		"server_remove": "Server disconnected from the network: [hostname]",
+		"server_delete": "Server deleted: [hostname]",
 		"server_update": "Server information was updated: [hostname]",
 		"server_watch": "A watch for [duration] was set on the server: [hostname]",
 		
@@ -265,5 +266,18 @@
 		["year", "This Year"],
 		["lastyear", "Last Year"],
 		["older", "Older"]
-	]
+	],
+	
+	"chart_flatten_menu": [
+		{ "id": "", "title": "Multi-Layer" },
+		{ "id": "total", "title": "Total" },
+		{ "id": "average", "title": "Average" },
+		{ "id": "minimum", "title": "Minimum" },
+		{ "id": "maximum", "title": "Maximum" }
+	],
+	
+	"satellite_install_commands": {
+		"standard": "curl -s \"[base_url]/api/app/satellite/install?t=[token]\" | sudo sh",
+		"windows": "powershell -Command \"IEX (New-Object Net.WebClient).DownloadString('[base_url]/api/app/satellite/install?t=[token]&os=windows')\""
+	}
 }
