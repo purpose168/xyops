@@ -161,17 +161,6 @@ Page.Dashboard = class Dashboard extends Page.Base {
 		// calculate total CPU usage
 		var total_cpu = 0;
 		
-		// add CPU for current master server, main process
-		if (app.stats && app.stats.cpu) total_cpu += app.stats.cpu;
-		
-		// add CPU for all servers, satellite process
-		for (var server_id in app.servers) {
-			var server = app.servers[server_id];
-			if (server.info && server.info.process && server.info.process.cpu) {
-				total_cpu += server.info.process.cpu;
-			}
-		}
-		
 		// add CPU for all active jobs (avg)
 		for (var job_id in app.activeJobs) {
 			var job = app.activeJobs[job_id];
@@ -182,25 +171,11 @@ Page.Dashboard = class Dashboard extends Page.Base {
 		
 		html += '<div class="dash_unit_box">';
 			html += '<div class="dash_unit_value">' + Math.round(total_cpu || 0) + '%</div>';
-			html += '<div class="dash_unit_label">CPU Usage</div>';
+			html += '<div class="dash_unit_label">Job CPU Usage</div>';
 		html += '</div>';
 		
 		// calculate total memory usage
 		var total_mem = 0;
-		
-		// add mem for all masters (main process)
-		for (var host_id in app.masters) {
-			var master = app.masters[host_id];
-			if (master.stats && master.stats.mem) total_mem += master.stats.mem;
-		}
-		
-		// add mem for all servers (satellte process)
-		for (var server_id in app.servers) {
-			var server = app.servers[server_id];
-			if (server.info && server.info.process && server.info.process.mem) {
-				total_mem += server.info.process.mem;
-			}
-		}
 		
 		// add mem for all jobs (avg)
 		for (var job_id in app.activeJobs) {
@@ -212,7 +187,7 @@ Page.Dashboard = class Dashboard extends Page.Base {
 		
 		html += '<div class="dash_unit_box">';
 			html += '<div class="dash_unit_value">' + get_text_from_bytes(total_mem, 1) + '</div>';
-			html += '<div class="dash_unit_label">Mem Usage</div>';
+			html += '<div class="dash_unit_label">Job Mem Usage</div>';
 		html += '</div>';
 		
 		var uptime_sec = app.stats.started ? (time_now() - app.stats.started) : 0;
@@ -697,6 +672,7 @@ Page.Dashboard = class Dashboard extends Page.Base {
 				"dataSuffix": def.suffix,
 				"minVertScale": def.min_vert_scale || 0,
 				"delta": def.delta || false,
+				"deltaMinValue": def.delta_min_value ?? false,
 				"divideByDelta": def.divide_by_delta || false,
 				"_quick": true
 			});
@@ -719,7 +695,7 @@ Page.Dashboard = class Dashboard extends Page.Base {
 					
 					if (server) chart.addLayer({
 						id: server_id,
-						title: app.formatHostname(server.hostname),
+						title: self.getNiceServerText(server),
 						data: self.getQuickMonChartData(rows, def.id)
 					});
 				} // foreach server
@@ -749,6 +725,8 @@ Page.Dashboard = class Dashboard extends Page.Base {
 		
 		config.quick_monitors.forEach( function(def) {
 			var chart = self.charts[def.id];
+			if (!chart) return;
+			
 			var layer_idx = find_object_idx( chart.layers, { id: data.id } );
 			
 			if (layer_idx > -1) {
@@ -761,7 +739,7 @@ Page.Dashboard = class Dashboard extends Page.Base {
 				
 				chart.addLayer({
 					id: server.id,
-					title: app.formatHostname(server.hostname),
+					title: self.getNiceServerText(server),
 					data: self.getQuickMonChartData([ data.row ], def.id)
 				});
 				
