@@ -1013,6 +1013,16 @@ body.dark #dialog .plugin_param_editor_cont {
 	color: var(--green);
 }
 
+.chart_toolbar > .chart_icon.ci_fl > select {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+}
+
 .pxc_tt_overlay {
 	z-index: 99 !important;
 }
@@ -1344,7 +1354,7 @@ i.mdi.mdi-moon-waning-crescent:before {
 		grid-template-columns: 2fr 6fr 1fr;
 	}
 	
-	.data_grid.event_grid { grid-template-columns: min-content auto auto 0px auto auto auto auto !important; }
+	.data_grid.event_grid { grid-template-columns: 40px auto auto 0px auto auto auto auto !important; }
 	.data_grid.event_grid > ul > div:nth-child(4) { visibility: hidden; }
 }
 
@@ -1371,7 +1381,7 @@ i.mdi.mdi-moon-waning-crescent:before {
 		font-size: 11px;
 	}
 	
-	.data_grid.event_grid { grid-template-columns: min-content auto auto 0px auto auto auto auto !important; }
+	.data_grid.event_grid { grid-template-columns: 40px auto auto 0px auto auto auto auto !important; }
 	.data_grid.event_grid > ul > div:nth-child(4) { visibility: hidden; }
 }
 
@@ -1435,7 +1445,7 @@ i.mdi.mdi-moon-waning-crescent:before {
 		height: 75vh;
 	}
 	
-	.data_grid.event_grid { grid-template-columns: min-content auto 0px 0px auto auto auto auto !important; }
+	.data_grid.event_grid { grid-template-columns: 40px auto 0px 0px auto auto auto auto !important; }
 	.data_grid.event_grid > ul > div:nth-child(3) { visibility: hidden; }
 	.data_grid.event_grid > ul > div:nth-child(4) { visibility: hidden; }
 	
@@ -1684,7 +1694,7 @@ i.mdi.mdi-moon-waning-crescent:before {
 		height: 75vh;
 	}
 	
-	.data_grid.event_grid { grid-template-columns: min-content auto 0px 0px 0px auto auto auto !important; }
+	.data_grid.event_grid { grid-template-columns: 40px auto 0px 0px 0px auto auto auto !important; }
 	.data_grid.event_grid > ul > div:nth-child(3) { visibility: hidden; }
 	.data_grid.event_grid > ul > div:nth-child(4) { visibility: hidden; }
 	.data_grid.event_grid > ul > div:nth-child(5) { visibility: hidden; }
@@ -2048,7 +2058,7 @@ i.mdi.mdi-moon-waning-crescent:before {
 		height: 80vh;
 	}
 	
-	.data_grid.event_grid { grid-template-columns: min-content auto 0px 0px 0px 0px auto auto !important; }
+	.data_grid.event_grid { grid-template-columns: 40px auto 0px 0px 0px 0px auto auto !important; }
 	.data_grid.event_grid > ul > div:nth-child(3) { visibility: hidden; }
 	.data_grid.event_grid > ul > div:nth-child(4) { visibility: hidden; }
 	.data_grid.event_grid > ul > div:nth-child(5) { visibility: hidden; }
