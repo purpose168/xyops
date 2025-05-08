@@ -102,13 +102,24 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 			break;
 		} // switch args.mode
 		
+		// save epoch range for later
+		this.epochStart = epoch_start;
+		
 		// nudge limit back into current range if needed
 		limit = this.nudgeLimit(epoch_start, limit);
 		
-		// save epoch range for later
-		this.epochStart = epoch_start;
 		this.epochEnd = epoch_start + (limit * sys.epoch_div);
 		this.chartLimit = limit;
+		
+		// possibly augment title if range is wider than one unit
+		if (args.limit && (args.limit > 1)) {
+			switch (args.mode) {
+				case 'yearly': title += ' - ' + this.formatDate(this.epochEnd - 1, { year: 'numeric' } ); break;
+				case 'monthly': title += ' - ' + this.formatDate(this.epochEnd - 1, { year: 'numeric', month: 'long' } ); break;
+				case 'daily': title += ' - ' + this.formatDate(this.epochEnd - 1, { year: 'numeric', month: 'long', day: 'numeric' } ); break;
+				case 'hourly': title = this.formatDateRange( this.epochStart, this.epochEnd, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric' } ); break;
+			}
+		}
 		
 		app.setHeaderNav([
 			{ icon: 'server', loc: '#Servers?sub=list', title: 'Servers' },
@@ -121,9 +132,9 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 		html += '<div class="box" style="border:none;">';
 			html += '<div class="box_title">';
 				html += '<div class="box_title_left">' + ucfirst(args.mode) + ' &mdash; ' + title + '</div>';
-				html += '<div class="box_title_left"><div class="button secondary" onClick="$P().chooseHistoricalView()"><i class="mdi mdi-calendar-cursor">&nbsp;</i>Select Range...</div></div>';
-				html += '<div class="box_title_right"><div class="button secondary" onClick="$P().navNext()">Next ' + ucfirst(unit) + '&nbsp;<i class="mdi mdi-chevron-right"></i></div></div>';
-				html += '<div class="box_title_right"><div class="button secondary" onClick="$P().navPrev()"><i class="mdi mdi-chevron-left">&nbsp;</i>Prev ' + ucfirst(unit) + '</div></div>';
+				html += '<div class="box_title_left"><div class="button secondary mobile_collapse" onClick="$P().chooseHistoricalView()"><i class="mdi mdi-calendar-cursor">&nbsp;</i><span>Select Range...</span></div></div>';
+				html += '<div class="box_title_right"><div class="button secondary mobile_collapse tablet_hide" onClick="$P().navNext()"><span>Next ' + ucfirst(unit) + '&nbsp;</span><i class="mdi mdi-chevron-right"></i></div></div>';
+				html += '<div class="box_title_right"><div class="button secondary mobile_collapse tablet_hide" onClick="$P().navPrev()"><i class="mdi mdi-chevron-left">&nbsp;</i><span>Prev ' + ucfirst(unit) + '</span></div></div>';
 			html += '</div>';
 		html += '</div>';
 		
@@ -212,6 +223,7 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 		html += '<div class="box" id="d_vs_monitors">';
 			html += '<div class="box_title">';
 				html += '<div class="box_title_widget" style="overflow:visible; margin-left:0;"><i class="mdi mdi-magnify" onMouseUp="$(this).next().focus()">&nbsp;</i><input type="text" placeholder="Filter" value="" onInput="$P().applyMonitorFilter(this)"></div>';
+				html += this.getChartSizeSelector();
 				html += 'Server Monitors &mdash; ' + title;
 			html += '</div>';
 			html += '<div class="box_content table">';
@@ -257,7 +269,7 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 		this.fetchAlertHistory();
 		this.fetchJobHistory();
 		
-		SingleSelect.init( this.div.find('#fe_vs_job_filter') );
+		SingleSelect.init( this.div.find('#fe_vs_job_filter, .sel_chart_size') );
 	}
 	
 	navPrev() {
@@ -342,6 +354,38 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 		['year', 'month', 'day', 'hour'].forEach( function(key) { if (key in args) criteria[key] = args[key]; } );
 		var num_crit = num_keys(criteria);
 		
+		// support limit > 1 for ranges
+		if (args.limit && (args.limit > 1)) {
+			switch (args.mode) {
+				case 'yearly':
+					criteria.year += (args.limit - 1);
+				break;
+				
+				case 'monthly':
+					criteria.month += (args.limit - 1);
+					if (criteria.month > 12) { criteria.month -= 12; criteria.year++; }
+				break;
+				
+				case 'daily':
+					var dargs = this.getDateArgsTZ( this.epochStart + 43200 + (86400 * (args.limit - 1)) );
+					criteria.year = dargs.year;
+					criteria.month = dargs.month;
+					criteria.day = dargs.day;
+				break;
+				
+				case 'hourly':
+					var dargs = this.getDateArgsTZ( this.epochStart + (3600 * (args.limit - 1)) );
+					criteria.year = dargs.year;
+					criteria.month = dargs.month;
+					criteria.day = dargs.day;
+					
+					// special case here for jumping over fall-back DST
+					// (i.e. where jumping forward one hour will land on the same YYYY-MM-DD-HH)
+					criteria.hour = (dargs.hour == criteria.hour) ? (dargs.hour + 1) : dargs.hour;
+				break;
+			} // switch args.mode
+		} // limit adj
+		
 		while (!done) {
 			var end_epoch = epoch_start + ((limit - 1) * sys.epoch_div);
 			var dargs = this.getDateArgsTZ(end_epoch);
@@ -362,7 +406,8 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 		var server = this.server;
 		var monitors = this.monitors = [];
 		var html = '';
-		html += '<div class="chart_grid_horiz">';
+		var chart_size = app.getPref('chart_size') || 'medium';
+		html += '<div class="chart_grid_horiz ' + chart_size + '">';
 		
 		app.monitors.forEach( function(mon_def) {
 			if (!mon_def.display) return;
@@ -381,15 +426,6 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 			return;
 		}
 		
-		var render_chart_overlay = function(key) {
-			$('.pxc_tt_overlay').html(
-				'<div class="chart_toolbar ct_' + key + '">' + 
-					'<div class="chart_icon ci_di" title="Download Image" onClick="$P().chartDownload(\'' + key + '\')"><i class="mdi mdi-cloud-download-outline"></i></div>' + 
-					'<div class="chart_icon ci_cl" title="Copy Image Link" onClick="$P().chartCopyLink(\'' + key + '\',this)"><i class="mdi mdi-clipboard-pulse-outline"></i></div>' + 
-				'</div>' 
-			);
-		};
-		
 		monitors.forEach( function(def, idx) {
 			var chart = self.createChart({
 				"canvas": '#c_vs_' + def.id,
@@ -401,10 +437,15 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 				"deltaMinValue": def.delta_min_value ?? false,
 				"divideByDelta": def.divide_by_delta || false,
 				"minVertScale": def.min_vert_scale || 0,
-				"legend": false // single layer, no legend needed
+				"legend": false, // single layer, no legend needed
+				"zoom": {
+					xMin: self.epochStart,
+					xMax: self.epochEnd
+				},
+				"_allow_zoom": true
 			});
-			chart.on('mouseover', function(event) { render_chart_overlay(def.id); });
 			self.charts[ def.id ] = chart;
+			self.setupChartHover(def.id);
 		});
 		
 		// request data from server
@@ -434,7 +475,7 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 				chart.addLayer({
 					id: server.id,
 					title: self.getNiceServerText(server),
-					data: self.getMonitorChartData(resp.rows, def.id),
+					data: self.getMonitorChartData(resp.rows, def),
 					color: app.colors[ idx % app.colors.length ]
 				});
 			}); // foreach mon
