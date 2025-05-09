@@ -1,10 +1,11 @@
 Page.ServerUtils = class ServerUtils extends Page.PageUtils {
 	
-	showProcessInfo(pid) {
+	showProcessInfo(pid, snapshot) {
 		// pop dialog with process details
 		var self = this;
 		var html = '';
-		var list = this.snapshot.data.processes.list;
+		if (!snapshot) snapshot = this.snapshot;
+		var list = snapshot.data.processes.list;
 		var proc = find_object( list, { pid } );
 		if (!proc) return; // sanity
 		
@@ -25,6 +26,14 @@ Page.ServerUtils = class ServerUtils extends Page.PageUtils {
 		
 		// grid
 		html += '<div class="summary_grid triple">';
+		
+		// server
+		if (proc.server) {
+			html += '<div>';
+				html += '<div class="info_label">Server</div>';
+				html += '<div class="info_value">' + this.getNiceServer(proc.server, true) + '</div>';
+			html += '</div>';
+		}
 		
 		// pid
 		html += '<div>';
@@ -889,11 +898,15 @@ Page.ServerUtils = class ServerUtils extends Page.PageUtils {
 		html += this.getFormRow({
 			id: 'd_esh_limit',
 			label: 'Limit:',
-			content: this.getFormMenuSingle({
+			content: this.getFormText({
 				id: 'fe_esh_limit',
 				title: 'Select Limit',
-				options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-				value: args.limit || '',
+				type: 'number',
+				spellcheck: 'false',
+				maxlength: 2,
+				min: 1,
+				max: 15,
+				value: args.limit || 1,
 				'data-shrinkwrap': 1
 			})
 		});
@@ -988,7 +1001,7 @@ Page.ServerUtils = class ServerUtils extends Page.PageUtils {
 			$('#fe_esh_limit').val(1);
 		}); // type change
 		
-		SingleSelect.init( $('#fe_esh_mode, #fe_esh_year, #fe_esh_month, #fe_esh_day, #fe_esh_hour, #fe_esh_limit') );
+		SingleSelect.init( $('#fe_esh_mode, #fe_esh_year, #fe_esh_month, #fe_esh_day, #fe_esh_hour') );
 		
 		change_mode( args.mode );
 	}
