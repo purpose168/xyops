@@ -1533,10 +1533,21 @@ i.mdi.mdi-moon-waning-crescent:before {
 	.data_grid.process_grid > ul > div:nth-child(7) { visibility: hidden; }
 	.data_grid.process_grid > ul > div:nth-child(8) { visibility: hidden; }
 	
+	/* 'Command', 'Server', 'User', 'PID', 'Parent', 'CPU', 'Memory', 'Age', 'State' */
+	.data_grid.grp_proc_grid { grid-template-columns: auto auto 0px auto auto auto auto 0px 0px !important; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(3) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(8) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(9) { visibility: hidden; }
+	
 	/* 'Protocol', 'State', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out' */
 	.data_grid.connection_grid { grid-template-columns: auto auto auto auto auto 0px 0px !important; }
 	.data_grid.connection_grid > ul > div:nth-child(6) { visibility: hidden; }
 	.data_grid.connection_grid > ul > div:nth-child(7) { visibility: hidden; }
+	
+	/* 'State', 'Server', 'Protocol', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out' */
+	.data_grid.grp_conn_grid { grid-template-columns: auto auto auto auto auto auto 0px 0px !important; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(7) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(8) { visibility: hidden; }
 	
 	/* 'Name', 'IPv4', 'IPv6', 'State', 'Type', 'Speed', 'Bytes In', 'Bytes Out' */
 	.data_grid.interface_grid { grid-template-columns: auto auto auto auto auto auto 0px 0px !important; }
@@ -1804,11 +1815,25 @@ i.mdi.mdi-moon-waning-crescent:before {
 	.data_grid.process_grid > ul > div:nth-child(7) { visibility: hidden; }
 	.data_grid.process_grid > ul > div:nth-child(8) { visibility: hidden; }
 	
+	/* 'Command', 'Server', 'User', 'PID', 'Parent', 'CPU', 'Memory', 'Age', 'State' */
+	.data_grid.grp_proc_grid { grid-template-columns: auto auto 0px auto 0px auto auto 0px 0px !important; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(3) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(5) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(8) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(9) { visibility: hidden; }
+	
 	/* 'Protocol', 'State', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out' */
 	.data_grid.connection_grid { grid-template-columns: auto auto 0px auto auto 0px 0px !important; }
 	.data_grid.connection_grid > ul > div:nth-child(3) { visibility: hidden; }
 	.data_grid.connection_grid > ul > div:nth-child(6) { visibility: hidden; }
 	.data_grid.connection_grid > ul > div:nth-child(7) { visibility: hidden; }
+	
+	/* 'State', 'Server', 'Protocol', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out' */
+	.data_grid.grp_conn_grid { grid-template-columns: auto auto 0px 0px auto auto 0px 0px !important; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(3) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(4) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(7) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(8) { visibility: hidden; }
 	
 	/* 'Name', 'IPv4', 'IPv6', 'State', 'Type', 'Speed', 'Bytes In', 'Bytes Out' */
 	.data_grid.interface_grid { grid-template-columns: auto auto auto auto auto 0px 0px 0px !important; }
@@ -2190,12 +2215,29 @@ i.mdi.mdi-moon-waning-crescent:before {
 	.data_grid.process_grid > ul > div:nth-child(7) { visibility: hidden; }
 	.data_grid.process_grid > ul > div:nth-child(8) { visibility: hidden; }
 	
+	/* 'Command', 'Server', 'User', 'PID', 'Parent', 'CPU', 'Memory', 'Age', 'State' */
+	.data_grid.grp_proc_grid { grid-template-columns: auto auto 0px auto 0px 0px 0px 0px 0px !important; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(3) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(5) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(6) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(7) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(8) { visibility: hidden; }
+	.data_grid.grp_proc_grid > ul > div:nth-child(9) { visibility: hidden; }
+	
 	/* 'Protocol', 'State', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out' */
 	.data_grid.connection_grid { grid-template-columns: auto auto 0px auto 0px 0px 0px !important; }
 	.data_grid.connection_grid > ul > div:nth-child(3) { visibility: hidden; }
 	.data_grid.connection_grid > ul > div:nth-child(5) { visibility: hidden; }
 	.data_grid.connection_grid > ul > div:nth-child(6) { visibility: hidden; }
 	.data_grid.connection_grid > ul > div:nth-child(7) { visibility: hidden; }
+	
+	/* 'State', 'Server', 'Protocol', 'Local Address', 'Remote Address', 'Process', 'Bytes In', 'Bytes Out' */
+	.data_grid.grp_conn_grid { grid-template-columns: auto auto 0px 0px auto 0px 0px 0px !important; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(3) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(4) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(6) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(7) { visibility: hidden; }
+	.data_grid.grp_conn_grid > ul > div:nth-child(8) { visibility: hidden; }
 	
 	/* 'Name', 'IPv4', 'IPv6', 'State', 'Type', 'Speed', 'Bytes In', 'Bytes Out' */
 	.data_grid.interface_grid { grid-template-columns: auto auto auto auto 0px 0px 0px 0px !important; }
