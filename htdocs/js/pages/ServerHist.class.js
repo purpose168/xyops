@@ -656,6 +656,7 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 		delete this.epochEnd;
 		delete this.chartLimit;
 		delete this.jobHistArgs;
+		delete this.chartZoom;
 		
 		// destroy charts if applicable (view page)
 		if (this.charts) {
