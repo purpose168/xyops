@@ -1172,6 +1172,7 @@ Page.Job = class Job extends Page.PageUtils {
 	
 	getChartLayers(timeline, pkey, chart) {
 		// get chart layers for CPU, Mem, Disk or Net graph
+		var self = this;
 		var pids = {};
 		var color_keys = { cpu:0, memRss:1, disk:2, net:3 };
 		if (!timeline || !timeline.length) return [];
@@ -1184,7 +1185,7 @@ Page.Job = class Job extends Page.PageUtils {
 				for (var pid in item.procs) {
 					var proc = item.procs[pid];
 					
-					if (!(pid in pids)) pids[pid] = { title: proc.command + ' (' + pid + ')', data: [], _first: x };
+					if (!(pid in pids)) pids[pid] = { title: self.getNiceProcessText(proc) + ' (' + pid + ')', data: [], _first: x };
 					pids[pid].data.push({ x, y: proc[pkey] || 0 });
 				}
 			} );
