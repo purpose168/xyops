@@ -559,6 +559,9 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 		monitor.suffix = $('#fe_em_suffix').val();
 		monitor.notes = $('#fe_em_notes').val();
 		
+		// min_vert_scale should be 1+ for integers, if not set
+		if ((monitor.min_vert_scale < 1) && (monitor.data_type == 'integer')) monitor.min_vert_scale = 1;
+		
 		var feats = $('#fe_em_delta').val();
 		monitor.delta = false;
 		monitor.delta_min_value = false;
