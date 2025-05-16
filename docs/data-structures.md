@@ -159,6 +159,10 @@ The [Event.id](#event-id) of the event which spawned the job.
 
 Which [Server.id](#server-id) that was chosen to run the job, based on the [Event.algo](#event-algo).
 
+## Job.groups
+
+When a server is chosen, that server's assigned groups are copied into the job.
+
 ## Job.command
 
 Which executable to run for the job.  This cannot be set -- it is copied from the [Plugin](#plugin).
