@@ -140,6 +140,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		
 		this.div.html( html );
 		
+		SingleSelect.init( this.div.find('#fe_ak_status') );
 		MultiSelect.init( this.div.find('select[multiple]') );
 		$('#fe_ak_title').focus();
 		this.setupBoxButtonFloater();
@@ -220,6 +221,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		
 		this.div.html( html );
 		
+		SingleSelect.init( this.div.find('#fe_ak_status') );
 		MultiSelect.init( this.div.find('select[multiple]') );
 		this.setupBoxButtonFloater();
 	}
@@ -307,9 +309,10 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		// status
 		html += this.getFormRow({
 			label: 'Status:',
-			content: this.getFormMenu({
+			content: this.getFormMenuSingle({
 				id: 'fe_ak_status',
-				options: [[1,'Active'], [0,'Disabled']], // TODO: change this to a checkbox
+				title: 'Select Status',
+				options: [[1,'Active'], [0,'Disabled']],
 				value: api_key.active
 			}),
 			caption: '&ldquo;Disabled&rdquo; means that the API Key remains in the system, but it cannot be used for any API calls.'
