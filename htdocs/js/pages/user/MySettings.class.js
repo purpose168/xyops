@@ -176,18 +176,20 @@ Page.MySettings = class MySettings extends Page.Base {
 					{ id: 'normal', title: 'Normal Contrast', icon: 'circle-half-full' }, 
 					{ id: 'high', title: 'High Contrast', icon: 'circle-outline' },
 				],
-				value: user.contrast || 'auto'
+				value: user.contrast || 'auto',
+				onChange: '$P().previewContrastMode(this)'
 			}),
 			caption: 'Select your desired preference for contrast.  This affects the brightness range between the text and background colors.'
 		});
 		
-		// color blind mode
+		// color acc mode
 		html += this.getFormRow({
 			label: 'Vision:',
 			content: this.getFormCheckbox({
-				id: 'fe_ms_colorblind',
+				id: 'fe_ms_coloracc',
 				label: 'Color Accessibility Mode',
-				checked: !!user.color_blind
+				checked: !!user.color_acc,
+				onChange: '$P().previewColorMode(this)'
 			}),
 			caption: 'Enable or disable color assistance, which uses indicators other than color for differentiation.'
 		});
@@ -240,6 +242,18 @@ Page.MySettings = class MySettings extends Page.Base {
 		this.update_date_time_preview();
 	}
 	
+	previewContrastMode(elem) {
+		// set local mode on change
+		app.user.contrast = $(elem).val();
+		app.updateAccessibility();
+	}
+	
+	previewColorMode(elem) {
+		// set local mode on change
+		app.user.color_acc = $(elem).is(':checked');
+		app.updateAccessibility();
+	}
+	
 	playPreviewSound() {
 		// play preview sound at new volume level (unless zero)
 		var volume = parseInt( this.div.find('#fe_ms_volume').val() );
@@ -283,7 +297,7 @@ Page.MySettings = class MySettings extends Page.Base {
 			volume: parseInt( this.div.find('#fe_ms_volume').val() ),
 			motion: this.div.find('#fe_ms_motion').val(),
 			contrast: this.div.find('#fe_ms_contrast').val(),
-			color_blind: this.div.find('#fe_ms_colorblind').is(':checked'),
+			color_acc: this.div.find('#fe_ms_coloracc').is(':checked'),
 			page_info: this.div.find('#fe_ms_pageinfo').is(':checked'),
 			notifications: this.div.find('#fe_ms_notify').is(':checked'),
 			effects: this.div.find('#fe_ms_effects').is(':checked')
@@ -305,7 +319,7 @@ Page.MySettings = class MySettings extends Page.Base {
 		if (json.volume != user.volume) return true;
 		if (json.motion != user.motion) return true;
 		if (json.contrast != user.contrast) return true;
-		if (json.color_blind != user.color_blind) return true;
+		if (json.color_acc != user.color_acc) return true;
 		if (json.page_info != user.page_info) return true;
 		if (json.notifications != user.notifications) return true;
 		if (json.effects != user.effects) return true;
