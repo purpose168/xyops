@@ -1075,11 +1075,36 @@ app.extend({
 			app.sysReducedMotion = event.matches;
 			app.updateAccessibility();
 		});
+		
+		// we need multiple queries for contrast
+		var conHighQuery = window.matchMedia('(prefers-contrast: high)');
+		var conLowQuery = window.matchMedia('(prefers-contrast: low)');
+		this.sysContrast = (conHighQuery.matches ? 'high' : (conLowQuery.matches ? 'low' : 'normal'));
+		
+		var handleContrastChange = function() {
+			app.sysContrast = (conHighQuery.matches ? 'high' : (conLowQuery.matches ? 'low' : 'normal'));
+			app.updateAccessibility();
+		};
+		
+		conHighQuery.addEventListener('change', handleContrastChange);
+		conLowQuery.addEventListener('change', handleContrastChange);
 	},
 	
 	updateAccessibility() {
 		// update accessibility settings, after user login, user settings change or CSS event
-		if (this.reducedMotion()) $('body').addClass('reduced'); else $('body').removeClass('reduced');
+		var $body = $('body');
+		
+		// motion setting
+		if (this.reducedMotion()) $body.addClass('reduced'); else $body.removeClass('reduced');
+		
+		// contrast setting
+		$body.removeClass(['highcon', 'lowcon']);
+		var con = this.userContrast();
+		if (con == 'high') $body.addClass('highcon');
+		else if (con == 'low') $body.addClass('lowcon');
+		
+		// color accessibilty
+		if (this.user.color_acc) $body.addClass('coloracc'); else $body.removeClass('coloracc');
 	},
 	
 	reducedMotion() {
@@ -1087,6 +1112,14 @@ app.extend({
 		if (this.user.motion == 'full') return false;
 		else if (this.user.motion == 'reduced') return true;
 		else return this.sysReducedMotion;
+	},
+	
+	userContrast() {
+		// return user contrast preference
+		if (this.user.contrast == 'high') return 'high';
+		else if (this.user.contrast == 'normal') return 'normal';
+		else if (this.user.contrast == 'low') return 'low';
+		else return this.sysContrast;
 	}
 	
 }); // app
