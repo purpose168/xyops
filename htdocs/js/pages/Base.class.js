@@ -1437,8 +1437,9 @@ Page.Base = class Base extends Page {
 		
 		html += this.getFormRow({
 			label: 'Limit Type:',
-			content: this.getFormMenu({
+			content: this.getFormMenuSingle({
 				id: 'fe_erl_type',
+				title: 'Select Limit Type',
 				options: [ 
 					['time', "Max Run Time"], 
 					['job', "Max Concurrent Jobs"],
@@ -1601,6 +1602,7 @@ Page.Base = class Base extends Page {
 			change_limit_type( $(this).val() );
 		}); // type change
 		
+		SingleSelect.init( $('#fe_erl_type') );
 		RelativeTime.init( $('#fe_erl_duration') );
 		RelativeBytes.init( $('#fe_erl_byte_amount') );
 		
