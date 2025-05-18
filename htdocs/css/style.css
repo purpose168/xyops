@@ -756,7 +756,8 @@ div.td_big {
 }
 .dialog_box_content.maximize .form_row > div.fr_label {
 	justify-self: start;
-	margin-bottom: 4px;
+	margin-top: 3px;
+	margin-bottom: 2px;
 }
 .dialog_box_content.maximize .form_row > div.fr_suffix {
 	display: none;
