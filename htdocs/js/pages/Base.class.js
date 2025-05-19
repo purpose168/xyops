@@ -2994,6 +2994,10 @@ Page.Base = class Base extends Page {
 			copyToClipboard(this._temp_code);
 			app.showMessage('info', "The data was copied to your clipboard.");
 		}
+		else if (this.editor) {
+			copyToClipboard(this.editor.getValue());
+			app.showMessage('info', "The data was copied to your clipboard.");
+		}
 	}
 	
 	highlightCodeBlocks(elem) {
@@ -3143,7 +3147,8 @@ Page.Base = class Base extends Page {
 		html += '<div id="fe_dialog_editor"><div class="CodeMirror"></div></div>';
 		
 		var buttons_html = "";
-		buttons_html += '<div id="btn_dialog_cancel" class="button" onClick="Dialog.hide()"><i class="mdi mdi-close-circle-outline">&nbsp;</i>Cancel</div>';
+		buttons_html += '<div id="btn_dialog_cancel" class="button" onClick="Dialog.hide()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+		buttons_html += '<div class="button" onMouseUp="$P().copyCodeToClipboard()"><i class="mdi mdi-clipboard-text-outline">&nbsp;</i><span>Copy to Clipboard</span></div>';
 		buttons_html += '<div id="btn_dialog_confirm" class="button primary"><i class="mdi mdi-check-circle">&nbsp;</i>Apply Changes</div>';
 		
 		title += ' <div class="dialog_title_widget mobile_hide"><span class="link" onClick="$P().toggleDialogCodeEditorSize(this)">Maximize<i style="padding-left:3px" class="mdi mdi-arrow-top-right-thick"></i></span></div>';
