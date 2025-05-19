@@ -949,7 +949,7 @@ body.dark #dialog .plugin_param_editor_cont {
 	padding-right: 1px;
 }
 .summary_grid .info_value i.mdi:before {
-	transform: scale(1.20);
+	transform: scale(1.30);
 }
 
 .summary_grid.single {
