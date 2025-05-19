@@ -1472,6 +1472,7 @@ Page.Base = class Base extends Page {
 				type: 'number',
 				spellcheck: 'false',
 				maxlength: 32,
+				min: 0,
 				value: limit.amount || 0
 			}),
 			caption: '<span id="s_erl_raw_amount_cap"></span>'
