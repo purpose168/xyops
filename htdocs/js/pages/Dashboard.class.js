@@ -496,7 +496,7 @@ Page.Dashboard = class Dashboard extends Page.PageUtils {
 				self.getNiceJobSourceList( Object.keys(item.sources).sort() ),
 				self.getNiceTargetList( Object.keys(item.targets).sort() ),
 				commify( item.states.queued ),
-				'<span class="link" onClick="$P().doFlushQueue(\'' + item.id + '\')"><b>Flush Queue</b></a>'
+				'<span class="link danger" onClick="$P().doFlushQueue(\'' + item.id + '\')"><b>Flush Queue</b></a>'
 			];
 		} );
 		
@@ -506,15 +506,18 @@ Page.Dashboard = class Dashboard extends Page.PageUtils {
 	doFlushQueue(id) {
 		// flush specific event queue
 		var self = this;
+		var event = find_object( app.events, { id } ) || { title: id };
 		
-		Dialog.confirmDanger( 'Flush Queue', "Are you sure you want to flush the event queue for <b>" + this.getNiceEvent(id, false) + "</b>?  All pending jobs will be silently deleted without triggering completion actions.", ['trash-can', 'Flush'], function(result) {
+		Dialog.confirmDanger( 'Flush Queue', "Are you sure you want to flush the event queue for &ldquo;<b>" + this.event.title + "</b>&rdquo;?  All pending jobs will be silently deleted without triggering completion actions.", ['trash-can', 'Flush'], function(result) {
 			if (!result) return;
 			app.clearError();
 			Dialog.showProgress( 1.0, "Flushing Queue..." );
 			
 			app.api.post( 'app/flush_event_queue', { id: id }, function(resp) {
+				app.cacheBust = hires_time_now();
 				Dialog.hideProgress();
 				app.showMessage('success', "The event queue was flushed successfully.");
+				self.getQueueSummary();
 			} ); // api.post
 		} ); // confirm
 	}
