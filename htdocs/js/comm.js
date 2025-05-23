@@ -143,6 +143,13 @@ app.comm = {
 				app.doUserLogout(true);
 			break;
 			
+			case 'retry':
+				// server is not master, go into a retry loop
+				// FUTURE: data.masterHost may point to the new master
+				Debug.trace('comm', "Server has told us to try again...");
+				socket.close();
+			break;
+			
 			case 'login':
 				// auth successful
 				Debug.trace('user', "WebSocket auth successful!");
