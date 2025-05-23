@@ -914,7 +914,7 @@ Page.Events = class Events extends Page.PageUtils {
 			
 			var tds = [
 				'<div class="td_big nowrap">' + nice_icon + nice_type + '</div>',
-				'<div class="ellip">' + nice_desc + '</div>'
+				'<div class="wrap">' + nice_desc + '</div>'
 			];
 			
 			if (!item.enabled) tds.className = 'disabled';
@@ -979,7 +979,7 @@ Page.Events = class Events extends Page.PageUtils {
 			
 			var tds = [
 				'<div class="td_big nowrap"><i class="mdi mdi-' + icon + '"></i>' + nice_title + '</div>',
-				'<div class="ellip">' + nice_desc + '</div>'
+				'<div class="wrap">' + nice_desc + '</div>'
 			];
 			
 			if (!item.enabled) tds.className = 'disabled';
