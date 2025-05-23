@@ -845,7 +845,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 					html += '</div>';
 					
 					html += '<div>';
-						html += '<div class="info_label">Server Uptime</div>';
+						html += '<div class="info_label">Uptime</div>';
 						html += '<div class="info_value" id="d_vs_stat_uptime">' + this.getNiceUptime(snapshot.data.uptime_sec) + '</div>';
 					html += '</div>';
 					
@@ -1012,6 +1012,16 @@ Page.Servers = class Servers extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
+		// upcoming jobs
+		html += '<div class="box" id="d_upcoming_jobs">';
+			html += '<div class="box_title">';
+				html += 'Upcoming Server Jobs';
+			html += '</div>';
+			html += '<div class="box_content table">';
+				html += '<div class="loading_container"><div class="loading"></div></div>';
+			html += '</div>'; // box_content
+		html += '</div>'; // box
+		
 		this.div.html(html);
 		
 		SingleSelect.init( this.div.find('select.sel_chart_size') );
@@ -1021,6 +1031,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		this.renderMemDetails();
 		this.renderCPUDetails();
 		this.setupMonitors();
+		this.setupUpcomingJobs();
 		
 		if (online) {
 			// some components are online-only
@@ -1036,6 +1047,15 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		}
 		
 		// SingleSelect.init( this.div.find('#fe_vs_mode, #fe_vs_year') );
+	}
+	
+	setupUpcomingJobs() {
+		// start prediction engine, will render when complete
+		var self = this;
+		
+		this.getUpcomingJobs( app.events.filter( function(event) {
+			return (event.targets || []).includes( self.server.id );
+		} ) );
 	}
 	
 	openWatchDialog() {
@@ -1698,6 +1718,12 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		
 		// alerts today
 		this.div.find('#d_vs_stat_at').html( commify(stats.alert_new || 0) );
+		
+		// refresh upcoming
+		if (this.upcomingJobs) {
+			this.autoExpireUpcomingJobs();
+			this.renderUpcomingJobs();
+		}
 	}
 	
 	updateSnapshotData(snapshot) {
@@ -1733,6 +1759,10 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		
 		if (data.jobsChanged) {
 			this.renderActiveJobs();
+			
+			// recompute upcoming jobs
+			this.autoExpireUpcomingJobs();
+			this.renderUpcomingJobs();
 		}
 		else {
 			// fast update without redrawing entire table
@@ -1814,6 +1844,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 				else if (key == 'stats') this.updateServerStats();
 				else if (key == 'servers') this.checkUpdateServerState();
 				else if (key == 'state') this.updateWatchButton();
+				else if (key == 'events') this.setupUpcomingJobs();
 			break;
 		}
 	}
@@ -1829,6 +1860,8 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		delete this.detailAnimation;
 		delete this.serverInstallArgs;
 		delete this.chartZoom;
+		delete this.upcomingJobs;
+		delete this.upcomingOffset;
 		
 		// destroy charts if applicable (view page)
 		if (this.charts) {

@@ -795,6 +795,16 @@ Page.Groups = class Groups extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
+		// upcoming jobs
+		html += '<div class="box" id="d_upcoming_jobs">';
+			html += '<div class="box_title">';
+				html += 'Upcoming Group Jobs';
+			html += '</div>';
+			html += '<div class="box_content table">';
+				html += '<div class="loading_container"><div class="loading"></div></div>';
+			html += '</div>'; // box_content
+		html += '</div>'; // box
+		
 		this.div.html(html);
 		
 		SingleSelect.init( this.div.find('select.sel_chart_size, select.sel_cpu_mem_merge') );
@@ -805,10 +815,21 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		this.setupQuickMonitors();
 		this.setupMonitors();
 		
+		this.setupUpcomingJobs();
+		
 		var animate_max_servers = config.animate_max_servers || 100;
 		if (!app.reducedMotion() && (this.servers.length <= animate_max_servers)) this.animate();
 		
 		return true;
+	}
+	
+	setupUpcomingJobs() {
+		// start prediction engine, will render when complete
+		var self = this;
+		
+		this.getUpcomingJobs( app.events.filter( function(event) {
+			return (event.targets || []).includes( self.group.id );
+		} ) );
 	}
 	
 	addServerToGroup() {
@@ -1383,6 +1404,10 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		if (data.jobsChanged) {
 			this.renderActiveJobs();
 			
+			// recompute upcoming jobs
+			this.autoExpireUpcomingJobs();
+			this.renderUpcomingJobs();
+			
 			this.servers.forEach( function(item, idx) {
 				var nice_jobs = 'Idle';
 				var num_jobs = find_objects( app.activeJobs, { server: item.id } ).length;
@@ -1449,6 +1474,12 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		
 		// expire old chart samples for offline servers, delete layers if all samples gone
 		this.expireChartData();
+		
+		// refresh upcoming
+		if (this.upcomingJobs) {
+			this.autoExpireUpcomingJobs();
+			this.renderUpcomingJobs();
+		}
 	}
 	
 	setupServers() {
@@ -1626,6 +1657,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 			else if (key == 'activeAlerts') this.updateGroupServerTable();
 			else if (key == 'stats') this.updateGroupStats();
 			else if (key == 'state') this.updateWatchButton();
+			else if (key == 'events') this.setupUpcomingJobs();
 		}
 	}
 	
@@ -1640,6 +1672,8 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		delete this.donutDashUnits;
 		delete this.detailAnimation;
 		delete this.chartZoom;
+		delete this.upcomingJobs;
+		delete this.upcomingOffset;
 		
 		// destroy charts if applicable (view page)
 		if (this.charts) {
