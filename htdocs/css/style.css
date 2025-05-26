@@ -688,6 +688,39 @@ body.dark div.box_unit {
 	background-color: var(--box-background-color);
 }
 
+/* Job Day Graph */
+
+.job_day_graph {
+	display: grid;
+	grid-auto-flow: column;
+	grid-template-rows: repeat(7, 1fr);
+	grid-auto-columns: 1fr;
+	width: 100%;
+	aspect-ratio: 53 / 7;
+	gap: 5px;
+	/* max-width: 800px;
+	margin: auto; */
+}
+
+.job_day_graph > div {
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	/* box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.5), inset -1px -1px 0px rgba(0, 0, 0, 0.25); */
+	cursor: pointer;
+}
+.job_day_graph > div:hover {
+	/* box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.4); */
+	filter: brightness(110%);
+}
+
+.job_day_graph > div.empty {
+	/* background: var(--background-color);
+	box-shadow: none; */
+	box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.25);
+	cursor: default;
+}
+
 /* Misc */
 
 .data_grid div.td_drag_handle > div.checkbox_container {
@@ -1557,6 +1590,10 @@ i.mdi.mdi-moon-waning-crescent:before {
 		text-align: left;
 	}
 	
+	.job_day_graph {
+		gap: 4px;
+	}
+	
 	.data_grid.event_grid { grid-template-columns: 40px auto 0px 0px auto auto auto auto !important; }
 	.data_grid.event_grid > ul > div:nth-child(3) { visibility: hidden; }
 	.data_grid.event_grid > ul > div:nth-child(4) { visibility: hidden; }
@@ -1832,6 +1869,13 @@ i.mdi.mdi-moon-waning-crescent:before {
 	
 	.tablet_hide {
 		display: none;
+	}
+	
+	.job_day_graph {
+		gap: 3px;
+	}
+	.job_day_graph > div {
+		border-radius: 3px;
 	}
 	
 	.data_grid.event_grid { grid-template-columns: 40px auto 0px 0px 0px auto auto auto !important; }
@@ -2227,6 +2271,13 @@ i.mdi.mdi-moon-waning-crescent:before {
 	#fe_dialog_editor .CodeMirror.maximize {
 		width: 88vw;
 		height: 80vh;
+	}
+	
+	.job_day_graph {
+		gap: 2px;
+	}
+	.job_day_graph > div {
+		border-radius: 2px;
 	}
 	
 	.data_grid.event_grid { grid-template-columns: 40px auto 0px 0px 0px 0px auto auto !important; }
