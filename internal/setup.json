@@ -565,7 +565,6 @@
 			
 			[ "symlinkCompress", "node_modules/jquery/dist/jquery.min.js", "htdocs/js/external/" ],
 			[ "symlinkCompress", "node_modules/jquery/dist/jquery.min.map", "htdocs/js/external/" ],
-			[ "symlinkCompress", "node_modules/cash-dom/dist/cash.min.js", "htdocs/js/external/" ],
 			
 			[ "symlinkCompress", "node_modules/pixl-chart/chart.min.js", "htdocs/js/external/" ],
 			[ "symlinkCompress", "node_modules/zeroupload/zeroupload.min.js", "htdocs/js/external/" ],
@@ -588,10 +587,7 @@
 			[ "chmodFiles", "755", "bin/*" ],
 			
 			[ "prepIconFont", "htdocs/js/external/icon-font-names.js" ],
-			[ "compressFile", "htdocs/js/external/icon-font-names.js", "htdocs/js/external/icon-font-names.js.gz" ],
-			
-			[ "fetchCompress", "https://cdn.auth0.com/js/auth0-spa-js/1.21/auth0-spa-js.production.js", "htdocs/js/external/" ],
-			[ "fetchCompress", "https://cdn.auth0.com/js/auth0-spa-js/1.21/auth0-spa-js.production.js.map", "htdocs/js/external/" ]
+			[ "compressFile", "htdocs/js/external/icon-font-names.js", "htdocs/js/external/icon-font-names.js.gz" ]
 		],
 		"dev": [
 			[ "deleteFiles", "htdocs/css/_combo*" ],
@@ -627,7 +623,6 @@
 				"lines": [
 					"Welcome to Orchestra!",
 					"First time installing?  You should configure your settings in '/opt/orchestra/conf/config.json'.",
-					"Next, type: '/opt/orchestra/bin/control.sh setup' to init storage.",
 					"Then, to start the service, type: '/opt/orchestra/bin/control.sh start'.",
 					"For full docs, please visit: http://github.com/jhuckaby/orchestra",
 					"Enjoy!"
