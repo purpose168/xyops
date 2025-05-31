@@ -140,11 +140,12 @@
 		"server_update": "Server information was updated: [hostname]",
 		"server_watch": "A watch for [duration] was set on the server: [hostname]",
 		
-		"peer_add": "Conductor added to the network: [host]",
-		"peer_disconnect": "Conductor disconnected from the network: [host]",
-		"peer_command": "Control command [commands] sent to conductor: [host]",
+		"master_primary": "Conductor server is now primary: [host]",
+		"peer_add": "Conductor server added to the network: [host]",
+		"peer_disconnect": "Conductor serfer disconnected from the network: [host]",
+		"peer_command": "Control command [commands] sent to conductor server: [host]",
 		
-		"state_update": "Master state updated: [description]",
+		"state_update": "Internal state updated: [description]",
 		"internal_job": "Internal job completed: [job.title]"
 	},
 	
