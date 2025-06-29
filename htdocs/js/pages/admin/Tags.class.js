@@ -29,7 +29,13 @@ Page.Tags = class Tags extends Page.PageUtils {
 		// show tag list
 		app.setWindowTitle( "Tags" );
 		app.setHeaderTitle( '<i class="mdi mdi-tag-multiple-outline">&nbsp;</i>Tags' );
-		app.api.post( 'app/get_tags', {}, this.receive_tags.bind(this) );
+		
+		// use tags in app cache
+		this.receive_tags({
+			code: 0,
+			rows: app.tags,
+			list: { length: app.tags.length }
+		});
 	}
 	
 	receive_tags(resp) {
