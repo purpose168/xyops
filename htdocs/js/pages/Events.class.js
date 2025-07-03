@@ -689,6 +689,8 @@ Page.Events = class Events extends Page.PageUtils {
 		var event = this.event = find_object( app.events, { id: args.id } );
 		if (!event) return this.doFullPageError("Event not found: " + args.id);
 		
+		this.workflow = this.event.workflow || null;
+		
 		var is_workflow = (event.type == 'workflow');
 		var default_icon = is_workflow ? 'clipboard-flow-outline' : 'file-clock-outline';
 		var icon = event.icon || default_icon;
@@ -820,6 +822,30 @@ Page.Events = class Events extends Page.PageUtils {
 			html += '<div class="box_unity">' + this.getLimitDetails() + '</div>';
 		html += '</div>';
 		
+		// workflow preview
+		if (event.workflow) {
+			html += '<div class="box">';
+			html += '<div class="box_content">';
+			html += '<div class="wf_container preview" id="d_wf_container" style="height:40vh; min-height:400px;">';
+			
+			html += `<div class="wf_grid_header">
+				<div class="wf_title left"><i class="mdi mdi-clipboard-flow-outline">&nbsp;</i>Workflow Preview</div>
+				<div class="clear"></div>
+			</div>`;
+			
+			html += `<div class="wf_grid_footer">
+				<div class="button icon left" onClick="$P().wfZoomAuto()" title="Auto-fit workflow"><i class="mdi mdi-home"></i></div>
+				<div class="button icon left" id="d_btn_wf_zoom_out" onClick="$P().wfZoomOut()" title="Zoom out"><i class="mdi mdi-magnify-minus"></i></div>
+				<div class="button icon left" id="d_btn_wf_zoom_in" onClick="$P().wfZoomIn()" title="Zoom in"><i class="mdi mdi-magnify-plus"></i></div>
+				<div class="wf_zoom_msg left tablet_hide"></div>
+				<div class="clear"></div>
+			</div>`;
+			
+			html += '</div>'; // wf_container
+			html += '</div>'; // box_content
+			html += '</div>'; // box
+		} // workflow
+		
 		// plugin parameters
 		html += '<div class="box toggle" id="d_ve_params" style="display:none">';
 			html += '<div class="box_title">';
@@ -929,6 +955,7 @@ Page.Events = class Events extends Page.PageUtils {
 		this.setupToggleBoxes();
 		this.fetchRevisionHistory();
 		this.setupJobHistoryDayGraph();
+		this.setupWorkflow();
 	}
 	
 	getTriggerDetails() {
@@ -2075,22 +2102,6 @@ Page.Events = class Events extends Page.PageUtils {
 			caption: 'Enable all resource limits for the test run.'
 		});
 		
-		// notify
-		html += this.getFormRow({
-			id: 'd_eja_email',
-			label: 'Notify:',
-			content: this.getFormText({
-				id: 'fe_ete_email',
-				spellcheck: 'false',
-				maxlength: 8192,
-				placeholder: 'email@sample.com',
-				value: '',
-				onChange: '$P().updateAddRemoveMe(this)'
-			}),
-			suffix: '<div class="form_suffix_icon mdi" title="" onClick="$P().addRemoveMe(this)"></div>',
-			caption: 'Optionally send the test results to one or more email addresses.'
-		});
-		
 		// custom input json
 		html += this.getFormRow({
 			label: 'Custom JSON Input:',
@@ -2125,17 +2136,6 @@ Page.Events = class Events extends Page.PageUtils {
 				job.limits = [];
 			}
 			
-			var emails = $('#fe_ete_email').val().trim();
-			if (emails.length) {
-				if (!job.actions) job.actions = [];
-				job.actions.push({
-					enabled: true,
-					condition: 'complete',
-					type: 'email',
-					email: emails
-				});
-			}
-			
 			// parse custom input json
 			var raw_json = $('#fe_ete_input').val();
 			if (raw_json) try {
@@ -2163,14 +2163,13 @@ Page.Events = class Events extends Page.PageUtils {
 				win.location.href = '#Job?id=' + resp.id;
 			}, 
 			function(err) {
+				// capture error so we can close the window we just opened
 				win.close();
 				app.doError("API Error: " + err.description);
 			});
 			
 			Dialog.hide();
 		}); // Dialog.confirm
-		
-		this.updateAddRemoveMe('#fe_ete_email');
 	}
 	
 	edit_test_input() {
@@ -3462,6 +3461,11 @@ Page.Events = class Events extends Page.PageUtils {
 		delete this.revisionOffset;
 		delete this.revisions;
 		delete this.queuedJobs;
+		
+		delete this.workflow;
+		delete this.wfScroll;
+		delete this.wfZoom;
+		delete this.wfSelection;
 		
 		// destroy charts if applicable (view page)
 		if (this.charts) {
