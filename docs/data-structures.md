@@ -151,6 +151,15 @@ And these additions:
 
 An auto-generated, unique, alphanumeric ID for the job, which will always start with a `j`.
 
+## Job.type
+
+An optional string representing a custom job type.  Values include:
+
+| Job Type | Note | 
+|----------|------|
+| `workflow` | Job is a top-level workflow control job, which will spawn sub-jobs. | 
+| `adhoc` | Job is running as an ad-hoc under a workflow, with no event attached. | 
+
 ## Job.event
 
 The [Event.id](#event-id) of the event which spawned the job.
@@ -271,7 +280,7 @@ When the job was launched from another job (custom action or workflow step), thi
 
 ## Job.input
 
-When another job passes data to the current job, the `input` object is sued.  The object has the following properties:
+When another job passes data to the current job, an `input` object is populated.  The object has the following properties:
 
 | Property Name | Description |
 |---------------|-------------|
@@ -393,6 +402,10 @@ This is set to a Plugin ID by the scheduler when a job was launched from a Plugi
 ## Job.label
 
 User writable property for providing a visual label for the Job.  Should be specified as a string, and will be displayed alongside the Job ID on completion screens and history lists.
+
+## Job.test
+
+This is set to `true` when the job was fired from an event test.  This is used to override the event enabled check, and add hints to the UI.
 
 
 
