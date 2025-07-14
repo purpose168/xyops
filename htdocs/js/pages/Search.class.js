@@ -544,7 +544,7 @@ Page.Search = class Search extends Page.Base {
 		
 		var tds = [
 			'<b>' + this.getNiceJob( pdata.job, true ) + '</b>',
-			'<b>' + this.getNiceEvent( pdata.event, true ) + '</b>',
+			'<b>' + this.getNiceJobEvent( pdata, true ) + '</b>',
 			'<b>' + nice_file + '</b>',
 			
 			'<span class="mono">' + pdata.preview.before + '</span>' + 
@@ -647,7 +647,7 @@ Page.Search = class Search extends Page.Base {
 		html += this.getPaginatedGrid( grid_args, function(job, idx) {
 			return [
 				'<b>' + self.getNiceJob(job, true) + '</b>',
-				self.getNiceEvent(job.event, true),
+				self.getNiceJobEvent(job, true),
 				self.getNiceCategory(job.category, true),
 				self.getNiceServer(job.server, true),
 				self.getNiceJobSource(job),

@@ -1330,7 +1330,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		html += this.getPaginatedGrid( grid_args, function(job, idx) {
 			return [
 				'<b>' + self.getNiceJob(job, true) + '</b>',
-				self.getNiceEvent(job.event, true),
+				self.getNiceJobEvent(job, true),
 				self.getNiceCategory(job.category, true),
 				// self.getNiceJobSource(job),
 				// self.getShortDateTime( job.started ),
