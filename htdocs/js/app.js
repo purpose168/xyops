@@ -249,6 +249,7 @@ app.extend({
 		html += '<div id="d_header_clock" class="header_widget combo" onMouseDown="app.openScheduleSelector()" title="Toggle Scheduler">...</div>';
 		
 		html += '<div id="d_job_counter" class="header_widget combo marquee" onClick="app.goJobs()" title="Active Jobs" style="display:none">...</div>';
+		html += '<div id="d_queue_counter" class="header_widget combo" onClick="app.goJobs()" title="Queued Jobs" style="display:none">...</div>';
 		html += '<div id="d_alert_counter" class="header_widget combo red" onClick="app.goAlerts()" title="Active Alerts" style="display:none">...</div>';
 		
 		// html += '<div class="header_search_widget"><i class="mdi mdi-magnify">&nbsp;</i><input type="text" size="15" id="fe_header_search" placeholder="Quick Search" onKeyDown="app.qsKeyDown(this,event)"/></div>';
@@ -257,6 +258,7 @@ app.extend({
 		this.$headerClock = $('#d_header_clock');
 		this.$alertCounter = $('#d_alert_counter');
 		this.$jobCounter = $('#d_job_counter');
+		this.$queueCounter = $('#d_queue_counter');
 		
 		// reapply theme so header widget is updated
 		this.setTheme( this.getPref('theme') || 'auto' );
@@ -302,6 +304,16 @@ app.extend({
 		}
 		else {
 			this.$jobCounter.hide();
+		}
+		
+		// show queued job count as separate widget
+		var num_queued = this.numQueuedJobs || 0;
+		
+		if (num_queued) {
+			this.$queueCounter.show().html( '<i class="mdi mdi-tray-full"></i><span><b>' + commify(num_queued) + ' Queued</b></span>' );
+		}
+		else {
+			this.$queueCounter.hide();
 		}
 	},
 	
