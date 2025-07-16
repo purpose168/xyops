@@ -1,0 +1,20 @@
+To: [email_to]
+From: [config/email_from]
+Subject: Orchestra Job In Progress: [event/title]
+
+Date/Time: [display/date_time]
+Event: [event/title]
+Category: [category/title]
+Plugin: [plugin/title]
+
+Job ID: [job/id]
+Server: [server/hostname]
+
+Job Details:
+[links/job_details]
+
+Event Notes:
+[job/notes]
+
+Regards,
+The Orchestra Team
