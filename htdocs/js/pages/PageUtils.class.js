@@ -485,17 +485,27 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		var self = this;
 		if (!events) events = app.events;
 		
-		// pre-scan events for plugin-based scheduling
-		var plugin_rows = [];
+		// pre-scan events for plugin-based and continuous scheduler modes
+		var extra_rows = [];
 		
 		events.forEach( function(event) {
 			var plugin_trigger = find_object( event.triggers, { type: 'plugin', enabled: true } );
 			if (plugin_trigger) {
-				plugin_rows.push({
+				extra_rows.push({
 					event: event.id,
 					type: 'plugin',
 					plugin: plugin_trigger.plugin_id
 				});
+				return;
+			}
+			
+			var cont_trigger = find_object( event.triggers, { type: 'continuous', enabled: true } );
+			if (cont_trigger) {
+				extra_rows.push({
+					event: event.id,
+					type: 'continuous'
+				});
+				return;
 			}
 		} ); // foreach event
 		
@@ -506,7 +516,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			max: 1000,
 			progress: null,
 			callback: function(jobs) {
-				self.upcomingJobs = [ ...plugin_rows, ...jobs ];
+				self.upcomingJobs = [ ...extra_rows, ...jobs ];
 				self.renderUpcomingJobs();
 			}
 		};
@@ -537,7 +547,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		};
 		
 		html += this.getPaginatedGrid( grid_args, function(job, idx) {
-			var nice_source = (job.type == 'single') ? '<i class="mdi mdi-alarm-check">&nbsp;</i>Single Shot' : '<i class="mdi mdi-update">&nbsp;</i>Scheduler';
+			var type_info = find_object( config.ui.event_trigger_type_menu, { id: job.type } ) || { title: "Scheduler", icon: 'update' };
+			var nice_source = `<i class="mdi mdi-${type_info.icon}">&nbsp;</i>${type_info.title}`;
 			var event = find_object( app.events, { id: job.event } ) || {};
 			var precision = event.triggers ? find_object(event.triggers, { type: 'precision', enabled: true }) : null;
 			var nice_date_time = '';
@@ -552,20 +563,33 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				nice_countdown = '(Unknown)';
 				nice_skip = 'n/a';
 			}
+			else if (job.type == 'continuous') {
+				// special phantom row, for continuously running events
+				nice_date_time = '(Continuous)';
+				nice_countdown = 'n/a';
+				nice_skip = 'n/a';
+			}
 			else {
-				// vary date/time prediction display based on precision
+				// optionally vary date/time prediction display based on precision or interval
+				var countdown = 0;
+				
 				if (precision && precision.seconds && precision.seconds.length) {
-					job.precision = precision.seconds;
-					nice_date_time = self.getRelativeDateTime( job.epoch + job.precision[0], true );
-					if (job.precision.length > 1) nice_date_time += ' (+' + Math.floor(job.precision.length - 1) + ')';
+					job.seconds = precision.seconds;
+				}
+				
+				if (job.seconds) {
+					// precision or interval job
+					nice_date_time = self.getRelativeDateTime( job.epoch + job.seconds[0], true );
+					if (job.seconds.length > 1) nice_date_time += ' (+' + Math.floor(job.seconds.length - 1) + ')';
+					countdown = Math.max( 60, Math.abs((job.epoch + job.seconds[0]) - app.epoch) );
 				}
 				else {
+					// normal scheduled job
 					nice_date_time = self.getRelativeDateTime( job.epoch );
+					countdown = Math.max( 60, Math.abs(job.epoch - app.epoch) );
 				}
 				
-				var countdown = Math.max( 60, Math.abs(job.epoch - app.epoch) );
 				nice_countdown = '<i class="mdi mdi-clock-outline">&nbsp;</i>' + get_text_from_seconds_round( countdown );
-				
 				nice_skip = '<span class="link danger" onClick="$P().doSkipUpcomingJob(' + idx + ')"><b>Skip Job...</b></span>';
 			}
 			
@@ -2151,6 +2175,13 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				
 				menu_item = find_object( config.ui.event_trigger_type_menu, { id: tmode } );
 				alt_icon = menu_item.icon;
+			break;
+			
+			case 'interval':
+				nice_icon = '<i class="mdi mdi-calendar-clock"></i>';
+				nice_type = 'Schedule';
+				short_desc = get_text_from_seconds(item.duration || 0, true, false);
+				nice_desc = '<i class="mdi mdi-timer-sand">&nbsp;</i><b>Interval:</b> ' + get_text_from_seconds(item.duration || 0, false, false);
 			break;
 			
 			case 'continuous':

@@ -1298,8 +1298,11 @@ Page.Base = class Base extends Page {
 	getNiceJobSource(job) {
 		// get nice job source
 		if (job.source.match(/scheduler/i)) {
-			if (job.single) return '<i class="mdi mdi-alarm-check">&nbsp;</i>Single Shot';
-			else if (job.splugin) return this.getNicePlugin(job.splugin, true);
+			if (job.stype) {
+				var stype = find_object( config.ui.event_trigger_type_menu, { id: job.stype } );
+				if (stype) return `<i class="mdi mdi-${stype.icon}">&nbsp;</i>${stype.title}`;
+			}
+			if (job.splugin) return this.getNicePlugin(job.splugin, true);
 			else return '<i class="mdi mdi-update">&nbsp;</i>Scheduler';
 		}
 		else if (job.source.match(/(plugin)/i)) {
@@ -1462,7 +1465,8 @@ Page.Base = class Base extends Page {
 			
 			case 'time':
 				nice_title = "Max Run Time";
-				nice_desc = short_desc = get_text_from_seconds(item.duration, false, true);
+				nice_desc = get_text_from_seconds(item.duration, false, false);
+				short_desc = get_text_from_seconds(item.duration, true, false);
 				icon = 'timer-remove-outline';
 			break;
 			
@@ -2530,7 +2534,7 @@ Page.Base = class Base extends Page {
 			
 			// process triggers
 			var triggers = event.triggers.filter( function(trigger) { return trigger.enabled; } );
-			var schedules = triggers.filter( function(trigger) { return (trigger.type == 'schedule') || (trigger.type == 'single'); } );
+			var schedules = triggers.filter( function(trigger) { return trigger.type.match(/^(schedule|single|interval)$/); } );
 			if (!schedules.length) return false;
 			
 			// setup all unique timezones (intl formatters)
@@ -2596,11 +2600,20 @@ Page.Base = class Base extends Page {
 			// { "type": "schedule", "enabled": true, "years": [2023], "months": [3, 4, 5], "days": [1, 15], "weekdays": [1, 2, 3, 4, 5], "hours": [6, 7, 8, 9, 10], "minutes": [15, 45] }
 			opts.events.forEach( function(event) {
 				var scheduled = false;
+				var extras = {};
 				
 				event.schedules.forEach( function(trigger) {
 					if ((trigger.type == 'single') && (trigger.epoch == opts.epoch)) {
 						scheduled = 'single';
 						return;
+					}
+					if (trigger.type == 'interval') {
+						var hits = interval_hits_per_minute(trigger, opts.epoch);
+						if (hits.length) {
+							scheduled = 'interval';
+							extras.seconds = hits;
+							return;
+						}
 					}
 					
 					if (trigger.type != 'schedule') return; // sanity
@@ -2637,7 +2650,7 @@ Page.Base = class Base extends Page {
 				if (!scheduled) return;
 				
 				// add job!
-				opts.jobs.push({ event: event.id, epoch: opts.epoch, type: scheduled });
+				opts.jobs.push({ event: event.id, epoch: opts.epoch, type: scheduled, ...extras });
 				
 			} ); // foreach event
 			

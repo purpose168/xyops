@@ -145,13 +145,14 @@ Page.Events = class Events extends Page.PageUtils {
 								['', 'Any Trigger'], 
 								{ id: 'manual', title: 'Manual', icon: 'run-fast' },
 								{ id: 'schedule', title: 'Scheduled', icon: 'update' },
-								{ id: 'continuous', title: "Continuous", icon: 'all-inclusive' },
 								{ id: 'single', title: "Single Shot", icon: 'alarm-check' },
+								{ id: 'interval', title: "Interval", icon: 'timer-sand' },
+								{ id: 'continuous', title: "Continuous", icon: 'all-inclusive' },
 								{ id: 'catchup', title: "Catch-Up", icon: 'calendar-refresh-outline' },
 								{ id: 'range', title: "Range", icon: 'calendar-range-outline' },
 								{ id: 'blackout', title: "Blackout", icon: 'circle' },
 								{ id: 'delay', title: "Delay", icon: 'chat-sleep-outline' },
-								// TODO: add precision here, once that feature is impl
+								{ id: 'precision', title: "Precision", icon: 'progress-clock' },
 								{ id: 'plugin', title: "Plugin", icon: 'power-plug' }
 							].concat(
 								this.buildOptGroup( scheduler_plugins, "Scheduler Plugins:", 'power-plug-outline', 'p_' )
@@ -554,7 +555,7 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		// trigger
 		if ('trigger' in args) {
-			// types: manual, schedule, continuous, single, plugin, catchup, range, blackout, delay
+			// types: manual, schedule, interval, continuous, single, plugin, catchup, range, blackout, delay, precision
 			var types = {};
 			(item.triggers || []).forEach( function(trigger) { 
 				types[trigger.type || 'N/A'] = 1; 
@@ -1599,9 +1600,9 @@ Page.Events = class Events extends Page.PageUtils {
 					html = `<i class="mdi mdi-${plugin.icon || 'power-plug'}">&nbsp;</i>${plugin.title}`;
 				}
 				else {
-					if (job.precision) {
-						html = this.getRelativeDateTime( job.epoch + job.precision[0], true );
-						if (job.precision.length > 1) html += ' (+' + Math.floor(job.precision.length - 1) + ')';
+					if (job.seconds) {
+						html = this.getRelativeDateTime( job.epoch + job.seconds[0], true );
+						if (job.seconds.length > 1) html += ' (+' + Math.floor(job.seconds.length - 1) + ')';
 					}
 					else html = this.getRelativeDateTime( job.epoch );
 				}
@@ -2470,9 +2471,10 @@ Page.Events = class Events extends Page.PageUtils {
 			this.event.triggers.filter( function(row) { return row.type == 'manual'; } ),
 			this.event.triggers.filter( function(row) { return row.type == 'schedule'; } ),
 			this.event.triggers.filter( function(row) { return row.type == 'single'; } ),
+			this.event.triggers.filter( function(row) { return row.type == 'interval'; } ),
 			this.event.triggers.filter( function(row) { return row.type == 'continuous'; } ),
 			this.event.triggers.filter( function(row) { return row.type == 'plugin'; } ),
-			this.event.triggers.filter( function(row) { return !(row.type || '').match(/^(schedule|continuous|single|manual|plugin)$/); } )
+			this.event.triggers.filter( function(row) { return !(row.type || '').match(/^(schedule|continuous|interval|single|manual|plugin)$/); } )
 		);
 	}
 	
@@ -2716,6 +2718,23 @@ Page.Events = class Events extends Page.PageUtils {
 			content: 'Add this trigger to keep your job running continuously.  If it exits or crashes for any reason (besides a manual user abort), Orchestra will immediately start it up again.'
 		});
 		
+		// interval
+		html += this.getFormRow({
+			id: 'd_et_interval_desc',
+			label: 'Description:',
+			content: 'This schedule-based trigger allows you to run jobs based on a custom time interval, and a starting date/time.'
+		});
+		
+		html += this.getFormRow({
+			id: 'd_et_interval',
+			label: 'Interval:',
+			content: this.getFormRelativeTime({
+				id: 'fe_et_interval',
+				value: trigger.duration || 0
+			}),
+			caption: 'Specify the desired time interval between job launches.'
+		});
+		
 		// single shot
 		html += this.getFormRow({
 			id: 'd_et_single',
@@ -2823,7 +2842,7 @@ Page.Events = class Events extends Page.PageUtils {
 				autocomplete: 'off',
 				value: trigger.start ? this.formatDateISO( trigger.start, this.getUserTimezone() ) : ''
 			}),
-			caption: 'Select a start date/time for the range in your local timezone(' + this.getUserTimezone() + ').'
+			caption: 'Select a start date/time in your local timezone(' + this.getUserTimezone() + ').'
 		});
 		html += this.getFormRow({
 			id: 'd_et_range_end',
@@ -2835,7 +2854,7 @@ Page.Events = class Events extends Page.PageUtils {
 				autocomplete: 'off',
 				value: trigger.end ? this.formatDateISO( trigger.end, this.getUserTimezone() ) : ''
 			}),
-			caption: 'Select an end date/time for the range in your local timezone (' + this.getUserTimezone() + ').'
+			caption: 'Select an end date/time in your local timezone (' + this.getUserTimezone() + ').'
 		});
 		
 		// precision desc
@@ -2963,8 +2982,24 @@ Page.Events = class Events extends Page.PageUtils {
 				
 				case 'continuous':
 					// continuous mode (no options)
-					if ((idx == -1) && find_object(self.event.triggers, { type: 'continuous' })) {
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'continuous', enabled: true })) {
 						return app.doError("Sorry, you can only have one continuous rule defined per event.");
+					}
+				break;
+				
+				case 'interval':
+					// interval mode
+					trigger.duration = parseInt( $('#fe_et_interval').val() );
+					if (!trigger.duration) return app.badField('#fe_et_interval_val', "Please enter or select a non-zero interval time.");
+					
+					trigger.start = self.parseDateTZ( $('#fe_et_range_start').val(), self.getUserTimezone() ) || 0;
+					if (!trigger.start) return app.badField('#fe_et_range_start', "Please enter a valid date/time when the interval should start.");
+					
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'precision', enabled: true })) {
+						return app.doError("Sorry, the interval and precision triggers are mutually exclusive.");
+					}
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'delay', enabled: true })) {
+						return app.doError("Sorry, the interval and delay triggers are mutually exclusive.");
 					}
 				break;
 				
@@ -2976,7 +3011,7 @@ Page.Events = class Events extends Page.PageUtils {
 				
 				case 'manual':
 					// manual mode (no options)
-					if ((idx == -1) && find_object(self.event.triggers, { type: 'manual' })) {
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'manual', enabled: true })) {
 						return app.doError("Sorry, you can only have one manual rule defined per event.");
 					}
 				break;
@@ -2988,7 +3023,7 @@ Page.Events = class Events extends Page.PageUtils {
 							cursor: self.parseDateTZ( $('#fe_et_time_machine').val(), self.getUserTimezone() )
 						};
 					}
-					if ((idx == -1) && find_object(self.event.triggers, { type: 'catchup' })) {
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'catchup', enabled: true })) {
 						return app.doError("Sorry, you can only have one catch-up rule defined per event.");
 					}
 				break;
@@ -2999,7 +3034,7 @@ Page.Events = class Events extends Page.PageUtils {
 					if (trigger.start && trigger.end && (trigger.start > trigger.end)) {
 						return app.badField('#fe_et_range_start', "Invalid date range entered.  The start date cannot come after the end date.");
 					}
-					if ((idx == -1) && find_object(self.event.triggers, { type: 'range' })) {
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'range', enabled: true })) {
 						return app.doError("Sorry, you can only have one date/time range defined per event.");
 					}
 				break;
@@ -3019,11 +3054,28 @@ Page.Events = class Events extends Page.PageUtils {
 					}
 					trigger.duration = parseInt( $('#fe_et_delay').val() );
 					if (!trigger.duration) return app.badField('#fe_et_delay', "Please enter or select the number of seconds to delay.");
+					
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'interval', enabled: true })) {
+						return app.doError("Sorry, the delay and interval triggers are mutually exclusive.");
+					}
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'precision', enabled: true })) {
+						return app.doError("Sorry, the delay and precision triggers are mutually exclusive.");
+					}
 				break;
 				
 				case 'precision':
 					// precision (seconds)
 					trigger.seconds = $('#fe_et_seconds').val().map( function(v) { return parseInt(v); } );
+					
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'precision', enabled: true })) {
+						return app.doError("Sorry, you can only have one precision rule defined per event.");
+					}
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'interval', enabled: true })) {
+						return app.doError("Sorry, the precision and interval triggers are mutually exclusive.");
+					}
+					if ((idx == -1) && trigger.enabled && find_object(self.event.triggers, { type: 'delay', enabled: true })) {
+						return app.doError("Sorry, the precision and delay triggers are mutually exclusive.");
+					}
 				break;
 				
 				case 'plugin':
@@ -3104,6 +3156,12 @@ Page.Events = class Events extends Page.PageUtils {
 					$('#d_et_continuous_desc').show();
 				break;
 				
+				case 'interval':
+					$('#d_et_interval_desc').show();
+					$('#d_et_interval').show();
+					$('#d_et_range_start').show();
+				break;
+				
 				case 'single':
 					$('#d_et_single').show();
 				break;
@@ -3171,6 +3229,7 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		SingleSelect.init( $('#fe_et_type, #fe_et_tz, #fe_et_plugin') );
 		MultiSelect.init( $('#fe_et_years, #fe_et_months, #fe_et_weekdays, #fe_et_days, #fe_et_hours, #fe_et_minutes, #fe_et_seconds') );
+		RelativeTime.init( $('#fe_et_interval') );
 		// this.updateAddRemoveMe('#fe_eja_email');
 		
 		change_trigger_type( tmode );

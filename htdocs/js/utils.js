@@ -42,7 +42,7 @@ function summarize_event_timings(event) {
 	// summarize all event triggers from event into human-readable string
 	// separate schedule items and options
 	var triggers = event.triggers.filter( function(trigger) { return trigger.enabled; } );
-	var schedules = triggers.filter( function(trigger) { return !!(trigger.type || '').match(/^(schedule|continuous|single|plugin)$/); } );
+	var schedules = triggers.filter( function(trigger) { return !!(trigger.type || '').match(/^(schedule|continuous|interval|single|plugin)$/); } );
 	var parts = (schedules.length == 1) ? [summarize_event_timing(schedules[0])] : schedules.map( summarize_event_timing );
 	if (!parts.length) {
 		if (find_object(triggers, { type: 'manual', enabled: true })) return "On Demand";
@@ -55,6 +55,7 @@ function summarize_event_timings(event) {
 	if (find_object(triggers, { type: 'range' })) opts.push("Date Range");
 	if (find_object(triggers, { type: 'blackout' })) opts.push("Blackout");
 	if (find_object(triggers, { type: 'delay' })) opts.push("Delay");
+	if (find_object(triggers, { type: 'precision' })) opts.push("Precision");
 	// if (find_object(triggers, { type: 'plugin' })) opts.push("Plugin");
 	if (opts.length) summary += ' (' + opts.join(', ') + ')';
 	
@@ -69,6 +70,10 @@ function summarize_event_timing(trigger, idx) {
 		var text = app.formatDate(trigger.epoch, { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 		return text;
 	} // single shot
+	
+	if (trigger.type == 'interval') {
+		return "Every " + get_text_from_seconds(trigger.duration, false, false);
+	}
 	
 	// years
 	var year_str = '';
@@ -376,4 +381,21 @@ function gen_workflow_id(prefix) {
 function inline_marked(md) {
 	// render text to markdown, trimming and stripping outer <p> tag
 	return marked(md, config.ui.marked_config).trim().replace(/^<p>(.+)<\/p>$/, '$1')
+};
+
+function interval_hits_per_minute(trigger, epoch) {
+	// calculate when an interval should hit in the current minute (epoch)
+	// return an array of second offsets, similar to precision.seconds
+	// trigger: { start, duration }
+	if (trigger.start > epoch) return []; // trigger starts in future
+	
+	var first_idx = Math.ceil((epoch - trigger.start) / trigger.duration);
+	var first_hit = trigger.start + first_idx * trigger.duration;
+	var hits = [];
+	
+	for (var t = first_hit; t < epoch + 60; t += trigger.duration) {
+		if (t >= epoch) hits.push(t - epoch);
+	}
+	
+	return hits;
 };
