@@ -2687,6 +2687,7 @@ Page.Events = class Events extends Page.PageUtils {
 			label: 'Crontab Expression:',
 			content: this.getFormText({
 				id: 'fe_et_crontab',
+				class: 'monospace',
 				spellcheck: 'false',
 				autocomplete: 'off',
 				maxlength: 64,
