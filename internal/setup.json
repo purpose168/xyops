@@ -512,6 +512,8 @@
 			"created": 1434125333
 		} ],
 		
+		[ "listCreate", "global/buckets", {} ],
+		
 		[ "listCreate", "global/stats", {} ],
 		
 		[ "put", "global/state", {
