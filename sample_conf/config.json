@@ -330,8 +330,8 @@
 			"Access-Control-Allow-Origin": "*"
 		},
 		"http_max_connections": 2048,
-		"http_max_concurrent_requests": 32,
-		"http_log_requests": true,
+		"http_max_concurrent_requests": 256,
+		"http_log_requests": false,
 		"http_legacy_callback_support": false,
 		"http_startup_message": false,
 		"http_debug_ttl": true,
