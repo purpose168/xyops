@@ -947,8 +947,15 @@ Page.Workflows = class Workflows extends Page.Events {
 				rows: 1,
 				value: `{\n\t\n}`,
 				style: 'display:none'
-			}) + '<div class="button small secondary" onClick="$P().edit_test_input()">Edit JSON...</div>',
+			}) + '<div class="button small secondary" onClick="$P().edit_test_input()"><i class="mdi mdi-text-box-edit-outline">&nbsp;</i>Edit JSON...</div>',
 			caption: 'Optionally customize the JSON input data for the first job.  This is used to simulate data being passed to it from a previous job.'
+		});
+		
+		// user files
+		html += this.getFormRow({
+			label: 'File Input:',
+			content: this.getDialogFileUploader(),
+			caption: 'Optionally upload and attach files to the job as inputs.'
 		});
 		
 		// user form fields
@@ -998,10 +1005,18 @@ Page.Workflows = class Workflows extends Page.Events {
 			// parse custom input json
 			var raw_json = $('#fe_ete_input').val();
 			if (raw_json) try {
-				job.input = { data: JSON.parse( raw_json ), files: [] };
+				if (!job.input) job.input = {};
+				job.input.data = JSON.parse( raw_json );
 			}
 			catch (err) {
 				return app.badField( '#fe_ete_input', "Invalid JSON: " + err.message );
+			}
+			
+			// add files if user uploaded
+			if (self.dialogFiles && self.dialogFiles.length) {
+				if (!job.input) job.input = {};
+				job.input.files = self.dialogFiles;
+				delete self.dialogFiles;
 			}
 			
 			var params = self.getParamValues(self.event.fields);
@@ -1033,6 +1048,14 @@ Page.Workflows = class Workflows extends Page.Events {
 		if (node.type.match(/^(event|job)$/)) {
 			SingleSelect.init( $('#fe_ete_scope') );
 		}
+		
+		Dialog.onHide = function() {
+			// cleanup
+			// FUTURE: If self.dialogFiles still exists here, delete in background (user canceled job)
+			delete self.dialogFiles;
+		};
+		
+		Dialog.autoResize();
 	}
 	
 	doEditSelection() {
