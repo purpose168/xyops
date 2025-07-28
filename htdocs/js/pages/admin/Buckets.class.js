@@ -425,7 +425,7 @@ Page.Buckets = class Buckets extends Page.PageUtils {
 				rows: 1,
 				value: JSON.stringify(this.bucketData, null, "\t"),
 				style: 'display:none'
-			}) + '<div class="button small secondary" onClick="$P().edit_bucket_json()">Edit JSON...</div>',
+			}) + '<div class="button small secondary" onClick="$P().edit_bucket_json()"><i class="mdi mdi-text-box-edit-outline">&nbsp;</i>Edit JSON...</div>',
 			caption: 'View or edit the JSON data content of the bucket.  This can also be manipulated by running jobs.'
 		});
 		
@@ -524,7 +524,7 @@ Page.Buckets = class Buckets extends Page.PageUtils {
 	}
 	
 	uploadBucketFiles() {
-		// upload files using ZeroUpload (for progress, etc.(
+		// upload files using ZeroUpload (for progress, etc.)
 		if (!this.bucket.id) return; // sanity
 		
 		ZeroUpload.chooseFiles({}, {
@@ -564,11 +564,11 @@ Page.Buckets = class Buckets extends Page.PageUtils {
 		var data = null;
 		try { data = JSON.parse( response.data ); }
 		catch (err) {
-			app.doError("Upload Failed: JSON Parse Error: " + err);
+			return app.doError("Upload Failed: JSON Parse Error: " + err);
 		}
 		
 		if (data && (data.code != 0)) {
-			app.doError("Upload Failed: " + data.description);
+			return app.doError("Upload Failed: " + data.description);
 		}
 		
 		// update local copy
