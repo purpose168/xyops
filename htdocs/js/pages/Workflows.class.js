@@ -593,10 +593,6 @@ Page.Workflows = class Workflows extends Page.Events {
 			if (node.id == id) return; // skip origin node
 			var $elem = $cont.find('#d_wfn_' + node.id);
 			
-			// some nodes cannot connect to action nodes, in either direction (despite having "compatible" poles)
-			if ((start_node.type.match(/^(controller|trigger)$/)) && (node.type == 'action')) return;
-			if ((node.type.match(/^(controller|trigger)$/)) && (start_node.type == 'action')) return;
-			
 			$elem.find('.wf_pole.' + end_pole).each( function() {
 				var $pole = $(this);
 				var $btn = $pole.clone().removeClass('wf_pole').addClass('wf_pole_button').html('<i class="mdi mdi-plus"></i>').on('mousedown', function(event) {
@@ -740,8 +736,8 @@ Page.Workflows = class Workflows extends Page.Events {
 			allowed_types.job = 1;
 			
 			if (start_node.type.match(/^(event|job)$/)) { allowed_types.action = 1; allowed_types.controller = 1; }
-			if (start_node.type == 'controller') { allowed_types.controller = 1; }
-			if (start_node.type == 'trigger') { allowed_types.controller = 1; }
+			if (start_node.type == 'controller') { allowed_types.controller = 1; allowed_types.action = 1; }
+			if (start_node.type == 'trigger') { allowed_types.controller = 1; allowed_types.action = 1; }
 		}
 		else if (start_pole == 'wf_input_pole') {
 			allowed_types.event = 1;
@@ -749,6 +745,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			
 			if (start_node.type.match(/^(event|job)$/)) { allowed_types.trigger = 1; allowed_types.controller = 1; }
 			if (start_node.type == 'controller') { allowed_types.trigger = 1; allowed_types.controller = 1; }
+			if (start_node.type == 'action') { allowed_types.trigger = 1; allowed_types.controller = 1; }
 		}
 		
 		SingleSelect.popupQuickMenu({
