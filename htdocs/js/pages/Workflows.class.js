@@ -1704,6 +1704,7 @@ Page.Workflows = class Workflows extends Page.Events {
 				id: 'fe_wfd_split',
 				type: 'text',
 				spellcheck: 'false',
+				autocomplete: 'off',
 				maxlength: 8192,
 				class: 'monospace',
 				value: node.data.split || ''
@@ -1719,6 +1720,7 @@ Page.Workflows = class Workflows extends Page.Events {
 				id: 'fe_wfd_if',
 				type: 'text',
 				spellcheck: 'false',
+				autocomplete: 'off',
 				maxlength: 8192,
 				class: 'monospace',
 				value: node.data.decision || ''
@@ -2071,6 +2073,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			content: this.getFormText({
 				id: 'fe_ee_title',
 				spellcheck: 'false',
+				autocomplete: 'off',
 				value: event.title
 			}),
 			caption: 'Enter the title of the workflow, for display purposes.'
