@@ -1862,6 +1862,116 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		return params;
 	}
 	
+	// Data Tree:
+	
+	getDataTree(obj) {
+		// get HTML for JSON tree
+		var html = '';
+		
+		var sorted_keys = Object.keys(obj).sort((a, b) => a.localeCompare(b));
+		for (var idx = 0, len = sorted_keys.length; idx < len; idx++) {
+			var key = sorted_keys[idx];
+			html += this.getDataBranch('', key, obj[key]);
+		}
+		
+		return html;
+	}
+	
+	getDataBranch(path, key, value) {
+		var html = '';
+		var type = (value === null) ? 'null' : typeof(value);
+		
+		if (path && !key.match(/^\[\d+\]$/)) path += '.';
+		path += key;
+		
+		if (type == 'object') {
+			// hash or array
+			html += `<div class="tree_row">`;
+				html += `<span class="tree_ctrl mdi mdi-minus-box-outline" onClick="$P().toggleDataBranch(this)"></span>`;
+				html += `<span class="tree_folder mdi mdi-folder-open-outline"></span>`;
+				html += `<span class="tree_key hljs-variable" data-path="${encode_attrib_entities(path)}"><b>${encode_entities(key)}</b></span>`;
+			html += `</div>`;
+		}
+		
+		if (Array.isArray(value)) {
+			// recurse for array
+			html += `<div class="tree_indent expanded">`;
+			for (var idx = 0, len = value.length; idx < len; idx++) {
+				html += this.getDataBranch(path, '[' + idx + ']', value[idx]);
+			}
+			html += `</div>`;
+		}
+		else if (type == 'object') {
+			// recurse for hash
+			html += `<div class="tree_indent expanded">`;
+			var sorted_keys = Object.keys(value).sort((a, b) => a.localeCompare(b));
+			for (var idx = 0, len = sorted_keys.length; idx < len; idx++) {
+				var sub_key = sorted_keys[idx];
+				html += this.getDataBranch(path, sub_key, value[sub_key]);
+			}
+			html += `</div>`;
+		}
+		else {
+			// plain value
+			var icon = 'file-outline';
+			var extra_class = '';
+			switch (type) {
+				case 'string': icon = 'file-document-outline'; extra_class = 'hljs-string'; break;
+				case 'number': icon = 'file-percent-outline'; extra_class = 'hljs-number'; break;
+				case 'boolean': icon = 'file-compare'; extra_class = 'hljs-keyword'; break;
+				case 'null': icon = 'file-hidden'; extra_class = 'hljs-keyword'; break;
+			}
+			
+			html += `<div class="tree_row">`;
+				html += `<span class="tree_file mdi mdi-${icon}"></span>`;
+				html += `<span class="tree_key hljs-variable" data-path="${encode_attrib_entities(path)}">${encode_entities(key)}</span>`;
+				html += `<span class="tree_value ${extra_class}">${encode_entities(JSON.stringify(value))}</span>`;
+			html += `</div>`;
+		}
+		
+		return html;
+	}
+	
+	toggleDataBranch(elem) {
+		// toggle branch open/closed
+		var $ctrl = $(elem);
+		var $row = $ctrl.closest('.tree_row');
+		var $folder = $row.find('.tree_folder');
+		var $cont = $row.next();
+		var duration = 300;
+		
+		if ($cont.hasClass('expanded')) {
+			// collapse
+			$cont.removeClass('expanded');
+			$cont.scrollTop(0).css('height', $cont[0].scrollHeight);
+			$cont.stop().animate({
+				scrollTop: $cont[0].scrollHeight,
+				height: 0
+			}, {
+				duration: duration,
+				easing: 'easeOutQuart'
+			});
+			
+			$ctrl.removeClass().addClass('tree_ctrl mdi mdi-plus-box-outline');
+			$folder.removeClass().addClass('tree_folder mdi mdi-folder-outline');
+		}
+		else {
+			// expand
+			$cont.addClass('expanded');
+			$cont.css('height', 0).scrollTop( $cont[0].scrollHeight );
+			$cont.stop().animate({
+				scrollTop: 0,
+				height: $cont[0].scrollHeight
+			}, {
+				duration: duration,
+				easing: 'easeOutQuart'
+			});
+			
+			$ctrl.removeClass().addClass('tree_ctrl mdi mdi-minus-box-outline');
+			$folder.removeClass().addClass('tree_folder mdi mdi-folder-open-outline');
+		}
+	}
+	
 	// Workflow Utilities:
 	
 	setupWorkflow() {
