@@ -380,7 +380,7 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 					disabled: 'disabled',
 					value: monitor.id
 				}),
-				suffix: '<div class="form_suffix_icon mdi mdi-clipboard-text-outline" title="Copy ID to Clipboard" onClick="$P().copyFormID(this)"></div>',
+				suffix: this.getFormIDCopier(),
 				caption: 'This is a unique ID for the monitor, used by the OpsRocket API.  It cannot be changed.'
 			});
 		}

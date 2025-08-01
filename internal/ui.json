@@ -547,6 +547,7 @@
 	},
 	
 	"tooltips": {
+		"copy_id": "Copy ID to Clipboard",
 		"quick_add_cat": "Quick Add Category...",
 		"wfd_exp_builder": "Open Expression Builder...",
 		

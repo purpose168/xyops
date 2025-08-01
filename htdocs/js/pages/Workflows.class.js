@@ -2091,7 +2091,7 @@ Page.Workflows = class Workflows extends Page.Events {
 					disabled: 'disabled',
 					value: event.id
 				}),
-				suffix: '<div class="form_suffix_icon mdi mdi-clipboard-text-outline" title="Copy ID to Clipboard" onClick="$P().copyFormID(this)"></div>'
+				suffix: this.getFormIDCopier()
 			});
 		}
 		

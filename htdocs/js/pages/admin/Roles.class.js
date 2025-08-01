@@ -348,7 +348,7 @@ Page.Roles = class Roles extends Page.PageUtils {
 					disabled: 'disabled',
 					value: role.id
 				}),
-				suffix: '<div class="form_suffix_icon mdi mdi-clipboard-text-outline" title="Copy ID to Clipboard" onClick="$P().copyFormID(this)"></div>',
+				suffix: this.getFormIDCopier(),
 				caption: 'This is a unique ID for the role, used by the OpsRocket API.  It cannot be changed.'
 			});
 		}

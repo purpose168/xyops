@@ -1474,6 +1474,10 @@ Page.Base = class Base extends Page {
 		return events;
 	}
 	
+	getFormIDCopier() {
+		return `<div class="form_suffix_icon mdi mdi-clipboard-text-outline" title="${config.ui.tooltips.copy_id}" onClick="$P().copyFormID(this)"></div>`;
+	}
+	
 	// Utilities for working with CSV lists in database records
 	
 	recordAddTagCSV(tags_csv, tag) {

@@ -455,6 +455,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		$file[0].click();
 	}
 	
+	// Chart Size Selector
+	
 	getChartSizeSelector(pref_key = 'chart_size') {
 		// get chart title widget menu selector
 		return '<div class="box_title_widget" style="overflow:visible; min-width:100px; max-width:200px; font-size:13px;">' + this.getFormMenuSingle({
@@ -676,6 +678,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			this.upcomingJobs.shift();
 		}
 	}
+	
+	// Job History Day Graph
 	
 	setupJobHistoryDayGraph() {
 		// fetch historical job stats and render as heatmap grid

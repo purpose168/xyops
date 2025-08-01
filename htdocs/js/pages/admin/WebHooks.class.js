@@ -417,7 +417,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 					disabled: 'disabled',
 					value: web_hook.id
 				}),
-				suffix: '<div class="form_suffix_icon mdi mdi-clipboard-text-outline" title="Copy ID to Clipboard" onClick="$P().copyFormID(this)"></div>',
+				suffix: this.getFormIDCopier(),
 				caption: 'This is a unique ID for the web hook, used by the OpsRocket API.  It cannot be changed.'
 			});
 		}
