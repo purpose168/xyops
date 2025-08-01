@@ -53,12 +53,66 @@ Page.Workflows = class Workflows extends Page.Events {
 		else {
 			this.event = deep_copy_object( app.config.new_event_template );
 			
-			this.event.triggers = []; // the user needs to add these by hand
-			
+			this.event.triggers = [];
 			this.event.workflow = this.workflow = {
 				nodes: [],
 				connections: []
 			};
+			
+			// construct minimal example workflow
+			var trigger_node_id = gen_workflow_id('n');
+			var job_node_id = gen_workflow_id('n');
+			var conn_id = gen_workflow_id('c');
+			
+			this.event.triggers.push({
+				"enabled": true,
+				"type": "manual",
+				"id": trigger_node_id
+			});
+			
+			this.event.workflow.nodes.push({
+                "id": trigger_node_id,
+                "type": "trigger",
+                "x": 100,
+                "y": 340
+            });
+			
+			var cat_id = '';
+			if (find_object(app.categories, { id: 'general' })) cat_id = 'general';
+			else if (!app.categories.length) return this.doFullPageError(config.ui.errors.new_wf_no_cats);
+			else cat_id = app.categories[0].id;
+			
+			var plug_id = '';
+			if (find_object(app.plugins, { id: 'shellplug' })) plug_id = 'shellplug';
+			else if (!app.plugins.length) return this.doFullPageError(config.ui.errors.new_wf_no_plugins);
+			else plug_id = app.plugins[0].id;
+			
+			var group_id = '';
+			if (find_object(app.groups, { id: 'main' })) group_id = 'main';
+			else if (!app.groups.length) return this.doFullPageError(config.ui.errors.new_wf_no_groups);
+			else group_id = app.groups[0].id;
+			
+			this.event.workflow.nodes.push({
+                "id": job_node_id,
+                "type": "job",
+                "data": {
+                    "params": {},
+                    "targets": [ group_id ],
+                    "algo": "random",
+                    "label": "",
+                    "category": cat_id,
+                    "plugin": plug_id,
+                    "icon": ""
+                },
+                "x": 320,
+                "y": 300
+            });
+			
+			this.event.workflow.connections.push({
+                "id": conn_id,
+                "source": trigger_node_id,
+                "dest": job_node_id
+            });
 		}
 		
 		this.params = this.event.fields; // for user form param editor

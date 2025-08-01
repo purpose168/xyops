@@ -494,6 +494,8 @@
 		"ex_tree_none": "No previous jobs were found.",
 		"ex_tree_no_data": "The selected job produced no output data or files.",
 		"new_wf_no_cats": "You must define at least one category to add workflows.",
+		"new_wf_no_plugins": "You must define at least one plugin to add workflows.",
+		"new_wf_no_groups": "You must define at least one server group to add workflows.",
 		"wfde_no_events": "Please create at least one event before adding a workflow event node.",
 		"wfde_event_not_found": "Event ID \"[node.data.event]\" could not be found.  Did someone delete it?",
 		"wfdj_no_cats": "You must define at least one category to add workflow plugin nodes.",
