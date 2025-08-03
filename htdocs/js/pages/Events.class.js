@@ -33,7 +33,7 @@ Page.Events = class Events extends Page.PageUtils {
 		// show event list
 		var self = this;
 		app.setWindowTitle( "Events" );
-		app.setHeaderTitle( '<i class="mdi mdi-calendar-multiple">&nbsp;</i>Events' );
+		app.setHeaderTitle( '<i class="mdi mdi-calendar-clock">&nbsp;</i>Events' );
 		
 		var event_plugins = app.plugins.filter( function(plugin) { return plugin.type == 'event'; } );
 		var scheduler_plugins = app.plugins.filter( function(plugin) { return plugin.type == 'scheduler'; } );
@@ -148,7 +148,7 @@ Page.Events = class Events extends Page.PageUtils {
 							options: [
 								['', 'Any Trigger'], 
 								{ id: 'manual', title: 'Manual', icon: 'run-fast' },
-								{ id: 'schedule', title: 'Scheduled', icon: 'update' },
+								{ id: 'schedule', title: 'Schedule', icon: 'update' },
 								{ id: 'single', title: "Single Shot", icon: 'alarm-check' },
 								{ id: 'interval', title: "Interval", icon: 'timer-sand' },
 								// { id: 'continuous', title: "Continuous", icon: 'all-inclusive' },
@@ -342,10 +342,10 @@ Page.Events = class Events extends Page.PageUtils {
 		html += '</div>'; // box_content
 		
 		html += '<div class="box_buttons">';
-			html += '<div class="button" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i>Import File...</div>';
-			html += '<div class="button secondary" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i>Revision History...</div>';
-			html += '<div class="button default" onClick="$P().go_new_workflow()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i>New Workflow...</div>';
-			html += '<div class="button default" onClick="$P().edit_event(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i>New Event...</div>';
+			html += '<div class="button phone_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
+			html += '<div class="button phone_collapse secondary" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
+			html += '<div class="button phone_collapse default" onClick="$P().go_new_workflow()"><i class="mdi mdi-clipboard-plus-outline">&nbsp;</i><span>New Workflow...</span></div>';
+			html += '<div class="button phone_collapse default" onClick="$P().edit_event(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Event...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -551,7 +551,7 @@ Page.Events = class Events extends Page.PageUtils {
 		if ('trigger' in args) {
 			// types: manual, schedule, interval, continuous, single, plugin, catchup, range, blackout, delay, precision
 			var types = {};
-			(item.triggers || []).forEach( function(trigger) { 
+			(item.triggers || []).filter( function(trigger) { return trigger.enabled; } ).forEach( function(trigger) { 
 				types[trigger.type || 'N/A'] = 1; 
 				if (trigger.type == 'plugin') types[ 'p_' + trigger.plugin_id ] = 1;
 			} );
@@ -561,7 +561,7 @@ Page.Events = class Events extends Page.PageUtils {
 		// action
 		if ('action' in args) {
 			var types = {};
-			(item.actions || []).forEach( function(action) { 
+			(item.actions || []).filter( function(action) { return action.enabled; } ).forEach( function(action) { 
 				types[action.type || 'N/A'] = 1; 
 				if (action.type == 'plugin') types[ 'p_' + action.plugin_id ] = 1;
 			} );
@@ -653,7 +653,7 @@ Page.Events = class Events extends Page.PageUtils {
 		var thing = is_workflow ? 'Workflow' : 'Event';
 		
 		app.setHeaderNav([
-			{ icon: 'calendar-multiple', loc: '#Events?sub=list', title: 'Events' },
+			{ icon: 'calendar-clock', loc: '#Events?sub=list', title: 'Events' },
 			{ icon: icon, title: event.title }
 		]);
 		
@@ -667,8 +667,8 @@ Page.Events = class Events extends Page.PageUtils {
 				else html += `${thing} Summary`;
 				
 				// html += '<div class="button right danger" onClick="$P().show_delete_event_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i>Delete...</div>';
-				html += '<div class="button default right" onClick="$P().do_edit_from_view()"><i class="mdi mdi-file-edit-outline">&nbsp;</i>' + edit_btn_text + '</div>';
-				if (event.enabled) html += '<div class="button right" onClick="$P().do_run_current_event()"><i class="mdi mdi-run-fast">&nbsp;</i>Run Now</div>';
+				html += '<div class="button default right phone_collapse" onClick="$P().do_edit_from_view()"><i class="mdi mdi-file-edit-outline">&nbsp;</i><span>' + edit_btn_text + '</span></div>';
+				if (event.enabled) html += '<div class="button right phone_collapse" onClick="$P().do_run_current_event()"><i class="mdi mdi-run-fast">&nbsp;</i><span>Run Now</span></div>';
 				html += '<div class="clear"></div>';
 			html += '</div>'; // title
 			
@@ -854,7 +854,7 @@ Page.Events = class Events extends Page.PageUtils {
 		html += '</div>'; // box
 		
 		// graphs
-		html += '<div class="box" id="d_ve_graphs" style="display:none; margin-top:-56px; border-top:none;">';
+		html += '<div class="box" id="d_ve_graphs" style="display:none;">';
 			html += '<div class="box_content">';
 				
 				html += '<div style="margin-bottom:20px"><canvas id="c_ve_perf" class="chart" style="width:100%; height:250px;"></canvas></div>';
@@ -1711,7 +1711,7 @@ Page.Events = class Events extends Page.PageUtils {
 	gosub_history(args) {
 		// show revision history sub-page
 		app.setHeaderNav([
-			{ icon: 'calendar-multiple', loc: '#Events?sub=list', title: 'Events' },
+			{ icon: 'calendar-clock', loc: '#Events?sub=list', title: 'Events' },
 			{ icon: 'history', title: "Revision History" }
 		]);
 		app.setWindowTitle( "Event Revision History" );
@@ -1721,7 +1721,7 @@ Page.Events = class Events extends Page.PageUtils {
 			itemKey: 'event',
 			editPageID: 'Events',
 			itemMenu: {
-				label: '<i class="icon mdi mdi-calendar-multiple">&nbsp;</i>Event:',
+				label: '<i class="icon mdi mdi-calendar-clock">&nbsp;</i>Event:',
 				title: 'Select Event',
 				options: [['', 'Any Event']].concat( this.getCategorizedEvents() ),
 				default_icon: 'file-clock-outline'
@@ -1735,7 +1735,7 @@ Page.Events = class Events extends Page.PageUtils {
 		var do_snap = true;
 		
 		app.setHeaderNav([
-			{ icon: 'calendar-multiple', loc: '#Events?sub=list', title: 'Events' },
+			{ icon: 'calendar-clock', loc: '#Events?sub=list', title: 'Events' },
 			{ icon: 'file-edit-outline', title: "New Event" }
 		]);
 		
@@ -1871,7 +1871,7 @@ Page.Events = class Events extends Page.PageUtils {
 		this.actions = this.event.actions; // for job action editor
 		
 		app.setHeaderNav([
-			{ icon: 'calendar-multiple', loc: '#Events?sub=list', title: 'Events' },
+			{ icon: 'calendar-clock', loc: '#Events?sub=list', title: 'Events' },
 			{ icon: this.event.icon || 'file-clock-outline', loc: '#Events?sub=view&id=' + this.event.id, title: this.event.title },
 			{ icon: 'file-edit-outline', title: "Edit Event" }
 		]);
@@ -3533,6 +3533,11 @@ Page.Events = class Events extends Page.PageUtils {
 			this.renderUpcomingJobs();
 			this.updateJobHistoryDayGraph();
 		}
+	}
+	
+	onResize() {
+		// called when page is resized
+		if (this.wfZoom) this.renderWFConnections();
 	}
 	
 	onDeactivate() {
