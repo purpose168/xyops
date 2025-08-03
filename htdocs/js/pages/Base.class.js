@@ -2690,6 +2690,7 @@ Page.Base = class Base extends Page {
 	
 	collapseToggleBox($box) {
 		// collapse toggle box
+		var self = this;
 		var $content = $box.find('> div.box_content');
 		
 		if ($box.hasClass('expanded')) {
@@ -2701,8 +2702,9 @@ Page.Base = class Base extends Page {
 				scrollTop: $content[0].scrollHeight,
 				height: 0
 			}, {
-				duration: 500,
-				easing: 'easeOutQuart'
+				duration: app.reducedMotion() ? 1 : 400,
+				easing: 'easeOutQuart',
+				complete: function() { self.updateBoxButtonFloaterState(); }
 			});
 			
 			if ($box.prop('id')) app.setPref('toggle_boxes.' + $box.prop('id'), 'collapsed');
@@ -2711,6 +2713,7 @@ Page.Base = class Base extends Page {
 	
 	expandToggleBox($box) {
 		// expand toggle box
+		var self = this;
 		var $content = $box.find('> div.box_content');
 		
 		if (!$box.hasClass('expanded')) {
@@ -2722,8 +2725,9 @@ Page.Base = class Base extends Page {
 				scrollTop: 0,
 				height: $content[0].scrollHeight
 			}, {
-				duration: 500,
-				easing: 'easeOutQuart'
+				duration: app.reducedMotion() ? 1 : 400,
+				easing: 'easeOutQuart',
+				complete: function() { self.updateBoxButtonFloaterState(); }
 			});
 			
 			if ($box.prop('id')) app.setPref('toggle_boxes.' + $box.prop('id'), 'expanded');
