@@ -623,7 +623,7 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		
 		if (this.defaultEditorMode && this.editor && this.editor.options && (this.editor.options.mode === null)) {
 			Debug.trace('debug', "Setting default language: " + this.defaultEditorMode);
-			this.editor.setOption('mode', this.defaultEditorMode);
+			this.editor.setOption('mode', { name: 'mustache', backdrop: this.defaultEditorMode });
 			this.editor.refresh();
 		}
 	}
