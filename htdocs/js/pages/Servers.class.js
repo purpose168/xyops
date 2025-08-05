@@ -784,12 +784,12 @@ Page.Servers = class Servers extends Page.ServerUtils {
 				html += '<div class="box_title_left">' + (online ? 'Live &mdash; Real-Time View' : 'Offline &mdash; Last <span class="sm_hide">Known</span> State') + '</div>';
 				html += '<div class="box_title_left"><div class="button secondary mobile_collapse" onClick="$P().chooseHistoricalView()"><i class="mdi mdi-calendar-cursor">&nbsp;</i><span>Change...</span></div></div>';
 				
+				html += '<div class="box_title_right"><div class="button default mobile_collapse" onClick="$P().showEditServerDialog()"><i class="mdi mdi-file-edit-outline">&nbsp;</i><span>Edit Server...</span></div></div>';
+				
 				if (online) {
 					html += '<div class="box_title_right"><div class="button mobile_collapse sm_hide" onClick="$P().createSnapshot()"><i class="mdi mdi-monitor-eye">&nbsp;</i><span>Snapshot</span></div></div>';
 					html += '<div class="box_title_right" id="d_vs_watch_btn">' + this.getWatchButton() + '</div>';
 				}
-				
-				html += '<div class="box_title_right"><div class="button default mobile_collapse" onClick="$P().showEditServerDialog()"><i class="mdi mdi-file-edit-outline">&nbsp;</i><span>Edit Server...</span></div></div>';
 			html += '</div>';
 		html += '</div>';
 		
