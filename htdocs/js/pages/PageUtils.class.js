@@ -2070,6 +2070,114 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		}
 	}
 	
+	openServerDataExplorer(elem, wrap) {
+		// open expression builder dialog for server data
+		var self = this;
+		var $input = $(elem).closest('.form_row').find('.fr_content').find('input, textarea');
+		var title = config.ui.titles.server_data_explorer;
+		var html = '';
+		
+		var servers = Object.values(app.servers);
+		
+		// merge in recently offline servers
+		for (var server_id in app.serverCache) {
+			if (!app.servers[server_id]) {
+				var server = app.serverCache[server_id];
+				servers.push( merge_objects(server, { offline: true, icon: server.icon || 'close-network-outline' }) );
+			}
+		}
+		
+		if (!servers.length) return app.doError(config.ui.errors.sde_no_servers);
+		
+		html += `<div class="dialog_intro">${config.ui.intros.server_data_explorer}</div>`;
+		html += '<div class="dialog_box_content scroll maximize">';
+		
+		// server picker
+		html += this.getFormRow({
+			id: 'd_ex_server',
+			content: this.getFormMenuSingle({
+				id: 'fe_ex_server',
+				options: sort_by(servers.map( function(server) {
+						return merge_objects( server, { title: server.title || server.hostname } );
+					} ), 'title'),
+				value: '',
+				default_icon: 'router-network'
+			})
+		});
+		
+		// json tree viewer
+		html += this.getFormRow({
+			id: 'd_ex_tree_viewer',
+			content: '<div id="d_ex_tree"><div class="ex_tree_inner"><div class="loading_container"><div class="loading"></div></div></div></div>'
+		});
+		
+		// expression
+		html += this.getFormRow({
+			id: 'd_ex_exp',
+			content: this.getFormText({
+				id: 'fe_ex_exp',
+				type: 'text',
+				spellcheck: 'false',
+				autocomplete: 'off',
+				maxlength: 8192,
+				class: 'monospace',
+				value: ''
+			})
+		});
+		
+		html += '</div>'; // dialog_box_content
+		
+		var buttons_html = "";
+		buttons_html += `<div class="button" onClick="CodeEditor.hide()"><i class="mdi mdi-close-circle-outline">&nbsp;</i>${config.ui.buttons.cancel}</div>`;
+		buttons_html += `<div id="btn_ex_apply" class="button primary"><i class="mdi mdi-check-circle">&nbsp;</i>${config.ui.buttons.accept}</div>`;
+		
+		CodeEditor.showSimpleDialog(title, html, buttons_html);
+		
+		SingleSelect.init('#fe_ex_server');
+		
+		$('#fe_ex_server').on('change', function() {
+			var id = $(this).val();
+			if (!id) return; // sanity
+			
+			// now load server host data
+			app.api.get( 'app/get_server', { id }, function(resp) {
+				
+				// render json tree
+				$('#d_ex_tree > .ex_tree_inner').html( self.getDataTree(resp.data.data) );
+				
+				// add click handler to all keys
+				$('#d_ex_tree .tree_key').on('click', function() {
+					var path = $(this).data('path');
+					$('#fe_ex_exp').val( path );
+					
+					// apply flash effect
+					$('#fe_ex_exp').addClass('iflash').focus();
+					setTimeout( function() { $('#fe_ex_exp').removeClass('iflash'); }, 1500 );
+				});
+			} ); // api.get
+		}); // on change
+		
+		$('#btn_ex_apply').on('click', function() {
+			// apply changes and exit dialog
+			var value = $input.val();
+			if (value.length) value += ' ';
+			
+			if (wrap) value += '{{';
+			value += $('#fe_ex_exp').val();
+			if (wrap) value += '}}';
+			
+			$input.val( value.trim() );
+			CodeEditor.hide();
+			
+			// apply flash effect
+			$input.addClass('iflash').focus();
+			setTimeout( function() { $input.removeClass('iflash'); }, 1500 );
+		});
+		
+		// trigger change to load first server
+		$('#fe_ex_server').trigger('change');
+	}
+	
 	// Workflow Utilities:
 	
 	setupWorkflow() {
