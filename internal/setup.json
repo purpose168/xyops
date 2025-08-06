@@ -177,7 +177,7 @@
 				{ "name": "Content-Type", "value": "application/json" },
 				{ "name": "User-Agent", "value": "OpsRocket/WebHook" }
 			],
-			"body": "{\n\t\"text\": \"[text]\",\n\t\"content\": \"[text]\"\n\t\"message\": \"[text]\"\n}",
+			"body": "{\n\t\"text\": \"{{text}}\",\n\t\"content\": \"{{text}},\"\n\t\"message\": \"{{text}}\"\n}",
 			"timeout": 30,
 			"retries": 0,
 			"follow": false,
