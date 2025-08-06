@@ -445,7 +445,7 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 				class: 'monospace',
 				spellcheck: 'false',
 				value: monitor.source
-			}), // + '<div class="text_field_icon mdi mdi-database-search-outline" title="' + config.ui.tooltips.server_data_explorer + '" onClick="$P().openServerDataExplorer(this)"></div>',
+			}),
 			suffix: `<div class="form_suffix_icon mdi mdi-database-search-outline" title="${config.ui.tooltips.server_data_explorer}" onClick="$P().openServerDataExplorer(this)"></div>`,
 			caption: 'Enter an expression for evaluating the data source using dot path notation (e.g. `stats.network.conns`).  For help, click the search icon above to open the Server Data Explorer, or [view the documentation](#Docs/monitoring/expressions).'
 		});
