@@ -463,7 +463,7 @@ Page.ActivityLog = class ActivityLog extends Page.PageUtils {
 				'<div class="td_big" style="white-space:nowrap; font-weight:normal;"><i class="mdi mdi-' + item_type.icon + '">&nbsp;</i>' + item_type.label + '</div>',
 				'' + desc + '',
 				'' + self.getNiceUser(item.admin || item.username, true) + '',
-				(item.ip || 'n/a'),
+				self.getNiceIP(item.ip),
 				'' + actions.join(' | ') + ''
 			];
 			if (color) tds.className = color;
@@ -495,6 +495,12 @@ Page.ActivityLog = class ActivityLog extends Page.PageUtils {
 		var title = item._type.label + ' Activity Details';
 		// var title = template.replace(/\:\s+.+$/, '').replace(/\s+\(.+$/, '');
 		var md = '';
+		
+		if (app.privacyMode()) {
+			item.ips = ['(REDACTED)'];
+			item.headers = { 'REDACTED': 'REDACTED' };
+			item[obj_key] = { 'REDACTED': 'REDACTED' };
+		}
 		
 		// summary
 		md += "### Summary\n\n";

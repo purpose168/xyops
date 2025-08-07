@@ -233,6 +233,18 @@ Page.MySettings = class MySettings extends Page.Base {
 			caption: 'Who doesn\'t need a little whimsy in their life?  This adds playful animations for certain app events.'
 		});
 		
+		// privacy mode
+		html += this.getFormRow({
+			label: 'Privacy:',
+			content: this.getFormCheckbox({
+				id: 'fe_ms_privacy',
+				label: '<span data-private>Streamer Mode</span>',
+				checked: !!user.privacy_mode,
+				onChange: '$P().previewPrivacyMode(this)'
+			}),
+			caption: 'Enable or disable streamer mode, which hides sensitive information such as IP addresses, hostnames, usernames, and email addresses.'
+		});
+		
 		html += '</div>'; // box_content
 		
 		// buttons at bottom
@@ -256,6 +268,12 @@ Page.MySettings = class MySettings extends Page.Base {
 	previewColorMode(elem) {
 		// set local mode on change
 		app.user.color_acc = $(elem).is(':checked');
+		app.updateAccessibility();
+	}
+	
+	previewPrivacyMode(elem) {
+		// set local mode on change
+		app.user.privacy_mode = $(elem).is(':checked');
 		app.updateAccessibility();
 	}
 	
@@ -303,6 +321,7 @@ Page.MySettings = class MySettings extends Page.Base {
 			motion: this.div.find('#fe_ms_motion').val(),
 			contrast: this.div.find('#fe_ms_contrast').val(),
 			color_acc: this.div.find('#fe_ms_coloracc').is(':checked'),
+			privacy_mode: this.div.find('#fe_ms_privacy').is(':checked'),
 			page_info: this.div.find('#fe_ms_pageinfo').is(':checked'),
 			notifications: this.div.find('#fe_ms_notify').is(':checked'),
 			effects: this.div.find('#fe_ms_effects').is(':checked')
@@ -325,6 +344,7 @@ Page.MySettings = class MySettings extends Page.Base {
 		if (json.motion != user.motion) return true;
 		if (json.contrast != user.contrast) return true;
 		if (json.color_acc != user.color_acc) return true;
+		if (json.privacy_mode != user.privacy_mode) return true;
 		if (json.page_info != user.page_info) return true;
 		if (json.notifications != user.notifications) return true;
 		if (json.effects != user.effects) return true;

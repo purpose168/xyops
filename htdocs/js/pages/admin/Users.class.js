@@ -76,8 +76,8 @@ Page.Users = class Users extends Page.Base {
 			return [
 				'<b>' + self.getNiceUser(user, true) + '</b>',
 				// '<a href="#Users?sub=edit&username=' + user.username + '"><div class="td_avatar" style="background-image:url(' + avatar_url + ')">' + user.username + '</div></a>',
-				'<span class="mono">' + user.username + '</span>',
-				'<a href="mailto:'+user.email+'">'+user.email+'</a>',
+				'<span class="mono" data-private>' + user.username + '</span>',
+				'<a href="mailto:'+user.email+'" data-private>'+user.email+'</a>',
 				user.active ? '<span class="color_label green"><i class="mdi mdi-check-circle">&nbsp;</i>Active</span>' : '<span class="color_label red"><i class="mdi mdi-alert-circle">&nbsp;</i>Suspended</span>',
 				user.privileges.admin ? '<span class="color_label purple"><i class="mdi mdi-lock">&nbsp;</i>Admin</span>' : '<span class="color_label gray">Standard</span>',
 				'<span title="'+self.getNiceDateTimeText(user.created)+'">'+self.getNiceDate(user.created)+'</span>',
@@ -492,7 +492,8 @@ Page.Users = class Users extends Page.Base {
 				class: 'monospace',
 				spellcheck: 'false',
 				onChange: '$P().checkUserExists(this)',
-				value: user.username
+				value: user.username,
+				'data-private': ''
 			}),
 			suffix: '<div class="checker"></div>',
 			caption: 'Enter the username which identifies this account.  Once entered, it cannot be changed.'
@@ -516,7 +517,8 @@ Page.Users = class Users extends Page.Base {
 			content: this.getFormText({
 				id: 'fe_eu_fullname',
 				spellcheck: 'false',
-				value: user.full_name
+				value: user.full_name,
+				'data-private': ''
 			}),
 			caption: 'The user\'s first and last names.  This will not be shared with anyone outside the server.'
 		});
@@ -529,7 +531,8 @@ Page.Users = class Users extends Page.Base {
 				type: 'email',
 				spellcheck: 'false',
 				autocomplete: 'off',
-				value: user.email
+				value: user.email,
+				'data-private': ''
 			}),
 			caption: 'This can be used to recover the password if the user forgets.  It will not be shared with anyone outside the server.'
 		});

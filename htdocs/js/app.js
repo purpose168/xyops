@@ -1195,6 +1195,14 @@ app.extend({
 		
 		// color accessibilty
 		if (this.user.color_acc) $body.addClass('coloracc'); else $body.removeClass('coloracc');
+		
+		// privacy mode
+		if (this.user.privacy_mode) $body.addClass('privacy'); else $body.removeClass('privacy');
+	},
+	
+	privacyMode() {
+		// return true if user is in privacy mode, false otherwise
+		return this.user.privacy_mode;
 	},
 	
 	reducedMotion() {

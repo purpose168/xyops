@@ -114,7 +114,7 @@ Page.MySecurity = class MySecurity extends Page.Base {
 				'<div class="td_big" style="white-space:nowrap; font-weight:normal;"><i class="mdi mdi-' + item_type.icon + '">&nbsp;</i>' + item_type.label + '</div>',
 				'' + desc + '',
 				'' + (item.useragent || 'n/a') + '',
-				(item.ip || 'n/a').replace(/^\:\:ffff\:(\d+\.\d+\.\d+\.\d+)$/, '$1'),
+				self.getNiceIP(item.ip),
 				'' + (actions.join(' | ') || '-') + ''
 			];
 			if (color) tds.className = color;

@@ -67,7 +67,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 			];
 			return [
 				'<b>' + self.getNiceAPIKey(item, true) + '</b>',
-				'<span class="mono">' + item.key + '</span>',
+				'<span class="mono" data-private>' + item.key + '</span>',
 				item.active ? '<span class="color_label green"><i class="mdi mdi-check-circle">&nbsp;</i>Active</span>' : '<span class="color_label red"><i class="mdi mdi-alert-circle">&nbsp;</i>Suspended</span>',
 				self.getNiceUser(item.username, app.isAdmin()),
 				'<span title="'+self.getNiceDateTimeText(item.created)+'">'+self.getNiceDate(item.created)+'</span>',
@@ -306,7 +306,8 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 				id: 'fe_ak_key',
 				class: 'monospace',
 				spellcheck: 'false',
-				value: api_key.key
+				value: api_key.key,
+				'data-private': ''
 			}),
 			suffix: '<div class="form_suffix_icon mdi mdi-dice-5" title="Generate Random Key" onClick="$P().generate_key()" onMouseDown="event.preventDefault();"></div>',
 			caption: 'The API Key string is used to authenticate API calls.'

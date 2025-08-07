@@ -40,7 +40,7 @@ Page.Base = class Base extends Page {
 		if (!item) return '(None)';
 		if (typeof(item) == 'string') item = { id: item };
 		
-		var html = '<span class="nowrap">';
+		var html = '<span class="nowrap" data-private>';
 		var icon = '<i class="mdi mdi-database"></i>';
 		html += icon + item.id;
 		html += '</span>';
@@ -469,7 +469,7 @@ Page.Base = class Base extends Page {
 	getNiceServerText(item) {
 		// get server label or hostname
 		if (!item) return '(None)';
-		return item.title || app.formatHostname(item.hostname);
+		return '<span data-private>' + (item.title || app.formatHostname(item.hostname)) + '</span>';
 	}
 	
 	getNiceTarget(target, link) {
@@ -618,7 +618,7 @@ Page.Base = class Base extends Page {
 		// get nice ip address for display
 		if (!ip) return 'n/a';
 		ip = ('' + ip).replace(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/, '$1');
-		return '<i class="mdi mdi-earth">&nbsp;</i>' + ip;
+		return '<i class="mdi mdi-earth">&nbsp;</i><span data-private>' + ip + '</span>';
 	}
 	
 	getNiceArch(arch) {
@@ -1095,7 +1095,7 @@ Page.Base = class Base extends Page {
 			user = { icon: 'account-outline' };
 		}
 		
-		var html = '<span class="nowrap">';
+		var html = '<span class="nowrap" data-private>';
 		var icon = '<i class="mdi mdi-' + (user.icon || 'account') + '"></i>';
 		if (link && user.full_name) {
 			if (link === true) link = '#Users?sub=edit&username=' + username;

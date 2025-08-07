@@ -55,7 +55,8 @@ Page.MyAccount = class MyAccount extends Page.Base {
 				class: 'monospace',
 				disabled: true,
 				autocomplete: 'off',
-				value: app.username
+				value: app.username,
+				'data-private': ''
 			}),
 			caption: 'Your username cannot be changed.'
 		});
@@ -81,7 +82,8 @@ Page.MyAccount = class MyAccount extends Page.Base {
 				spellcheck: 'false',
 				autocomplete: 'off',
 				maxlength: 64,
-				value: user.full_name
+				value: user.full_name,
+				'data-private': ''
 			}),
 			caption: 'Your first and last names (or a nickname), used for display purposes only.'
 		});
@@ -95,7 +97,8 @@ Page.MyAccount = class MyAccount extends Page.Base {
 				spellcheck: 'false',
 				autocomplete: 'off',
 				maxlength: 64,
-				value: user.email
+				value: user.email,
+				'data-private': ''
 			}),
 			caption: 'This is used only to recover your account, and never for marketing.'
 		});
