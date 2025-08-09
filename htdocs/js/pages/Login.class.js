@@ -13,6 +13,8 @@ Page.Login = class Login extends Page.Base {
 	
 	onActivate(args) {
 		// page activation
+		$('body').addClass('login');
+		
 		if (app.user) {
 			// user already logged in
 			setTimeout( function() { Nav.go(app.navAfterLogin || config.DefaultPage) }, 1 );
@@ -556,6 +558,7 @@ Page.Login = class Login extends Page.Base {
 	
 	onDeactivate() {
 		// called when page is deactivated
+		$('body').removeClass('login');
 		this.div.html( '' );
 		return true;
 	}
