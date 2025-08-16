@@ -1684,7 +1684,7 @@ Page.Events = class Events extends Page.PageUtils {
 			delete new_event.revision;
 			delete new_event.modified;
 			
-			var diff_html = this.getDiffHTML( old_event, new_event );
+			var diff_html = this.getDiffHTML( old_event, new_event ) || '(No changes)';
 			md += "\n### Diff to Previous\n\n";
 			md += '<div class="diff_content">' + diff_html + '</div>' + "\n";
 		}
