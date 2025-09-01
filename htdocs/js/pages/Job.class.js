@@ -1338,6 +1338,14 @@ Page.Job = class Job extends Page.PageUtils {
 			return;
 		}
 		
+		if (job.output) {
+			// job log is included inline
+			$cont.html('');
+			this.logSpool = job.output.trimEnd().split(/\n/);
+			this.spoolNextLogChunk();
+			return;
+		}
+		
 		$cont.html( '<div class="loading_container"><div class="loading"></div></div>' );
 		
 		var url = app.base_api_url + "/app/get_job_log?id=" + job.id;
@@ -1447,12 +1455,18 @@ Page.Job = class Job extends Page.PageUtils {
 		}
 		
 		var html = this.converter.ansi_to_html(text);
-		$cont.append( html.replace(/\n$/, '').split(/\n/).map( function(line) { return '<p>' + (line || ' ') + '</p>'; } ).join("\n") );
+		var lines = html.replace(/\n$/, '').split(/\n/).slice(-1000);
+		var full_replace = false;
+		
+		if (lines.length == 1000) { $cont.html(''); full_replace = true; }
+		$cont.append( lines.map( function(line) { return '<p>' + (line || ' ') + '</p>'; } ).join("\n") );
 		
 		// only keep latest 1K chunks
-		var $children = $cont.children();
-		if ($children.length > 1000) {
-			$children.slice( 0, $children.length - 1000 ).remove();
+		if (!full_replace) {
+			var $children = $cont.children();
+			if ($children.length > 1000) {
+				$children.slice( 0, $children.length - 1000 ).remove();
+			}
 		}
 		
 		// auto-size
