@@ -1915,7 +1915,7 @@ Page.Job = class Job extends Page.PageUtils {
 			
 			var tds = [
 				cmd,
-				proc.user,
+				proc.user || '-',
 				proc.pid,
 				proc.parentPid,
 				pct( proc.cpu, 100 ),
