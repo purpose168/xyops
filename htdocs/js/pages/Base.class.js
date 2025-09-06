@@ -231,6 +231,12 @@ Page.Base = class Base extends Page {
 	
 	getNiceProcessText(item) {
 		// get short process name from full path + args
+		if (item.name) {
+			// short name already provided (i.e. win32), but do some final massaging
+			if ((item.name == 'svchost.exe') && item.command && item.command.match(/\s+\-s\s+(\S+)/)) return RegExp.$1;
+			else return item.name;
+		}
+		
 		var short_cmd = '' + item.command;
 		short_cmd = short_cmd.replace(/\s[\-\(\/\*].*$/, '');
 		
