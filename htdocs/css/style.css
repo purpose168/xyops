@@ -959,6 +959,9 @@ div.td_big {
 	font-size: 13px;
 	color: var(--label-color);
 }
+.dialog.inline > .dialog_intro {
+	width: 100%;
+}
 
 .table_menu_container {
 	position: relative;
