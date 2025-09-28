@@ -34,7 +34,18 @@
 				"admin": true
 			},
 			"roles": [],
-			"searches": []
+			"searches": [
+				{
+					"name": "All Completed",
+					"uri": "Search",
+					"icon": "cloud-search-outline"
+				},
+				{
+					"name": "All Tickets",
+					"uri": "Tickets",
+					"icon": "text-box-multiple-outline"
+				}
+			]
 		} ],
 		[ "listCreate", "global/users", { "page_size": 1000 } ],
 		[ "listPush", "global/users", { "username": "admin" } ],
