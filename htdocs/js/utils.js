@@ -103,7 +103,10 @@ function summarize_event_timing(trigger, idx) {
 				case '-5': result = '5th last'; break;
 				case '-6': result = '6th last'; break;
 				case '-7': result = '7th last'; break;
-				default: result = m_g1 + _number_suffixes[ parseInt( m_g1.substring(m_g1.length - 1) ) ]; break;
+				default: 
+					if (m_g1.match(/^1[1-9]$/)) result = m_g1 + 'th'; // teens break the rule (11th, 12th, 13th, etc.)
+					else result = m_g1 + _number_suffixes[ parseInt( m_g1.substring(m_g1.length - 1) ) ]; 
+				break;
 			}
 			return result;
 		});
