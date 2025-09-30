@@ -1747,6 +1747,7 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		// app.setHeaderTitle( '<i class="mdi mdi-calendar-plus">&nbsp;</i>New Event' );
 		app.setWindowTitle( "New Event" );
+		app.highlightTab( 'NewEvent' );
 		
 		html += '<div class="box" style="overflow:hidden">';
 		html += '<div class="box_title">';

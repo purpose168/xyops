@@ -37,6 +37,7 @@ Page.Workflows = class Workflows extends Page.Events {
 		
 		app.setHeaderNav([ 'event_list', 'new_workflow' ]);
 		app.setWindowTitle( config.ui.titles.new_workflow );
+		app.highlightTab( 'NewWorkflow' );
 		
 		html += '<div class="box" style="overflow:hidden">';
 		html += '<div class="box_title">';
