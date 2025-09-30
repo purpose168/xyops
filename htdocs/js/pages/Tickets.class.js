@@ -414,7 +414,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 			
 			return [
 				'<div class="monospace">#' + ticket.num + '</div>',
-				'<span class="nowrap"><a href="#' + ticket.num + '"><i class="mdi mdi-text-box-outline"></i><b>' + strip_html(ticket.subject) + '</b></a></span>',
+				self.getNiceTicket(ticket, true),
 				self.getNiceTicketType(ticket.type),
 				self.getNiceTicketStatus(ticket.status),
 				ticket.assignee ? self.getNiceUser(ticket.assignee, app.isAdmin()) : '(None)',
@@ -1128,7 +1128,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		html += '<div class="box" id="d_ticket_events" style="display:none">';
 			html += '<div class="box_title">';
 				html += '<span>Ticket Events</span>';
-				// html += '<div class="button right" onClick="$P().addTicketEvent()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>Add Event...</span></div>';
+				// html += '<div class="button right" onClick="$P().do_edit_event(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>Add Event...</span></div>';
 				html += '<div class="clear"></div>';
 			html += '</div>';
 			html += '<div class="box_content table">';
@@ -1152,7 +1152,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		html += '<div class="box" id="d_ticket_files" style="display:none">';
 			html += '<div class="box_title">';
 				html += '<span>Ticket Files</span>';
-				// html += '<div class="button right" onClick="$P().addTicketFile()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Upload Files...</span></div>';
+				// html += '<div class="button right" onClick="$P().do_attach_files()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Attach Files...</span></div>';
 				html += '<div class="clear"></div>';
 			html += '</div>';
 			html += '<div class="box_content table">';
@@ -1170,7 +1170,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		
 		// button box
 		html += '<div class="box">';
-			html += '<div class="box_buttons">';
+			html += '<div class="box_buttons" style="padding:20px">';
 				html += '<div class="button mobile_collapse" onClick="$P().cancel_ticket_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 				html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_ticket_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 				// html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
@@ -1467,7 +1467,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		var event = this.events[idx];
 		var event_def = find_object( app.events, { id: event.id } ) || { id: event.id, title: '(Not Found)', triggers: [] };
 		
-		Dialog.confirmDanger( 'Remove Event', "Are you sure you want to remove the event &ldquo;<b>" + event_def.title + "</b>&rdquo; from the ticket?", ['trash-can', 'Remove'], function(result) {
+		Dialog.confirmDanger( 'Remove Event', "Are you sure you want to remove the event &ldquo;<b>" + event_def.title + "</b>&rdquo; from the current ticket?", ['trash-can', 'Remove'], function(result) {
 			if (!result) return;
 			
 			ticket.events.splice(idx, 1);
@@ -1595,7 +1595,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		var ticket = this.ticket;
 		var job = this.jobs[idx];
 		
-		Dialog.confirmDanger( 'Remove Job', "Are you sure you want to remove the job &ldquo;<b>" + job.id + "</b>&rdquo; from the ticket?  This will not delete the job itself.", ['trash-can', 'Remove'], function(result) {
+		Dialog.confirmDanger( 'Remove Job', "Are you sure you want to remove the job &ldquo;<b>" + job.id + "</b>&rdquo; from the current ticket?  This will not delete the job itself.", ['trash-can', 'Remove'], function(result) {
 			if (!result) return;
 			app.clearError();
 			Dialog.showProgress( 1.0, "Removing Job..." );
