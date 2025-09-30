@@ -935,8 +935,8 @@
 	
 	"ticket_types": [
 		{ "id": "issue", "title": "Issue", "icon": "bug-outline" },
-		{ "id": "feature", "title": "Feature Request", "icon": "lightbulb-outline" },
-		{ "id": "change", "title": "Change Control", "icon": "swap-horizontal-circle-outline" },
+		{ "id": "feature", "title": "Feature", "icon": "lightbulb-outline" },
+		{ "id": "change", "title": "Change", "icon": "swap-horizontal-circle-outline" },
 		{ "id": "maintenance", "title": "Maintenance", "icon": "wrench-outline" },
 		{ "id": "question", "title": "Question", "icon": "help-circle-outline" },
 		{ "id": "other", "title": "Other", "icon": "shape-outline" }
