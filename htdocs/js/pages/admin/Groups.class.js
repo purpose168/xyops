@@ -609,7 +609,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 				html += '<div class="button icon right secondary sm_hide" title="Job History..." onClick="$P().goJobHistory()"><i class="mdi mdi-cloud-search-outline"></i></div>';
 				html += '<div class="button icon right secondary sm_hide" title="Alert History..." onClick="$P().goAlertHistory()"><i class="mdi mdi-restore-alert"></i></div>';
 				html += '<div class="button icon right secondary sm_hide" title="Group History..." onClick="$P().goGroupHistory()"><i class="mdi mdi-script-text-outline"></i></div>';
-				html += '<div class="button icon right" title="Add Server..." onClick="$P().addServerToGroup()"><i class="mdi mdi-plus-circle-outline"></i></div>';
+				html += '<div class="button icon right" title="Add Server..." onClick="$P().addServerToGroup()"><i class="mdi mdi-server-plus-outline"></i></div>';
 				
 				html += '<div class="clear"></div>';
 			html += '</div>'; // title
@@ -859,12 +859,15 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		var html = '';
 		html += '<div class="chart_grid_horiz ' + (app.getPref('chart_size_quick') || 'medium') + '">';
 		
-		// see if any of our servers support quickmon
-		this.quickmonEnabled = false;
-		this.servers.forEach( function(server) {
-			if (server.info.quickmon) self.quickmonEnabled = true;
-		} );
-		if (!this.quickmonEnabled) return;
+		this.quickmonEnabled = true;
+		
+		// see if any of our servers support quickmon 
+		// JH: disabling this because it breaks the flow when you arrive at a group with no servers, then one comes online)
+		// this.quickmonEnabled = false;
+		// this.servers.forEach( function(server) {
+		// 	if (server.info.quickmon) self.quickmonEnabled = true;
+		// } );
+		// if (!this.quickmonEnabled) return;
 		
 		config.quick_monitors.forEach( function(def) {
 			// { "id": "cpu_load", "title": "CPU Load Average", "source": "cpu.avgLoad", "type": "float", "suffix": "" },
@@ -937,6 +940,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		// animate quickmon charts
 		var self = this;
 		if (!this.active) return; // auto-shutdown on page deactivate
+		if (!this.charts || (this.args.sub != 'view')) return; // sanity check
 		
 		// determine if we have any online servers that are not hidden
 		var chart = this.charts[ config.quick_monitors[0].id ];
@@ -972,7 +976,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		// append sample to chart (real-time from server)
 		// { id, row }
 		var self = this;
-		if (!this.quickReady) return; // prevent race condition
+		if (!this.quickReady || !this.charts) return; // prevent race condition
 		
 		// locate matching server
 		var server = find_object( this.servers, { id: data.id } );
@@ -1654,9 +1658,13 @@ Page.Groups = class Groups extends Page.ServerUtils {
 	
 	onPageUpdate(pcmd, pdata) {
 		// receive data packet for this page specifically (i.e. live graph append)
-		switch (pcmd) {
-			case 'quickmon': this.appendSampleToQuickChart(pdata); break;
-			case 'snapshot': this.updateSnapshotData(pdata); break;
+		if (!this.active || !this.charts) return;
+		
+		if (this.args.sub == 'view') {
+			switch (pcmd) {
+				case 'quickmon': this.appendSampleToQuickChart(pdata); break;
+				case 'snapshot': this.updateSnapshotData(pdata); break;
+			}
 		}
 	}
 	
