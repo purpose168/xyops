@@ -11,8 +11,8 @@ The following {{config.client.name}} job has started:
 - **Plugin:** {{plugin.title}}
 - **Server:** {{nice_server}}
 
-### Job Details:
-{{links.job_details}}
+### Links:
+- [Job Details]({{links.job_details}})
 
 ### Event Notes:
 {{job.notes}}

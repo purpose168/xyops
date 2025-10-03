@@ -8,7 +8,7 @@ The following {{config.client.name}} {{display.type}} ticket has been created: *
 ### {{ticket.subject}}
 {{ticket.body}}
 
-### Ticket Attributes
+### Ticket Attributes:
 - **Number:** #{{ticket.num}}
 - **Type:** {{display.type}}
 - **Category:** {{display.category}}

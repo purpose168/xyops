@@ -5,7 +5,7 @@
 
 The following {{config.client.name}} {{display.type}} ticket is overdue: **#{{ticket.num}}**: {{ticket.subject}}
 
-### Ticket Attributes
+### Ticket Attributes:
 - **Subject:** {{ticket.subject}}
 - **Due Date:** {{display.due}}
 - **Number:** #{{ticket.num}}

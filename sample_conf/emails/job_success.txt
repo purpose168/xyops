@@ -17,17 +17,15 @@ The following {{config.client.name}} job has completed successfully:
 - **Avg. Memory Usage:** {{display.mem}}
 - **Avg. CPU Usage:** {{display.cpu}}
 
-### Job Details:
-{{links.job_details}}
+### Links:
+- [Job Details]({{links.job_details}})
+- [Download Log]({{links.job_log}}) ({{display/log_size}})
 
 ### Job Files:
 {{links.job_files}}
 
-### Job Output ({{display.log_size}}):
-{{links.job_log}}
-
-### Output Excerpt:
-```
+### Job Output:
+```text
 {{log_excerpt}}
 ```
 

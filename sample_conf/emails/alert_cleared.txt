@@ -8,13 +8,11 @@ The following {{config.client.name}} alert has been cleared: **{{def.title}}**
 - **Server:** {{nice_server}}
 - **Hostname:** {{params.hostname}}
 - **IP Address:** {{params.ip}}
-- **Group:** {{nice_group}}
+- **Groups:** {{nice_groups}}
 - **Date/Time:** {{date_time}}
 - **Expression:** `{{def.expression}}`
 - **Elapsed:** {{nice_elapsed}}
 
-### Alert Detail View:
-{{links.alert_url}}
-
-### Live Server View:
-{{links.server_url}}
+### Links:
+- [Alert Detail View]({{links.alert_url}})
+- [Live Server View]({{links.server_url}})

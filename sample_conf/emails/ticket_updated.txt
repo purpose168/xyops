@@ -7,7 +7,7 @@ The following {{config.client.name}} {{display.type}} ticket has been updated: *
 
 {{display.changes}}
 
-### Ticket Attributes
+### Ticket Attributes:
 - **Subject:** {{ticket.subject}}
 - **Number:** #{{ticket.num}}
 - **Type:** {{display.type}}
