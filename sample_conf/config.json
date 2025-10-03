@@ -55,6 +55,13 @@
 		],
 		"workflow": []
 	},
+	"alert_universal_actions": [
+		{
+			"enabled": true,
+			"condition": "alert_new",
+			"type": "snapshot"
+		}
+	],
 	
 	"hostname_display_strip": "\\.[\\w\\-]+\\.\\w+$",
 	"tick_precision_ms": 50,
@@ -139,8 +146,9 @@
 		"edit_events": true,
 		"run_jobs": true,
 		"tag_jobs": true,
-		"ticket_jobs": true,
-		"comment_jobs": true
+		"comment_jobs": true,
+		"create_tickets": true,
+		"edit_tickets": true
 	},
 	
 	"default_user_prefs": {
