@@ -4,7 +4,7 @@
 // Released under the MIT License.
 // See the LICENSE.md file in this repository.
 
-Page.Alerts = class Alerts extends Page.Base {
+Page.Alerts = class Alerts extends Page.PageUtils {
 	
 	onInit() {
 		// called once at page load
@@ -401,9 +401,9 @@ Page.Alerts = class Alerts extends Page.Base {
 		html += '</div>'; // box
 		
 		// snapshots
-		html += '<div class="box" id="d_va_snapshots">';
+		html += '<div class="box toggle" id="d_va_snapshots">';
 			html += '<div class="box_title">';
-				html += 'Alert Snapshots';
+				html += '<i></i><span>Alert Snapshots</span>';
 			html += '</div>';
 			html += '<div class="box_content table">';
 				html += '<div class="loading_container"><div class="loading"></div></div>';
@@ -411,9 +411,9 @@ Page.Alerts = class Alerts extends Page.Base {
 		html += '</div>'; // box
 		
 		// tickets
-		html += '<div class="box" id="d_va_tickets" style="display:none">';
+		html += '<div class="box toggle" id="d_va_tickets" style="display:none">';
 			html += '<div class="box_title">';
-				html += 'Alert Tickets';
+				html += '<i></i><span>Alert Tickets</span>';
 			html += '</div>';
 			html += '<div class="box_content table">';
 				html += '<div class="loading_container"><div class="loading"></div></div>';
@@ -421,9 +421,19 @@ Page.Alerts = class Alerts extends Page.Base {
 		html += '</div>'; // box
 		
 		// jobs
-		html += '<div class="box" id="d_va_jobs">';
+		html += '<div class="box toggle" id="d_va_jobs">';
 			html += '<div class="box_title">';
-				html += 'Alert Jobs';
+				html += '<i></i><span>Alert Jobs</span>';
+			html += '</div>';
+			html += '<div class="box_content table">';
+				html += '<div class="loading_container"><div class="loading"></div></div>';
+			html += '</div>'; // box_content
+		html += '</div>'; // box
+		
+		// actions
+		html += '<div class="box toggle" id="d_va_actions">';
+			html += '<div class="box_title">';
+				html += '<i></i><span>Alert Actions</span>';
 			html += '</div>';
 			html += '<div class="box_content table">';
 				html += '<div class="loading_container"><div class="loading"></div></div>';
@@ -431,9 +441,9 @@ Page.Alerts = class Alerts extends Page.Base {
 		html += '</div>'; // box
 		
 		// history
-		html += '<div class="box" id="d_va_history">';
+		html += '<div class="box toggle" id="d_va_history">';
 			html += '<div class="box_title">';
-				html += 'Alert History';
+				html += '<i></i><span>Alert History</span>';
 			html += '</div>';
 			html += '<div class="box_content table">';
 				html += '<div class="loading_container"><div class="loading"></div></div>';
@@ -445,7 +455,9 @@ Page.Alerts = class Alerts extends Page.Base {
 		this.getAlertSnapshots();
 		this.getAlertTickets();
 		this.getAlertJobs();
+		this.renderAlertActions();
 		this.getAlertHistory();
+		this.setupToggleBoxes();
 	}
 	
 	doCreateTicket() {
@@ -814,6 +826,8 @@ Page.Alerts = class Alerts extends Page.Base {
 		};
 		
 		html += this.getBasicGrid( grid_args, function(job, idx) {
+			if (job.err) return [ '(Job deleted)', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a' ];
+			
 			return [
 				'<b>' + self.getNiceJob(job, true) + '</b>',
 				self.getNiceServer(job.server, true),
@@ -827,6 +841,76 @@ Page.Alerts = class Alerts extends Page.Base {
 		} );
 		
 		this.div.find('#d_va_jobs > .box_content').html( html );
+	}
+	
+	renderAlertActions() {
+		// render details on executed alert actions
+		var self = this;
+		var alert = this.alert;
+		if (!this.active) return; // sanity
+		
+		// we're only interested in actions that actually fired (and aren't hidden)
+		var actions = this.actions = (alert.actions || []).filter( function(action) { return !!(action.date && !action.hidden); } );
+		
+		// decorate actions with idx, for linking
+		actions.forEach( function(action, idx) { action.idx = idx; } );
+		
+		if (!actions.length) {
+			$('#d_va_actions').hide();
+			return;
+		}
+		
+		var cols = ["Condition", "Type", "Description", "Date/Time", "Elapsed", "Result", "Actions"];
+		var html = '';
+		
+		var grid_args = {
+			rows: sort_by(actions, 'condition', { dir: -1 }), // sort in place, so idx works below
+			cols: cols,
+			data_type: 'action'
+		};
+		
+		html += this.getBasicGrid( grid_args, function(item, idx) {
+			var disp = self.getJobActionDisplayArgs(item, true); // condition, type, text, desc, icon
+			
+			var link = '';
+			if (item.loc) link = `Nav.go('${item.loc}')`;
+			else if (item.description || item.details) link = `$P().viewActionDetails(${idx})`;
+			
+			var view_details = 'n/a';
+			if (link) view_details = '<span class="link" onClick="' + link + '">View Details...</span>';
+			
+			return [
+				// '<b><i class="mdi mdi-' + disp.condition.icon + '">&nbsp;</i>' + disp.condition.title + '</b>',
+				'<span class="link nowrap" onClick="' + link + '"><b><i class="mdi mdi-' + disp.condition.icon + '"></i>' + disp.condition.title + '</b></span>',
+				
+				'<i class="mdi mdi-' + disp.icon + '">&nbsp;</i>' + disp.type,
+				disp.desc,
+				self.getRelativeDateTime(item.date, true),
+				'<i class="mdi mdi-clock-check-outline">&nbsp;</i>' + get_text_from_ms_round( Math.floor(item.elapsed_ms), true),
+				self.getNiceJobResult(item), // yes, this works for actions too
+				'<b>' + view_details + '</b>'
+			];
+		}); // grid
+		
+		$('#d_va_actions > div.box_content').html( html );
+		$('#d_va_actions').show();
+	}
+	
+	viewActionDetails(idx) {
+		// popup dialog to show action results
+		var self = this;
+		var action = this.actions[idx];
+		var disp = self.getJobActionDisplayArgs(action); // condition, type, text, desc, icon
+		var details = action.details || "";
+		
+		if (action.description) {
+			details = "**Result:** " + action.description + "\n\n" + details;
+		}
+		
+		var title = "Alert Action Details: " + disp.type;
+		if (action.code) title = '<span style="color:var(--red);">' + title + '</span>';
+		
+		this.viewMarkdownAuto( title, details.trim() );
 	}
 	
 	getAlertHistory() {
