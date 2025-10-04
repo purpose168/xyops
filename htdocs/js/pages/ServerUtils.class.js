@@ -465,6 +465,8 @@ Page.ServerUtils = class ServerUtils extends Page.PageUtils {
 		};
 		
 		html += this.getBasicGrid( grid_args, function(item, idx) {
+			if (item.err) return [ '(Alert deleted)', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a' ];
+			
 			return [
 				'<b>' + self.getNiceAlertID(item, true) + '</b>',
 				self.getNiceAlert(item.alert, true),
@@ -506,6 +508,8 @@ Page.ServerUtils = class ServerUtils extends Page.PageUtils {
 		};
 		
 		html += this.getBasicGrid( grid_args, function(job, idx) {
+			if (job.err) return [ '(Job deleted)', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a' ];
+			
 			return [
 				'<b>' + self.getNiceJob(job, true) + '</b>',
 				self.getNiceServer(job.server, true),
