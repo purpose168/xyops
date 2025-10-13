@@ -783,7 +783,7 @@ Page.Job = class Job extends Page.PageUtils {
 		if (this.job.workflow && (this.job.type == 'adhoc')) return; // adhoc wf jobs do not have user fields
 		if (this.job.source.match(/(scheduler|plugin|action|alert)/)) return; // these sources do not populate user fields
 		
-		html += this.getParamSummaryGrid(fields, params);
+		html += '<div class="summary_grid">' + this.getParamSummaryGrid(fields, params) + '</div>';
 		
 		this.div.find('#d_event_params').show().find( '> .box_content').html( html );
 	}
