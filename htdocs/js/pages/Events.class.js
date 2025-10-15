@@ -1982,7 +1982,7 @@ Page.Events = class Events extends Page.PageUtils {
 				rows: 1,
 				value: JSON.stringify({ data: {}, files: [] }, null, "\t"),
 				style: 'display:none'
-			}) + `<div class="button small secondary" onClick="$P().openJobDataExplorer()"><i class="mdi mdi-database-search-outline">&nbsp;</i>${config.ui.buttons.wfd_data_explorer}</div>` + 
+			}) + `<div class="button small secondary" onClick="$P().openJobDataImporter()"><i class="mdi mdi-database-search-outline">&nbsp;</i>${config.ui.buttons.wfd_data_importer}</div>` + 
 				`<div class="button small secondary" style="margin-left:15px;" onClick="$P().edit_test_input()"><i class="mdi mdi-text-box-edit-outline">&nbsp;</i>${config.ui.buttons.wfd_edit_json}</div>`,
 			caption: 'Optionally customize the JSON input data for the job.  This is used to simulate data being passed to it from a previous job.'
 		});
@@ -2079,15 +2079,15 @@ Page.Events = class Events extends Page.PageUtils {
 		});
 	}
 	
-	openJobDataExplorer() {
-		// open job data explorer dialog
+	openJobDataImporter() {
+		// open job data importer dialog
 		var self = this;
 		var $input = $('#fe_ete_input');
-		var title = config.ui.titles.wfd_data_explorer;
+		var title = config.ui.titles.wfd_data_importer;
 		var html = '';
 		var temp_data = null;
 		
-		html += `<div class="dialog_intro">${config.ui.intros.wfd_data_explorer}</div>`;
+		html += `<div class="dialog_intro">${config.ui.intros.wfd_data_importer}</div>`;
 		html += '<div class="dialog_box_content scroll maximize">';
 		
 		// job picker

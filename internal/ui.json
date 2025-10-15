@@ -786,7 +786,7 @@
 		"wfdc_edit": "Editing Controller",
 		
 		"wfd_exp_builder": "Expression Builder",
-		"wfd_data_explorer": "Job Data Importer",
+		"wfd_data_importer": "Job Data Importer",
 		
 		"server_data_explorer": "Server Data Explorer",
 		
@@ -810,7 +810,7 @@
 		"wf_new_save": "Save Workflow",
 		"wfd_run_test": "Run Test",
 		"wfd_edit_json": "Edit Raw Data...",
-		"wfd_data_explorer": "Import From Job...",
+		"wfd_data_importer": "Import From Job...",
 		"wfd_add_node": "Add Node",
 		"wfd_add_action": "Add Action",
 		"wfd_add_limit": "Add Limiter",
@@ -844,7 +844,7 @@
 	
 	"intros": {
 		"wfd_exp_builder": "This allows you to explore output data from recently completed jobs, and pick out a specific JSON key path to use for your controller expression.",
-		"wfd_data_explorer": "Select a previously completed job to import the data and/or files from it.  This is so you can use it as simulated input for your test run.",
+		"wfd_data_importer": "Select a previously completed job to import the data and/or files from it.  This is so you can use it as simulated input for your test run.",
 		"server_data_explorer": "This allows you to explore monitoring data from your servers, and pick out a specific JSON key path to use for your expression.",
 		"job_create_ticket": "Use this form to create a new ticket, which will reference the current job.",
 		"job_add_to_ticket": "Attach the current job to an existing ticket.",
