@@ -559,6 +559,17 @@
 	
 	"pages": {
 		
+		"Events": {
+			"d_re_tags": {
+				"label": "Tags:",
+				"caption": "Optionally override the tags for running the event."
+			},
+			"fe_re_tags": {
+				"title": "Select tags for event",
+				"placeholder": "(Use event defaults)"
+			}
+		},
+		
 		"System": {
 			"d_sys_sat_targets": {
 				"label": "Upgrade Targets:",

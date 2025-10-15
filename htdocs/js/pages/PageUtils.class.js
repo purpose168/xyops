@@ -4086,6 +4086,18 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			});
 		}
 		
+		// tags
+		html += this.getFormRow({
+			id: 'd_re_tags',
+			content: this.getFormMenuMulti({
+				id: 'fe_re_tags',
+				options: app.tags,
+				values: [],
+				default_icon: 'tag-outline',
+				// 'data-shrinkwrap': 1
+			})
+		});
+		
 		// user form fields
 		html += this.getFormRow({
 			label: 'User Parameters:',
@@ -4112,6 +4124,10 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				delete self.dialogFiles;
 			}
 			
+			// add tags if specified
+			var tags = $('#fe_re_tags').val();
+			if (tags.length) job.tags = tags;
+			
 			Dialog.showProgress( 1.0, "Launching Job..." );
 			
 			app.api.post( 'app/run_event', job, function(resp) {
@@ -4129,6 +4145,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			delete self.dialogFiles;
 		};
 		
+		MultiSelect.init( $('#fe_re_tags') );
 		Dialog.autoResize();
 	}
 	
