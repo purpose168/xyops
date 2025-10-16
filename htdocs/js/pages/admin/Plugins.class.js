@@ -292,11 +292,11 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button mobile_collapse" onClick="$P().cancel_plugin_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			html += '<div class="button cancel mobile_collapse" onClick="$P().cancel_plugin_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Close</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_plugin_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button primary phone_collapse" onClick="$P().do_save_plugin()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" onClick="$P().do_save_plugin()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -311,6 +311,7 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		this.setupEditor();
 		this.setupBoxButtonFloater();
 		this.renderParamEditor();
+		this.setupEditTriggers();
 	}
 	
 	do_export() {
@@ -349,7 +350,8 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		Dialog.hideProgress();
 		if (!this.active) return; // sanity
 		
-		Nav.go( 'Plugins?sub=list' );
+		// Nav.go( 'Plugins?sub=list' );
+		this.triggerSaveComplete();
 		app.showMessage('success', "The plugin was saved successfully.");
 	}
 	
@@ -674,6 +676,8 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 					self.editor.setOption('mode', { name: 'mustache', backdrop: mode });
 					self.editor.refresh();
 				}
+				
+				self.triggerEditChange();
 			};
 			
 			reader.readAsText( files[0] );

@@ -291,12 +291,12 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button mobile_collapse" onClick="$P().cancel_web_hook_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			html += '<div class="button cancel mobile_collapse" onClick="$P().cancel_web_hook_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Close</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_web_hook_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_test_web_hook()"><i class="mdi mdi-test-tube">&nbsp;</i><span>Test...</span></div>';
 			html += '<div class="button secondary mobile_collapse sm_hide" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse sm_hide" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button primary phone_collapse" onClick="$P().do_save_web_hook()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" onClick="$P().do_save_web_hook()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -308,6 +308,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		// this.updateAddRemoveMe('#fe_ewh_email');
 		this.setupBoxButtonFloater();
 		this.setupEditor();
+		this.setupEditTriggers();
 	}
 	
 	do_export() {
@@ -375,7 +376,8 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		Dialog.hideProgress();
 		if (!this.active) return; // sanity
 		
-		Nav.go( 'WebHooks?sub=list' );
+		// Nav.go( 'WebHooks?sub=list' );
+		this.triggerSaveComplete();
 		app.showMessage('success', "The web hook was saved successfully.");
 	}
 	
@@ -690,8 +692,8 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 			// keep list sorted
 			sort_by(self.headers, 'name');
 			
-			// self.dirty = true;
 			self.renderHeaderEditor();
+			self.triggerEditChange();
 			Dialog.hide();
 		} ); // Dialog.confirm
 		
@@ -704,6 +706,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		// delete selected header
 		this.headers.splice( idx, 1 );
 		this.renderHeaderEditor();
+		this.triggerEditChange();
 	}
 	
 	get_web_hook_form_json() {

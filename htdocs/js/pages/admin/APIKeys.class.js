@@ -274,11 +274,11 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button mobile_collapse" onClick="$P().cancel_api_key_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			html += '<div class="button cancel mobile_collapse" onClick="$P().cancel_api_key_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Close</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_api_key_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button primary phone_collapse" onClick="$P().do_save_api_key()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" onClick="$P().do_save_api_key()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -288,6 +288,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		SingleSelect.init( this.div.find('#fe_ak_status') );
 		MultiSelect.init( this.div.find('select[multiple]') );
 		this.setupBoxButtonFloater();
+		this.setupEditTriggers();
 	}
 	
 	do_export() {
@@ -326,9 +327,9 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		Dialog.hideProgress();
 		if (!this.active) return; // sanity
 		
-		Nav.go( 'APIKeys?sub=list' );
+		// Nav.go( 'APIKeys?sub=list' );
+		this.triggerSaveComplete();
 		app.showMessage('success', "The API Key was saved successfully.");
-		// window.scrollTo( 0, 0 );
 	}
 	
 	show_delete_api_key_dialog() {

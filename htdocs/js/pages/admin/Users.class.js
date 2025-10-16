@@ -4,7 +4,7 @@
 // Released under the MIT License.
 // See the LICENSE.md file in this repository.
 
-Page.Users = class Users extends Page.Base {
+Page.Users = class Users extends Page.PageUtils {
 	
 	onInit() {
 		// called once at page load
@@ -320,11 +320,11 @@ Page.Users = class Users extends Page.Base {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button mobile_collapse" onClick="$P().cancel_user_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			html += '<div class="button cancel mobile_collapse" onClick="$P().cancel_user_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Close</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_account_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().logout_all()"><i class="mdi mdi-power-standby">&nbsp;</i>Logout...</div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button primary phone_collapse" onClick="$P().do_save_user()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" onClick="$P().do_save_user()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -335,6 +335,7 @@ Page.Users = class Users extends Page.Base {
 		MultiSelect.init( this.div.find('select[multiple]') );
 		$('#fe_eu_username').attr('disabled', true);
 		this.setupBoxButtonFloater();
+		this.setupEditTriggers();
 	}
 	
 	go_edit_history() {
@@ -377,6 +378,8 @@ Page.Users = class Users extends Page.Base {
 		
 		var avatar_url = '/api/app/avatar/' + this.user.username + '.png?size=128&random=' + Math.random();
 		$('#d_eu_image').css( 'background-image', 'url(' + avatar_url + ')' );
+		
+		this.triggerEditChange();
 	}
 	
 	upload_error(type, message, userData) {
@@ -398,6 +401,8 @@ Page.Users = class Users extends Page.Base {
 			
 			var avatar_url = '/api/app/avatar/' + self.user.username + '.png?size=128&random=' + Math.random();
 			$('#d_eu_image').css( 'background-image', 'url(' + avatar_url + ')' );
+			
+			self.triggerEditChange();
 		} );
 	}
 	
@@ -428,7 +433,8 @@ Page.Users = class Users extends Page.Base {
 		Dialog.hideProgress();
 		if (!this.active) return; // sanity
 		
-		Nav.go( 'Users?sub=list' );
+		// Nav.go( 'Users?sub=list' );
+		this.triggerSaveComplete();
 		app.showMessage('success', "The user was saved successfully.");
 		
 		// if we edited ourself, update header

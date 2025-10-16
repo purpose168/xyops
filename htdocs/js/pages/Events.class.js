@@ -403,7 +403,7 @@ Page.Events = class Events extends Page.PageUtils {
 			nice_status = '<span class="color_label blue nowrap linky" onClick="Nav.go(\'' + url + '\')"><i class="mdi mdi-autorenew mdi-spin"></i>' + num_jobs + ' Active</span>';
 		}
 		else if (!num_jobs && event_state && event_state.last_job) {
-			nice_status = this.getNiceJobResultLink({ id: event_state.last_job, code: event_state.last_code });
+			nice_status = this.getNiceJobResultLink({ id: event_state.last_job, code: event_state.last_code, final: true });
 		}
 		
 		return nice_status;
@@ -1899,12 +1899,12 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button mobile_collapse" onClick="$P().cancel_event_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			html += '<div class="button cancel mobile_collapse" onClick="$P().cancel_event_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Close</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_event_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_test_event()"><i class="mdi mdi-test-tube">&nbsp;</i><span>Test...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_save_event()"><i class="mdi mdi-floppy">&nbsp;</i>Save Changes</div>';
+			html += '<div class="button save" onClick="$P().do_save_event()"><i class="mdi mdi-floppy">&nbsp;</i>Save Changes</div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -1917,6 +1917,7 @@ Page.Events = class Events extends Page.PageUtils {
 		this.renderParamEditor();
 		// this.updateAddRemoveMe('#fe_ee_email');
 		this.setupBoxButtonFloater();
+		this.setupEditTriggers();
 		
 		if (do_snap) this.savePageSnapshot( this.get_event_form_json(true) );
 	}
@@ -2196,7 +2197,8 @@ Page.Events = class Events extends Page.PageUtils {
 			merge_hash_into( app.events[idx], this.event );
 		}
 		
-		Nav.go( 'Events?sub=view&id=' + this.event.id );
+		// Nav.go( 'Events?sub=view&id=' + this.event.id );
+		this.triggerSaveComplete();
 		app.showMessage('success', "The event was saved successfully.");
 	}
 	
@@ -2593,6 +2595,8 @@ Page.Events = class Events extends Page.PageUtils {
 		else $(elem).closest('ul').addClass('disabled');
 		
 		if (this.onAfterEditTrigger) this.onAfterEditTrigger(idx, item);
+		
+		this.triggerEditChange();
 	}
 	
 	editTrigger(idx) {
@@ -3157,6 +3161,7 @@ Page.Events = class Events extends Page.PageUtils {
 			Dialog.hide();
 			self.renderTriggerTable();
 			if (self.onAfterEditTrigger) self.onAfterEditTrigger(idx, trigger);
+			self.triggerEditChange();
 		} ); // Dialog.confirm
 		
 		var change_trigger_type = function(new_type) {
@@ -3299,6 +3304,7 @@ Page.Events = class Events extends Page.PageUtils {
 	resetTimeMachine() {
 		// set time machine date/time to now
 		$('#fe_et_time_machine').val( this.formatDateISO( time_now(), this.getUserTimezone() ) );
+		this.triggerEditChange();
 	}
 	
 	deleteTrigger(idx) {
@@ -3312,6 +3318,8 @@ Page.Events = class Events extends Page.PageUtils {
 			trigger.deleted = true;
 			this.onAfterEditTrigger(idx, trigger);
 		}
+		
+		this.triggerEditChange();
 	}
 	
 	getYearOptions() {

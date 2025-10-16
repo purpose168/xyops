@@ -279,11 +279,11 @@ Page.Channels = class Channels extends Page.PageUtils {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button mobile_collapse" onClick="$P().cancel_channel_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			html += '<div class="button cancel mobile_collapse" onClick="$P().cancel_channel_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Close</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_channel_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button primary phone_collapse" onClick="$P().do_save_channel()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" onClick="$P().do_save_channel()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -294,6 +294,7 @@ Page.Channels = class Channels extends Page.PageUtils {
 		SingleSelect.init( this.div.find('#fe_ech_run_event, #fe_ech_icon, #fe_ech_web_hook, #fe_ech_sound') );
 		this.updateAddRemoveMe('#fe_ech_email');
 		this.setupBoxButtonFloater();
+		this.setupEditTriggers();
 	}
 	
 	do_export() {
@@ -332,7 +333,8 @@ Page.Channels = class Channels extends Page.PageUtils {
 		Dialog.hideProgress();
 		if (!this.active) return; // sanity
 		
-		Nav.go( 'Channels?sub=list' );
+		// Nav.go( 'Channels?sub=list' );
+		this.triggerSaveComplete();
 		app.showMessage('success', "The channel was saved successfully.");
 	}
 	

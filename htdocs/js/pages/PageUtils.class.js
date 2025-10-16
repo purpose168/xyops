@@ -5,7 +5,33 @@
 // See the LICENSE.md file in this repository.
 
 Page.PageUtils = class PageUtils extends Page.Base {
-
+	
+	setupEditTriggers() {
+		// rig all form elements to triger save button highlight
+		this.div.find('input, textarea, select').on('change', this.triggerEditChange.bind(this));
+		this.div.find('input, textarea').on('input', this.triggerEditChange.bind(this));
+		if (this.editor) this.editor.on('change', this.triggerEditChange.bind(this));
+		
+		// if page is in rollback draft mode, trigger the button right away
+		if (this.args.rollback) this.triggerEditChange();
+	}
+	
+	triggerEditChange() {
+		// highlight save button
+		var $btn = $('.button.save');
+		if ($btn.length && !$btn.hasClass('primary')) {
+			$btn.addClass('primary pulse');
+			setTimeout( function() { $btn.removeClass('pulse'); }, 1000 );
+			$('.button.cancel > span').html('Cancel');
+		}
+	}
+	
+	triggerSaveComplete() {
+		// remove highlight on save button
+		$('.button.save').removeClass('primary pulse');
+		$('.button.cancel > span').html('Close');
+	}
+	
 	goRevisionHistory(opts) {
 		// jump intp revision history view for parent page
 		var self = this;
@@ -982,6 +1008,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		
 		if (item.enabled) $(elem).closest('ul').removeClass('disabled');
 		else $(elem).closest('ul').addClass('disabled');
+		
+		this.triggerEditChange();
 	}
 	
 	editResLimit(idx) {
@@ -1017,7 +1045,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 					else self.limits.push(limit);
 				}
 				
-				// self.dirty = true;
+				self.triggerEditChange();
 				self.renderResLimitEditor();
 			}
 		});
@@ -1236,6 +1264,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		// delete selected limit
 		this.limits.splice( idx, 1 );
 		this.renderResLimitEditor();
+		this.triggerEditChange();
 	}
 	
 	//
@@ -1406,6 +1435,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		
 		if (item.enabled) $(elem).closest('ul').removeClass('disabled');
 		else $(elem).closest('ul').addClass('disabled');
+		
+		this.triggerEditChange();
 	}
 	
 	editJobAction(idx) {
@@ -1432,7 +1463,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				// keep list sorted
 				sort_by(self.actions, 'condition');
 				
-				// self.dirty = true;
+				self.triggerEditChange();
 				self.renderJobActionEditor();
 			}
 		});
@@ -1815,6 +1846,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		// delete selected limit
 		this.actions.splice( idx, 1 );
 		this.renderJobActionEditor();
+		this.triggerEditChange();
 	}
 	
 	// Plugin Params
@@ -1849,14 +1881,16 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			
 			switch (param.type) {
 				case 'text':
-					html += explore_start + self.getFormText({ 
+					var text_args = { 
 						id: elem_id, 
 						type: param.variant || 'text', 
 						value: elem_value, 
 						class: 'monospace', 
 						disabled: elem_dis, 
 						autocomplete: 'off' 
-					}) + explore_end;
+					};
+					if (param.variant && (param.variant != 'text')) html += self.getFormText(text_args);
+					else html += explore_start + self.getFormText(text_args) + explore_end;
 				break;
 				
 				case 'textarea':
@@ -2338,6 +2372,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			}
 			
 			CodeEditor.hide();
+			self.triggerEditChange();
 		});
 		
 		// trigger change to load first server
@@ -2442,6 +2477,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				setTimeout( function() { $input.removeClass('iflash'); }, 1500 );
 			}
 			CodeEditor.hide();
+			self.triggerEditChange();
 		});
 		
 		// job search
@@ -3531,6 +3567,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		
 		// prevent ghost hover bug in safari
 		$(document).one( 'mousemove', function() { self.renderParamEditor(); } );
+		
+		this.triggerEditChange();
 	}
 	
 	editParam(idx) {
@@ -3797,9 +3835,9 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				self.params[idx] = param;
 			}
 			
-			// self.dirty = true;
 			Dialog.hide();
 			self.renderParamEditor();
+			self.triggerEditChange();
 		} ); // Dialog.confirm
 		
 		var change_param_type = function(new_type) {
@@ -3826,6 +3864,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		// delete selected param
 		this.params.splice( idx, 1 );
 		this.renderParamEditor();
+		this.triggerEditChange();
 	}
 	
 	validateToolsetData(param) {

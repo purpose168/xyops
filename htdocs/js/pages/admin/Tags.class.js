@@ -240,11 +240,11 @@ Page.Tags = class Tags extends Page.PageUtils {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button mobile_collapse" onClick="$P().cancel_tag_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+			html += '<div class="button cancel mobile_collapse" onClick="$P().cancel_tag_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Close</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_tag_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button primary phone_collapse" onClick="$P().do_save_tag()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" onClick="$P().do_save_tag()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -253,6 +253,7 @@ Page.Tags = class Tags extends Page.PageUtils {
 		
 		SingleSelect.init( this.div.find('#fe_et_icon') );
 		this.setupBoxButtonFloater();
+		this.setupEditTriggers();
 	}
 	
 	do_export() {
@@ -291,7 +292,8 @@ Page.Tags = class Tags extends Page.PageUtils {
 		Dialog.hideProgress();
 		if (!this.active) return; // sanity
 		
-		Nav.go( 'Tags?sub=list' );
+		// Nav.go( 'Tags?sub=list' );
+		this.triggerSaveComplete();
 		app.showMessage('success', "The tag was saved successfully.");
 	}
 	
@@ -389,16 +391,6 @@ Page.Tags = class Tags extends Page.PageUtils {
 		}
 		
 		return tag;
-	}
-	
-	updateIcon(field) {
-		// render icon next to text field
-		var $field = $(field);
-		var icon = trim( $field.val().toLowerCase() ).replace(/^mdi\-/, '');
-		var $elem = $field.closest('.form_row').find('.fr_suffix .checker');
-		$elem.html('<span class="mdi mdi-' + icon + '"></span>');
-		
-		if (icon != $field.val()) $field.val(icon);
 	}
 	
 	onDataUpdate(key, data) {

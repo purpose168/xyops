@@ -1200,7 +1200,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		// button box
 		html += '<div class="box">';
 			html += '<div class="box_buttons" style="padding:20px">';
-				html += '<div class="button mobile_collapse" onClick="$P().cancel_ticket_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+				// html += '<div class="button mobile_collapse" onClick="$P().cancel_ticket_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 				html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_ticket_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 				// html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 				// html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
