@@ -502,7 +502,7 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 				placeholder: '(None)',
 				options: [
 					{ id: 'delta', icon: 'finance', title: "Calc as Delta" },
-					{ id: 'delta_div', icon: 'timer-sand', title: "Divide by Time" },
+					{ id: 'delta_div', icon: 'av-timer', title: "Divide by Time" },
 					{ id: 'delta_min', icon: 'altimeter', title: "Zero Minimum" }
 				],
 				values: feats,
