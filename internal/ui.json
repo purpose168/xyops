@@ -854,6 +854,7 @@
 	
 	"nav": {
 		"event_list": { "icon": "calendar-multiple", "loc": "#Events?sub=list", "title": "Events" },
+		"workflow_list": { "icon": "clipboard-flow-outline", "loc": "#Events?plugin=_workflow", "title": "Workflows" },
 		"new_workflow": { "icon": "clipboard-edit-outline", "title": "New Workflow" },
 		"edit_workflow": { "icon": "clipboard-edit-outline", "title": "Edit Workflow" },
 		
