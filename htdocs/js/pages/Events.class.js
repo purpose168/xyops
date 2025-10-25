@@ -318,7 +318,7 @@ Page.Events = class Events extends Page.PageUtils {
 				}) + '</div>',
 				'<span style="font-weight:bold">' + self.getNiceEvent(item, true) + '</span>',
 				self.getNiceCategory(item.category, true),
-				self.getNicePlugin(item.plugin, true),
+				(item.plugin == '_workflow') ? '(Workflow)' : self.getNicePlugin(item.plugin, true),
 				self.getNiceTargetList(item.targets, true),
 				summarize_event_timings(item),
 				
