@@ -142,7 +142,7 @@ Page.Job = class Job extends Page.PageUtils {
 				case 'success': banner_icon = 'check-circle'; break;
 				case 'warning': banner_icon = 'alert-rhombus'; prefix = 'Warning: '; break;
 				case 'error': banner_icon = 'alert-decagram'; prefix = 'Error (' + job.code + '): '; break;
-				case 'critical': banner_icon = 'flash-alert'; prefix = 'Critical: '; break;
+				case 'critical': banner_icon = 'fire-alert'; prefix = 'Critical: '; break;
 				case 'abort': banner_icon = 'cancel'; prefix = 'Job Aborted: '; break;
 			}
 			
@@ -523,6 +523,7 @@ Page.Job = class Job extends Page.PageUtils {
 			// in progress
 			this.updateLiveJobStats();
 			this.setupLiveJobLog();
+			this.updateSuspensionStatus();
 		}
 		else {
 			// completed
@@ -545,6 +546,118 @@ Page.Job = class Job extends Page.PageUtils {
 			this.setupActiveWorkflow();
 			this.renderWorkflowJobs();
 		}
+		
+		// jump straight into resume dialog if requested on URL
+		if (this.args.resume) this.doResumeJob();
+	}
+	
+	updateSuspensionStatus() {
+		// show or hide suspension status banner
+		// called on page load and jobsChanged
+		var $banner = this.div.find('#d_sus_banner');
+		
+		if (this.job.suspended) {
+			// job is suspended
+			if ($banner.length) return; // already visible
+			var html = '';
+			
+			html += '<div id="d_sus_banner" class="box message inline suspended" onClick="$P().doResumeJob()">';
+				html += '<div class="message_inner" style="cursor:pointer">';
+					html += `<div style="float:right"><i class="mdi mdi-play">&nbsp;</i>Click to resume...</div>`;
+					html += '<i class="mdi mdi-motion-pause-outline">&nbsp;&nbsp;&nbsp;</i>';
+					html += `This job has been suspended, and requires manual user intervention.`;
+				html += '</div>';
+			html += '</div>';
+			
+			this.div.find('#d_job_summary').before(html);
+			app.showMessage('suspended', `This job has been suspended, and requires manual user intervention. Click to resume...`, 0, this.doResumeJob.bind(this) );
+		}
+		else {
+			// job is not suspended
+			if ($banner.length) $banner.remove();
+			
+			// only remove our toast, not the workflow (non-clicky) toast
+			$('div.toast.suspended.clicky').remove();
+		}
+	}
+	
+	doResumeJob(job) {
+		// show dialog to resume suspended job
+		// collect user fields if necessary
+		var self = this;
+		var title = "Resume Suspended Job";
+		var btn = ['motion-play-outline', 'Resume'];
+		var html = '';
+		
+		if (!job) job = this.job;
+		if (typeof(job) == 'string') job = app.activeJobs[job];
+		if (!job) return; // sanity
+		
+		if (!job.suspended) return; // sanity -- this is for suspended jobs only
+		if (!job.workflow || !job.workflow.job) return; // sanity -- must be wf sub-job
+		
+		var $toast = $('div.toast.suspended');
+		if ($toast.length && !$toast.is(':animated')) $toast.fadeOut( 250, function() { $(this).remove(); } );
+		
+		// possibly show user fields to collect values
+		var fields = [];
+		var event = null;
+		
+		if ((job.state == 'starting') && (job.type != 'adhoc')) {
+			// job is starting, so use current job's event's fields
+			event = find_object( app.events, { id: job.event } );
+			if (event && event.fields) fields = event.fields;
+		}
+		
+		app.clearError();
+		
+		var thing = '';
+		if (job.id == this.job.id) thing = 'the current job';
+		else {
+			thing = 'suspended job #' + job.id;
+			if (event) thing += ` (${event.title})`;
+		}
+		
+		if (fields.length) {
+			// event has custom fields and job is starting
+			html += `<div class="dialog_intro">Are you sure you want to resume ${thing}?  Please enter values for all the event-defined parameters below.</div>`;
+			html += '<div class="dialog_box_content scroll maximize">';
+			
+			// user form fields
+			html += this.getFormRow({
+				label: 'User Parameters:',
+				content: '<div class="plugin_param_editor_cont">' + this.getParamEditor(fields, job.params) + '</div>',
+				// caption: 'Enter values for all the event-defined parameters here.'
+			});
+			
+			html += '</div>';
+		}
+		else {
+			// no user fields
+			html += `Are you sure you want to resume ${thing}?`;
+		}
+		
+		Dialog.confirm( title, html, btn, function(result) {
+			if (!result) return;
+			app.clearError();
+			
+			var values = {};
+			if (fields.length) {
+				values = self.getParamValues(fields);
+				if (!values) return; // validation error
+			}
+			
+			Dialog.showProgress( 1.0, "Resuming Job..." );
+			
+			app.api.post( 'app/resume_job', { id: job.id, params: values }, function(resp) {
+				Dialog.hideProgress();
+				if (!self.active) return; // sanity
+				
+				app.showMessage('success', "The job was resumed successfully.");
+			} ); // api.post
+		}); // Dialog.confirm
+		
+		Dialog.autoResize();
 	}
 	
 	doCreateTicket() {
@@ -826,7 +939,14 @@ Page.Job = class Job extends Page.PageUtils {
 			// setup active job trackers for each node
 			var $cont = this.wfGetContainer();
 			$cont.find('.wf_node.wf_event').each( function() {
-				$(this).append('<div class="wf_active_bar"><div class="wf_active_widget wf_jobs" style="display:none"></div><div class="wf_active_widget wf_queued" style="display:none"></div><div class="clear"></div></div>');
+				$(this).append(
+					'<div class="wf_active_bar">' + 
+						'<div class="wf_active_widget wf_jobs" style="display:none"></div>' + 
+						'<div class="wf_active_widget wf_suspended" style="display:none"></div>' + 
+						'<div class="wf_active_widget wf_queued" style="display:none"></div>' + 
+						'<div class="clear"></div>' + 
+					'</div>'
+				);
 			} );
 		}
 	}
@@ -837,6 +957,7 @@ Page.Job = class Job extends Page.PageUtils {
 		var self = this;
 		var workflow = this.job.workflow;
 		var html = '';
+		var num_sus = 0;
 		
 		// active jobs on top, sorted
 		var rows = Object.values(app.activeJobs).filter( function(job) {
@@ -885,30 +1006,58 @@ Page.Job = class Job extends Page.PageUtils {
 		};
 		
 		html += this.getBasicGrid( grid_args, function(job, idx) {
-			if (!job.completed) return [
-				'<b>' + self.getNiceJob(job, true) + '</b>',
-				// self.getNiceJobSource(job),
-				// self.getShortDateTime( job.started ),
-				self.getNiceJobEvent(job, true),
-				self.getNiceCategory(job.category, true),
-				'<div id="d_wf_jt_server_' + job.id + '">' + self.getNiceServer(job.server, true) + '</div>',
-				'<div id="d_wf_jt_state_' + job.id + '">' + self.getNiceJobState(job) + '</div>',
-				'<div id="d_wf_jt_elapsed_' + job.id + '">' + self.getNiceJobElapsedTime(job, false) + '</div>',
-				'<div id="d_wf_jt_progress_' + job.id + '">' + self.getNiceJobProgressBar(job) + '</div>',
-				// '<div id="d_wf_jt_remaining_' + job.id + '">' + self.getNiceJobRemainingTime(job, false) + '</div>',
+			var actions = [];
+			var tds = [];
+			
+			if (job.category) {
+				var category = find_object( app.categories, { id: job.category } );
+				if (category && category.color) tds.className = 'clr_' + category.color;
+			}
+			
+			if (!job.final) {
+				// job in progress
+				if (app.hasPrivilege('abort_jobs')) {
+					actions.push('<span class="link danger" onClick="$P().doAbortJob(\'' + job.id + '\')"><b>Abort Job</b></a>');
+				}
+				if (job.suspended && app.hasPrivilege('run_jobs')) {
+					actions = []; // replace abort with resume
+					actions.push('<span class="link" onClick="$P().doResumeJob(\'' + job.id + '\')"><b>Resume Job...</b></a>');
+				}
 				
-				'<span class="link danger" onClick="$P().doAbortJob(\'' + job.id + '\')"><b>Abort Job</b></a>'
-			];
-			else return [
-				'<b>' + self.getNiceJob(job, true) + '</b>',
-				self.getNiceJobEvent(job, true),
-				self.getNiceCategory(job.category, true),
-				self.getNiceServer(job.server, true),
-				self.getNiceJobState(job),
-				self.getNiceJobElapsedTime(job, false),
-				self.getNiceJobResult(job),
-				`<a href="#Job?id=${job.id}"><b>View Details...</b></a>`
-			];
+				tds = [
+					'<b>' + self.getNiceJob(job, true) + '</b>',
+					// self.getNiceJobSource(job),
+					// self.getShortDateTime( job.started ),
+					self.getNiceJobEvent(job, true),
+					self.getNiceCategory(job.category, true),
+					'<div id="d_wf_jt_server_' + job.id + '">' + self.getNiceServer(job.server, true) + '</div>',
+					'<div id="d_wf_jt_state_' + job.id + '">' + self.getNiceJobState(job) + '</div>',
+					'<div id="d_wf_jt_elapsed_' + job.id + '">' + self.getNiceJobElapsedTime(job, false) + '</div>',
+					'<div id="d_wf_jt_progress_' + job.id + '">' + self.getNiceJobProgressBar(job) + '</div>',
+					// '<div id="d_wf_jt_remaining_' + job.id + '">' + self.getNiceJobRemainingTime(job, false) + '</div>',
+					actions.join(' | ') || 'n/a'
+				];
+				
+				if (job.suspended) {
+					tds.className = 'suspended';
+					num_sus++;
+				}
+			}
+			else {
+				// job complete
+				tds = [
+					'<b>' + self.getNiceJob(job, true) + '</b>',
+					self.getNiceJobEvent(job, true),
+					self.getNiceCategory(job.category, true),
+					self.getNiceServer(job.server, true),
+					self.getNiceJobState(job),
+					self.getNiceJobElapsedTime(job, false),
+					self.getNiceJobResult(job),
+					`<a href="#Job?id=${job.id}"><b>View Details...</b></a>`
+				];
+			}
+			
+			return tds;
 		} );
 		
 		this.div.find('#d_job_wf_jobs > .box_content').html(html);
@@ -918,6 +1067,13 @@ Page.Job = class Job extends Page.PageUtils {
 		
 		// we have to fetch queued job information separately
 		if (!this.job.final) this.getWorkflowQueueSummary();
+		
+		// show orange notification if sus level has increased
+		if (!this.lastSuspendedCount) this.lastSuspendedCount = 0;
+		if (!this.job.final && (num_sus > this.lastSuspendedCount)) {
+			this.lastSuspendedCount = num_sus;
+			if (!$('div.toast.suspended').length) app.showMessage('suspended', `One or more workflow jobs have been suspended, and require manual user intervention.`);
+		}
 	}
 	
 	doAbortJob(id) {
@@ -940,6 +1096,10 @@ Page.Job = class Job extends Page.PageUtils {
 		var workflow = this.job.workflow;
 		var $cont = this.wfGetContainer();
 		
+		var wf_jobs = Object.values(app.activeJobs).filter( function(job) {
+			return job.workflow && job.workflow.job && (job.workflow.job == self.job.id);
+		} );
+		
 		workflow.nodes.forEach( function(node) {
 			var state = workflow.state[node.id] || {};
 			var $elem = $cont.find(`#d_wfn_${node.id}`);
@@ -953,12 +1113,28 @@ Page.Job = class Job extends Page.PageUtils {
 			}
 			else if (node.type.match(/^(event|job)$/)) {
 				// event and job types are more complex
-				var jobs = Object.values(app.activeJobs).filter( function(job) {
-					return job.workflow && job.workflow.job && (job.workflow.job == self.job.id) && (job.workflow.node == node.id) && (job.state == 'active');
-				} );
-				var num_jobs = jobs.length;
+				var num_jobs = 0;
+				var num_sus = 0;
 				var num_completed = 0;
 				var num_success = 0;
+				
+				wf_jobs.forEach( function(job) {
+					if (job.workflow.node == node.id) {
+						if (job.state == 'active') num_jobs++;
+						else if (job.suspended) num_sus++;
+					}
+				} );
+				
+				if (num_sus) {
+					// one or more jobs suspended for node
+					$elem.find('> .wf_active_bar > .wf_active_widget.wf_suspended').show().html( `<i class="mdi mdi-motion-pause-outline"></i><span>${commify(num_sus)}</span>` );
+					$elem.toggleClass('wf_suspended', true);
+				}
+				else {
+					// no sus jobs, hide bar widget
+					$elem.find('> .wf_active_bar > .wf_active_widget.wf_suspended').hide().html('');
+					$elem.toggleClass('wf_suspended', false);
+				}
 				
 				if (num_jobs) {
 					// one or more jobs active for node
@@ -981,7 +1157,7 @@ Page.Job = class Job extends Page.PageUtils {
 					$elem.toggleClass('wf_error', !!(num_completed && (num_success < num_completed)) );
 				}
 				
-				$elem.toggleClass('disabled', !num_jobs && !num_completed);
+				$elem.toggleClass('disabled', !num_jobs && !num_completed && !num_sus);
 				
 				// decorate limits too
 				find_objects( workflow.connections, { source: node.id } ).forEach( function(conn) {
@@ -1200,14 +1376,6 @@ Page.Job = class Job extends Page.PageUtils {
 		// we're only interested in actions that actually fired (and aren't hidden)
 		var actions = this.actions = (job.actions || []).filter( function(action) { return !!(action.date && !action.hidden); } );
 		
-		// if workflow, add sub-job actions that fired
-		if (this.isWorkflow) {
-			find_objects(workflow.nodes, { type: 'action' }).forEach( function(node) {
-				var state = workflow.state[node.id] || null;
-				if (state && state.date) actions.push( state );
-			} );
-		}
-		
 		// decorate actions with idx, for linking
 		actions.forEach( function(action, idx) { action.idx = idx; } );
 		
@@ -1350,7 +1518,7 @@ Page.Job = class Job extends Page.PageUtils {
 				if (item.err) return [ '(Job deleted)', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a', 'n/a' ];
 				
 				var reason = job.jobs[idx].reason;
-				return [
+				var tds = [
 					'<b>' + self.getNiceJob(item, true) + '</b>',
 					ucfirst(reason),
 					self.getNiceJobEvent(item, true),
@@ -1360,6 +1528,13 @@ Page.Job = class Job extends Page.PageUtils {
 					self.getNiceJobResult(item)
 					// '<a href="#Job?id=' + item.id + '"><b>Details</b></a>'
 				];
+				
+				if (item.category) {
+					var category = find_object( app.categories, { id: item.category } );
+					if (category && category.color) tds.className = 'clr_' + category.color;
+				}
+				
+				return tds;
 			}); // grid
 			
 			$('#d_job_add_jobs > div.box_content').html( html );
@@ -1616,6 +1791,10 @@ Page.Job = class Job extends Page.PageUtils {
 	getEmptyLogMessageHTML() {
 		// get custom empty log message for job state
 		var html = '';
+		
+		if (this.job.suspended) {
+			return 'Job is currently in state:&nbsp;&nbsp;' + this.getNiceJobState(this.job);
+		}
 		
 		switch (this.job.state) {
 			case 'queued':
@@ -2802,6 +2981,9 @@ Page.Job = class Job extends Page.PageUtils {
 		// for workflows, if jobs changed, redraw our special table
 		if (this.isWorkflow && data.jobsChanged) this.renderWorkflowJobs();
 		
+		// if jobs changed, update suspension status
+		if (data.jobsChanged) this.updateSuspensionStatus();
+		
 		// if (!updates || ((old_state != 'complete') && (this.job.state == 'complete'))) {
 		// 	// job has completed under our noses!  reload page!
 		// 	Debug.trace('job', "Job has completed, refreshing page");
@@ -2877,6 +3059,7 @@ Page.Job = class Job extends Page.PageUtils {
 		delete this.wfZoom;
 		delete this.wfSelection;
 		delete this.isWorkflow;
+		delete this.lastSuspendedCount;
 		
 		// destroy charts if applicable
 		if (this.charts) {
@@ -2885,6 +3068,8 @@ Page.Job = class Job extends Page.PageUtils {
 			}
 			delete this.charts;
 		}
+		
+		$('div.toast.suspended').remove();
 		
 		this.div.html( '' );
 		return true;
