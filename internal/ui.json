@@ -120,6 +120,7 @@
 		"job_abort": "Job aborted: #[description]: [reason]",
 		"job_delete": "Job deleted: #[description]",
 		"job_delete_file": "Job file deleted: #[description]: [path]",
+		"job_resume": "Job has been resumed: #[description]",
 		"queue_flush": "Flushed job queue for event: #[description]",
 		
 		"group_create": "Server group created: [description] ([group.id])",
@@ -1046,6 +1047,7 @@
 		{ "id": "store", "title": "Store Bucket", "icon": "import" },
 		{ "id": "fetch", "title": "Fetch Bucket", "icon": "export" },
 		{ "id": "ticket", "title": "Create Ticket", "icon": "text-box-plus-outline" },
+		{ "id": "suspend", "title": "Suspend Job", "icon": "motion-pause-outline" },
 		{ "id": "disable", "title": "Disable Event", "icon": "cancel" },
 		{ "id": "delete", "title": "Delete Event", "icon": "trash-can-outline" },
 		{ "id": "plugin", "title": "Plugin", "icon": "power-plug" }
