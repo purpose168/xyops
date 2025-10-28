@@ -1354,7 +1354,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			node.data.tags = $('#fe_wfde_tags').val();
 			
 			var event = find_object( app.events, { id: node.data.event } );
-			node.data.params = self.getParamValues(event.fields);
+			node.data.params = self.getParamValues(event.fields, false); // do not validate here
 			if (!node.data.params) return; // invalid
 			
 			Dialog.hide();
