@@ -868,7 +868,7 @@ Page.Alerts = class Alerts extends Page.PageUtils {
 			return;
 		}
 		
-		var cols = ["Condition", "Type", "Description", "Date/Time", "Elapsed", "Result", "Actions"];
+		var cols = ["Condition", "Type", "Source", "Description", "Date/Time", "Elapsed", "Result", "Actions"];
 		var html = '';
 		
 		var grid_args = {
@@ -888,10 +888,9 @@ Page.Alerts = class Alerts extends Page.PageUtils {
 			if (link) view_details = '<span class="link" onClick="' + link + '">View Details...</span>';
 			
 			return [
-				// '<b><i class="mdi mdi-' + disp.condition.icon + '">&nbsp;</i>' + disp.condition.title + '</b>',
 				'<span class="link nowrap" onClick="' + link + '"><b><i class="mdi mdi-' + disp.condition.icon + '"></i>' + disp.condition.title + '</b></span>',
-				
 				'<i class="mdi mdi-' + disp.icon + '">&nbsp;</i>' + disp.type,
+				self.getNiceActionSource(item.source || 'alert'),
 				disp.desc,
 				self.getRelativeDateTime(item.date, true),
 				'<i class="mdi mdi-clock-check-outline">&nbsp;</i>' + get_text_from_ms_round( Math.floor(item.elapsed_ms), true),
