@@ -1778,7 +1778,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			content: this.getFormMenuSingle({
 				id: 'fe_nt_type',
 				options: config.ui.ticket_types,
-				value: 'issue',
+				value: action.ticket_type || 'issue',
 				// 'data-shrinkwrap': 1
 			})
 		});
@@ -1789,7 +1789,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			content: this.getFormMenuMulti({
 				id: 'fe_nt_assignees',
 				options: app.users.map( function(user) { return { id: user.username, title: user.full_name, icon: user.icon || 'account' }; } ),
-				values: [ app.username ],
+				values: action.ticket_assignees || [ app.username ],
 				auto_add: true,
 				// 'data-shrinkwrap': 1
 			})
@@ -1802,7 +1802,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			content: this.getFormMenuMulti({
 				id: 'fe_nt_tags',
 				options: app.tags,
-				values: [],
+				values: action.ticket_tags || [],
 				// 'data-shrinkwrap': 1
 			})
 		});
