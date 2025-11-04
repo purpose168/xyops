@@ -507,7 +507,7 @@
 			},
 			"d_wfdj_targets": {
 				"label": "Targets:",
-				"caption": "Select groups and/or servers to run plugin jobs."
+				"caption": "Select groups and/or servers to run the plugin job."
 			},
 			"fe_wfdj_targets": {
 				"title": "Select targets for jobs",
