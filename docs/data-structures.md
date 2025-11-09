@@ -320,7 +320,6 @@ A notification channel is a way to send notifications to a group of users, and t
 	"run_event": "",
 	"sound": "attention-3.mp3",
 	"icon": "",
-	"shell_exec": "",
 	"revision": 3,
 	"max_per_day": 0
 }
@@ -361,10 +360,6 @@ An optional [Event.id](#event-id) to run when the channel is triggered.
 ## Channel.sound
 
 An optional sound effect to play to all subscribed users when the channel is triggered.  This should be a filename with a `.mp3` file extension.  See [Sound Effects](https://github.com/pixlcore/xyops/htdocs/sounds/) for the list of available sound effects to choose from.
-
-## Channel.shell_exec
-
-An optional shell command to execute when the channel is triggered.
 
 ## Channel.max_per_day
 
