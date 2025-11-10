@@ -4187,31 +4187,111 @@ Deletion removes the ticket permanently. References to the ticket in jobs and al
 
 ### Usage
 
-User APIs manage user accounts. Use them to list, fetch, create, update, and delete users, and to manage avatars or passwords where applicable. User changes are audited in the activity log. Creating and updating users requires administrative privileges; read operations require appropriate permissions.
-
-### create_user
-
-### update_user
-
-### delete_user
+User APIs manage user accounts.  Note that most user management APIs are handled in the [pixl-server-user](https://github.com/jhuckaby/pixl-server-user) component.  The only APIs listed here are those specific to xyOps.
 
 ### get_user_activity
 
+```
+GET /api/app/get_user_activity/v1
+```
+
+Fetch activity log entries for the current user (e.g., logins, password changes), with pagination. Requires a valid user session or API Key. Both HTTP GET with query parameters and HTTP POST with JSON are accepted.
+
+Parameters:
+
+| Property Name | Type | Description |
+|---------------|------|-------------|
+| `offset` | Number | Zero-based index into the activity list (default `0`). |
+| `limit` | Number | Number of rows to return (default `50`). |
+
+Example response:
+
+```json
+{
+  "code": 0,
+  "rows": [
+    {
+      "action": "user_login",
+      "session_id": "...",
+      "ip": "203.0.113.5",
+      "created": 1755400000,
+      "headers": { "user-agent": "Mozilla/5.0 ..." },
+      "useragent": "Chrome 119.0 / macOS"
+    }
+  ],
+  "list": { "length": 42 }
+}
+```
+
+In addition to the [Standard Response Format](#standard-response-format), this includes a `rows` array with the user’s activity entries (most recent first), and a `list` object with pagination metadata. A `useragent` string is included for each row when available.
+
 ### user_settings
 
-### check_user_exists
+```
+POST /api/app/user_settings/v1
+```
+
+Update non-critical settings for the current user (e.g., UI preferences such as language, timezone, contrast, motion, volume). Critical properties are ignored server-side (passwords, salts, `active`, `privileges`, `roles`, `created`). Requires a valid user session.
+
+Parameters:
+
+| Property Name | Type | Description |
+|---------------|------|-------------|
+| (Other) | Various | Any non-critical [User](data-structures.md#user) fields such as `language`, `region`, `num_format`, `hour_cycle`, `timezone`, `color_acc`, `privacy_mode`, `effects`, `page_info`, `contrast`, `motion`, `volume`, or `icon`. |
+
+Example request:
+
+```json
+{
+  "language": "en-US",
+  "timezone": "America/Los_Angeles",
+  "contrast": "high",
+  "motion": "reduced"
+}
+```
+
+Example response:
+
+```json
+{
+  "code": 0,
+  "user": { /* sanitized user object without password/salt */ }
+}
+```
+
+In addition to the [Standard Response Format](#standard-response-format), this includes a `user` object containing the updated user with sensitive fields removed. Changes are persisted but not logged as critical activity.
 
 ### logout_all
 
-### upload_avatar
+```
+POST /api/app/logout_all/v1
+```
 
-### admin_upload_avatar
+Log out all sessions associated with the current user, except the current session. Requires a valid user session and the user’s current password.
 
-### delete_avatar
+Parameters:
 
-### admin_delete_avatar
+| Property Name | Type | Description |
+|---------------|------|-------------|
+| `password` | String | **(Required)** The current account password for verification. |
 
-### avatar
+Example request:
+
+```json
+{ "password": "correcthorsebatterystaple" }
+```
+
+Example response:
+
+```json
+{ "code": 0 }
+```
+
+Notes:
+
+- The operation runs in the background after the response is returned; any connected websockets are closed and sessions are deleted.
+- A session report is emailed when sessions were actually terminated.
+- Administrators can perform the same action for another user via [admin_logout_all](#admin_logout_all).
 
 
 
@@ -4268,6 +4348,8 @@ Administrative APIs provide system-wide maintenance and export/import utilities 
 ### admin_export_data
 
 ### admin_delete_data
+
+### admin_logout_all
 
 ### get_api_keys
 
