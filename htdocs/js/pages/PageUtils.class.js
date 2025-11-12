@@ -3529,7 +3529,16 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		if (!workflow.connections.length) return;
 		
 		ctx.save();
-		ctx.scale( window.devicePixelRatio * this.wfZoom, window.devicePixelRatio * this.wfZoom );
+		
+		if (app.safari && (this.wfZoom != 1)) {
+			// hack for safari user zoom (sigh)
+			var safari_zoom = window.outerWidth / window.innerWidth;
+			ctx.scale( (window.devicePixelRatio * this.wfZoom) / safari_zoom, (window.devicePixelRatio * this.wfZoom) / safari_zoom );
+		}
+		else {
+			// sane browsers
+			ctx.scale( window.devicePixelRatio * this.wfZoom, window.devicePixelRatio * this.wfZoom );
+		}
 		// ctx.translate( 0 - this.wfScroll.x, 0 - this.wfScroll.y );
 		
 		ctx.lineJoin = "round";
@@ -3611,9 +3620,19 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			a[1] + ((b[1] - a[1]) / 2),
 		];
 		
+		var x = Math.floor(c[0] - 16);
+		var y = Math.floor(c[1] - 16);
+		
+		if (app.safari && (this.wfZoom != 1)) {
+			// sigh
+			var safari_zoom = window.outerWidth / window.innerWidth;
+			x /= safari_zoom;
+			y /= safari_zoom;
+		}
+		
 		$(trig).css({
-			left: '' + Math.floor(c[0] - 16) + 'px',
-			top: '' + Math.floor(c[1] - 16) + 'px'
+			left: '' + x + 'px',
+			top: '' + y + 'px'
 		});
 	}
 	
