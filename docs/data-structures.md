@@ -2803,15 +2803,28 @@ When limits are assigned to categories, they act as defaults for events in that 
 
 Each limit has a `type` property which specifies what it governs.  The different types are described below:
 
-| Type ID | Description |
-|---------|-------------|
-| `time` | Set a maximum run time for jobs.  The limit should be in a property named `duration`, specified as seconds. |
-| `job` | Set a maximum number of concurrent jobs for the event.  The number should be a in property named `amount`. |
-| `log` | Set a maximum limit on the log file size for jobs.  The limit should be in a property named `amount`, specified as bytes. |
-| `mem` | Set a maximum limit for memory usage for jobs (includes all child processes).  The limit should be in a property named `amount`, specified as bytes.  The sustain duration should be in a property named `duration`, specified as seconds. |
-| `cpu` | Set a maximum limit for CPU usage for jobs (includes all child processes).  The limit should be in a property named `amount`, specified as a percentage of one CPU core.  The sustain duration should be in a property named `duration`, specified as seconds. |
-| `retry` | Set a maximum number of retries allowed for failed jobs.  The number of retries should be in a property named `amount`, and optionally the delay between retries should be in a property named `duration`, specified as seconds. |
-| `queue` | Set a maximum number of jobs that may be queued up, if other limits prevent them from running concurrently.  The number should be in a property named `amount`. |
+| Type ID | Title | Description |
+|---------|-------|-------------|
+| `time` | **Max Run Time** | Set a maximum run time for jobs.  The limit should be in a property named `duration`, specified as seconds. |
+| `job` | **Max Concurrent Jobs** | Set a maximum number of concurrent jobs for the event.  The number should be a in property named `amount`. |
+| `log` | **Max Output Size** | Set a maximum limit on the output size for jobs.  The limit should be in a property named `amount`, specified as bytes. |
+| `mem` | **Max Memory Limit** | Set a maximum limit for memory usage for jobs (includes all child processes).  The limit should be in a property named `amount`, specified as bytes.  The sustain duration should be in a property named `duration`, specified as seconds. |
+| `cpu` | **Max CPU % Limit** | Set a maximum limit for CPU usage for jobs (includes all child processes).  The limit should be in a property named `amount`, specified as a percentage of one CPU core.  The sustain duration should be in a property named `duration`, specified as seconds. |
+| `retry` | **Max Retry Limit** | Set a maximum number of retries allowed for failed jobs.  The number of retries should be in a property named `amount`, and optionally the delay between retries should be in a property named `duration`, specified as seconds. |
+| `queue` | **Max Queue Limit** | Set a maximum number of jobs that may be queued up, if other limits prevent them from running concurrently.  The number should be in a property named `amount`. |
+| `file` | **Max File Limit** | Set a limit on the number and types of files allowed by the job.  This is a soft limit, and does not abort the job (the files are pruned if limits exceeded). |
+
+The **Max Run Time** (`time`), **Max Memory Limit** (`mem`), **Max CPU % Limit** (`cpu`) and **Max Output Size** (`log`) limit types all accept a set of additional parameters that enable special actions to take place when the limit is exceeded:
+
+| Property Name | Type | Description |
+|---------------|------|-------------|
+| `tags` | Array | An optional set of [Tag.id](data-structures.md#tag-id)s to apply to the job when the limit is exceeded. |
+| `users` | Array | An optional set of [User.username](data-structures.md#user-username)s to send an email to about the limit violation. |
+| `email` | String | An optional list of custom email addresses (in CSV format) to send to. |
+| `web_hook` | String | An optional [WebHook.id](data-structures.md#webhook-id) to fire when the limit is exceeded. |
+| `text` | String | If `web_hook` is populated, this can contain a custom text string to append to the web hook text. |
+| `snapshot` | Boolean | If set to `true`, a [server snapshot](snapshots.md) is taken when the limit is exceeded. |
+| `abort` | Boolean | If set to `true`, the job is aborted when the limit is exceeded. |
 
 ## Trigger
 
