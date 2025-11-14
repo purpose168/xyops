@@ -308,7 +308,7 @@ Example (launch at :05, :20, :35, :50 within each matched minute):
 
 ### Plugin
 
-Use a custom Scheduler Plugin to decide whether to launch on each minute for this event. The plugin runs with configured parameters and returns a launch/no‑launch decision per minute.
+Use a custom [Trigger Plugin](plugins.md#trigger-plugins) to decide whether to launch on each minute for this event. The plugin runs with configured parameters and returns a launch/no‑launch decision per minute.
 
 Parameters:
 
@@ -333,6 +333,8 @@ Example:
   "timezone": "UTC"
 }
 ```
+
+See [Trigger Plugins](plugins.md#trigger-plugins) for more details.
 
 ## Notes on Workflows
 
