@@ -10,7 +10,7 @@ Storage Buckets provide durable, shareable storage for jobs and workflows. A buc
 - Job integration: Fetch at job start; store on job completion based on action conditions.
 - Direct links: Files in buckets are downloadable by URL.
 
-See the [Bucket](data-structures.md#bucket) data structure and the [Bucket APIs](api.md#buckets) for full technical details.
+See the [Bucket](data.md#bucket) data structure and the [Bucket APIs](api.md#buckets) for full technical details.
 
 ## When To Use
 
@@ -85,7 +85,7 @@ Example (JSON):
 
 Parameters used by both actions:
 
-- `bucket_id`: Target [Bucket.id](data-structures.md#bucket-id).
+- `bucket_id`: Target [Bucket.id](data.md#bucket-id).
 - `bucket_sync`: One of `data`, `files`, or `data_and_files` to control what is fetched/stored.
 - `bucket_glob`: Optional glob pattern to filter which files are included (default `*`).
 
@@ -116,7 +116,7 @@ GET https://your.xyops.example.com/files/bucket/bme4wi6pg35/bdY8zZ9nKynfFUb4xH6f
 
 ## See Also
 
-- Data structures: [Bucket](data-structures.md#bucket)
+- Data structures: [Bucket](data.md#bucket)
 - APIs: [Buckets](api.md#buckets)
 - Actions: [Store Bucket](actions.md#store-bucket), [Fetch Bucket](actions.md#fetch-bucket)
 - Privileges: [Buckets](privileges.md#buckets)

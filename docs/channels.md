@@ -54,7 +54,7 @@ Channels support an optional per‑day cap. When the limit is reached, the chann
 
 ## Channel Object
 
-Channels are first‑class objects with these key properties. See the canonical definition in [Channel](data-structures.md#channel).
+Channels are first‑class objects with these key properties. See the canonical definition in [Channel](data.md#channel).
 
 - `id`: Unique alphanumeric identifier. If omitted on creation, xyOps auto‑generates one.
 - `title`: Display title shown in the UI and notifications.
@@ -62,8 +62,8 @@ Channels are first‑class objects with these key properties. See the canonical 
 - `icon`: Optional Material Design icon name for UI display.
 - `users`: Array of usernames to notify. Used for both email lookup and in‑app notifications.
 - `email`: Optional comma‑separated email address list (external recipients).
-- `web_hook`: Optional [WebHook.id](data-structures.md#webhook-id) to fire.
-- `run_event`: Optional [Event.id](data-structures.md#event-id) to launch.
+- `web_hook`: Optional [WebHook.id](data.md#webhook-id) to fire.
+- `run_event`: Optional [Event.id](data.md#event-id) to launch.
 - `sound`: Optional `.mp3` filename to play for channel users in the UI notification.
 - `max_per_day`: Optional cap on channel invocations per day (0 = unlimited).
 - `notes`: Optional free‑form notes.
@@ -154,7 +154,7 @@ See [Channels API](api.md#channels) for more API details.
 
 - API: [Channels](api.md#channels)
 - Actions: [Actions](actions.md)
-- Data structures: [Channel](data-structures.md#channel)
+- Data structures: [Channel](data.md#channel)
 - Privileges: [Privileges](privileges.md)
 - Web Hooks: [Web Hooks](web-hooks.md)
 - Events: [Events](events.md)

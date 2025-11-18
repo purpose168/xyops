@@ -68,7 +68,7 @@ Some action types are job-only and cannot be used with alerts:
 
 ## Action Object
 
-All [Action](data-structures.md#action) objects include these common properties:
+All [Action](data.md#action) objects include these common properties:
 
 | Property | Type | Description |
 |---------|------|-------------|
@@ -88,7 +88,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `users` | Array<String> | Optional | Array of [User.username](data-structures.md#user-username) values to email. |
+| `users` | Array<String> | Optional | Array of [User.username](data.md#user-username) values to email. |
 | `email` | String | Optional | One or more additional recipients, comma-separated. |
 
 Example (job error):
@@ -123,7 +123,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `web_hook` | String | Yes | The [WebHook.ID](data-structures.md#webhook-id) for the hook. |
+| `web_hook` | String | Yes | The [WebHook.ID](data.md#webhook-id) for the hook. |
 | `text` | String | Optional | Extra text appended to the generated message text. |
 
 Example (job critical):
@@ -159,7 +159,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `event_id` | String | Yes | Target [Event.id](data-structures.md#event-id) to run. |
+| `event_id` | String | Yes | Target [Event.id](data.md#event-id) to run. |
 | `params` | Object | Optional | Override parameters for the launched event. |
 
 Example (job warning):
@@ -195,7 +195,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `channel_id` | String | Yes | Notification [Channel.id](data-structures.md@channel-id). |
+| `channel_id` | String | Yes | Notification [Channel.id](data.md@channel-id). |
 
 Example (job error):
 
@@ -257,9 +257,9 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `ticket_type` | String | Yes | See [Ticket.type](data-structures.md#ticket-type) (e.g., `issue`, `task`, etc.). |
-| `ticket_assignees` | Array<String> | Yes | Array of [User.username](data-structures.md#user-username) assignees. |
-| `ticket_tags` | Array<String> | Optional | Array of [Tag.id](data-structures.md#tag-id) values. |
+| `ticket_type` | String | Yes | See [Ticket.type](data.md#ticket-type) (e.g., `issue`, `task`, etc.). |
+| `ticket_assignees` | Array<String> | Yes | Array of [User.username](data.md#user-username) assignees. |
+| `ticket_tags` | Array<String> | Optional | Array of [Tag.id](data.md#tag-id) values. |
 
 Example (job error):
 
@@ -297,7 +297,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `plugin_id` | String | Yes | The [Plugin.id](data-structures.md#plugin-id) of a plugin with `type: "action"`. |
+| `plugin_id` | String | Yes | The [Plugin.id](data.md#plugin-id) of a plugin with `type: "action"`. |
 | `params` | Object | Optional | Plugin-defined parameter values. |
 
 Example (job success):
@@ -334,9 +334,9 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `users` | Array<String> | Optional | Array of [User.username](data-structures.md#user-username) values to email. |
+| `users` | Array<String> | Optional | Array of [User.username](data.md#user-username) values to email. |
 | `email` | String | Optional | One or more additional recipients, comma-separated. |
-| `web_hook` | String | Optional | [WebHook.id](data-structures.md#webhook-id) to fire on suspension. |
+| `web_hook` | String | Optional | [WebHook.id](data.md#webhook-id) to fire on suspension. |
 | `text` | String | Optional | Extra text appended to the suspension web hook message. |
 
 Example (job start):
@@ -393,7 +393,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `bucket_id` | String | Yes | [Bucket.id](data-structures.md#bucket-id) target. |
+| `bucket_id` | String | Yes | [Bucket.id](data.md#bucket-id) target. |
 | `bucket_sync` | String | Yes | Controls what types of data are stored.  One of `data`, `files`, `data_and_files`. |
 | `bucket_glob` | String | Optional | Glob pattern to match selective job files and only store those (default `*`). |
 
@@ -420,7 +420,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `bucket_id` | String | Yes | [Bucket.id](data-structures.md#bucket-id) target. |
+| `bucket_id` | String | Yes | [Bucket.id](data.md#bucket-id) target. |
 | `bucket_sync` | String | Yes | Controls what types of data are fetched.  One of `data`, `files`, `data_and_files`. |
 | `bucket_glob` | String | Optional | Glob pattern to match selective job files and only fetch those (default `*`). |
 
@@ -446,5 +446,5 @@ Example (job start):
 
 ## See Also
 
-- Data structures: [Action](data-structures.md#action)
+- Data structures: [Action](data.md#action)
 - Alerts: [Alerts](alerts.md)

@@ -30,7 +30,7 @@ Minimal category example (JSON format):
 }
 ```
 
-See the full data shape: [Category](data-structures.md#category)
+See the full data shape: [Category](data.md#category)
 
 ## Defaults: Actions and Limits
 

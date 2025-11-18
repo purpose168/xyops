@@ -1,6 +1,6 @@
 # Alerts
 
-Alerts evaluate live server data and trigger actions when conditions are met. In xyOps, an alert is defined once (the “definition”) and may fire many times across servers (each firing is an “invocation”). Alerts are evaluated every minute on the master using the most recent [ServerMonitorData](data-structures.md#servermonitordata) collected from each server.
+Alerts evaluate live server data and trigger actions when conditions are met. In xyOps, an alert is defined once (the “definition”) and may fire many times across servers (each firing is an “invocation”). Alerts are evaluated every minute on the master using the most recent [ServerMonitorData](data.md#servermonitordata) collected from each server.
 
 Use alerts to detect system conditions (e.g., high CPU, low memory, disk full, job spikes), notify teams, attach context via snapshots, open tickets, run jobs, and optionally limit or abort jobs on affected servers.
 
@@ -19,7 +19,7 @@ Use alerts to detect system conditions (e.g., high CPU, low memory, disk full, j
 Per incoming minute of server data:
 
 1. xyOps evaluates each enabled alert definition whose group scope matches the server.
-2. The alert’s expression (JavaScript format) runs against the current [ServerMonitorData](data-structures.md#servermonitordata) snapshot.
+2. The alert’s expression (JavaScript format) runs against the current [ServerMonitorData](data.md#servermonitordata) snapshot.
 3. If the expression returns true, the alert’s internal sample counter increments. If false and previously incremented, the counter decrements toward zero.
 4. When the counter first reaches the max samples, an invocation is created and actions run. When the counter subsequently returns to zero, the invocation is cleared and cleared actions run.
 
@@ -31,7 +31,7 @@ Notes:
 
 ## Alert Expressions
 
-An alert expression is a JavaScript-style expression evaluated by [jexl](https://www.npmjs.com/package/jexl) against the current [ServerMonitorData](data-structures.md#servermonitordata). Common entry points include:
+An alert expression is a JavaScript-style expression evaluated by [jexl](https://www.npmjs.com/package/jexl) against the current [ServerMonitorData](data.md#servermonitordata). Common entry points include:
 
 - `cpu`: CPU stats and hardware information.
 - `memory`: Total/available memory, etc.
@@ -71,7 +71,7 @@ Tips:
 
 ## Alert Messages
 
-The alert message is a string with `{{ ... }}` macros evaluated against the same [ServerMonitorData](data-structures.md#servermonitordata) context used for expressions. This lets you include formatted, contextual details in notifications, tickets and logs.
+The alert message is a string with `{{ ... }}` macros evaluated against the same [ServerMonitorData](data.md#servermonitordata) context used for expressions. This lets you include formatted, contextual details in notifications, tickets and logs.
 
 Example:
 
@@ -181,6 +181,6 @@ Users without these privileges can still read definitions and view active alerts
 
 ## See Also
 
-- Data structures: [Alert](data-structures.md#alert) and [AlertInvocation](data-structures.md#alertinvocation)
+- Data structures: [Alert](data.md#alert) and [AlertInvocation](data.md#alertinvocation)
 - API: [Alerts](api.md#alerts)
-- Monitoring data context: [ServerMonitorData](data-structures.md#servermonitordata)
+- Monitoring data context: [ServerMonitorData](data.md#servermonitordata)

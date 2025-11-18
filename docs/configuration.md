@@ -268,7 +268,7 @@ This object defines system-wide web hook triggers that can fire on any logged ac
 
 This object provides message templates for jobs and alerts; Mustache-style placeholders populate human‑readable text for emails and web hooks (default includes templates like `{{links.job_details}}`).
 
-See [JobHookData](data-structures.md#jobhookdata) and [AlertHookData](data-structures.md#alerthookdata) for a list of the placeholder macros you can use here.
+See [JobHookData](data.md#jobhookdata) and [AlertHookData](data.md#alerthookdata) for a list of the placeholder macros you can use here.
 
 
 

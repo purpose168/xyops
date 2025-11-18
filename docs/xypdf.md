@@ -40,18 +40,18 @@ The following object types can be exported from xyOps and included in XYPDF file
 
 | Data Structure | Type ID | Notes |
 |----------------|---------|-------|
-| [Alert](data-structures.md#alert) | `alert` | - |
-| [APIKey](data-structures.md#apikey) | `api_key` | - |
-| [Bucket](data-structures.md#bucket) | `bucket` | Only includes bucket metadata, not actual files or data. |
-| [Category](data-structures.md#category) | `category` | - |
-| [Channel](data-structures.md#channel) | `channel` | - |
-| [Event](data-structures.md#event) | `event` | Workflows are part of this group, as they are just events with extra properties. |
-| [Group](data-structures.md#group) | `group` | - |
-| [Monitor](data-structures.md#monitor) | `monitor` | - |
-| [Plugin](data-structures.md#plugin) | `plugin` | - |
-| [Role](data-structures.md#role) | `role` | - |
-| [Tag](data-structures.md#tag) | `tag` | - |
-| [WebHook](data-structures.md#webhook) | `web_hook` | - |
+| [Alert](data.md#alert) | `alert` | - |
+| [APIKey](data.md#apikey) | `api_key` | - |
+| [Bucket](data.md#bucket) | `bucket` | Only includes bucket metadata, not actual files or data. |
+| [Category](data.md#category) | `category` | - |
+| [Channel](data.md#channel) | `channel` | - |
+| [Event](data.md#event) | `event` | Workflows are part of this group, as they are just events with extra properties. |
+| [Group](data.md#group) | `group` | - |
+| [Monitor](data.md#monitor) | `monitor` | - |
+| [Plugin](data.md#plugin) | `plugin` | - |
+| [Role](data.md#role) | `role` | - |
+| [Tag](data.md#tag) | `tag` | - |
+| [WebHook](data.md#webhook) | `web_hook` | - |
 
 ## Examples
 

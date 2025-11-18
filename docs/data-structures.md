@@ -2816,10 +2816,10 @@ The **Max Run Time** (`time`), **Max Memory Limit** (`mem`), **Max CPU % Limit**
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `tags` | Array | An optional set of [Tag.id](data-structures.md#tag-id)s to apply to the job when the limit is exceeded. |
-| `users` | Array | An optional set of [User.username](data-structures.md#user-username)s to send an email to about the limit violation. |
+| `tags` | Array | An optional set of [Tag.id](#tag-id)s to apply to the job when the limit is exceeded. |
+| `users` | Array | An optional set of [User.username](#user-username)s to send an email to about the limit violation. |
 | `email` | String | An optional list of custom email addresses (in CSV format) to send to. |
-| `web_hook` | String | An optional [WebHook.id](data-structures.md#webhook-id) to fire when the limit is exceeded. |
+| `web_hook` | String | An optional [WebHook.id](#webhook-id) to fire when the limit is exceeded. |
 | `text` | String | If `web_hook` is populated, this can contain a custom text string to append to the web hook text. |
 | `snapshot` | Boolean | If set to `true`, a [server snapshot](snapshots.md) is taken when the limit is exceeded. |
 | `abort` | Boolean | If set to `true`, the job is aborted when the limit is exceeded. |

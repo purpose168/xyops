@@ -101,7 +101,7 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 
 In addition to the [Standard Response Format](#standard-response-format), this API will also include a `rows` array containing information about every alert definition, and a `list` object containing list metadata.
 
-See [Alert](data-structures.md#alert) for details on the properties on each alert.
+See [Alert](data.md#alert) for details on the properties on each alert.
 
 ### get_alert
 
@@ -149,7 +149,7 @@ And an example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this API will also include an `alert` object containing information about the requested alert.
 
-See [Alert](data-structures.md#alert) for details on the alert properties.
+See [Alert](data.md#alert) for details on the alert properties.
 
 ### create_alert
 
@@ -157,7 +157,7 @@ See [Alert](data-structures.md#alert) for details on the alert properties.
 POST /api/app/create_alert/v1
 ```
 
-This creates a new alert definition.  The [create_alerts](privileges.md#create_alerts) privilege is required, as well as a valid user session or API Key.   The request must be sent as an HTTP POST with a JSON body.  See [Alert](data-structures.md#alert) for details on the input properties.  The `id`, `username`, `created` and `modified` properties may be omitted, as they are automatically generated.  Here is an example request:
+This creates a new alert definition.  The [create_alerts](privileges.md#create_alerts) privilege is required, as well as a valid user session or API Key.   The request must be sent as an HTTP POST with a JSON body.  See [Alert](data.md#alert) for details on the input properties.  The `id`, `username`, `created` and `modified` properties may be omitted, as they are automatically generated.  Here is an example request:
 
 ```json
 {
@@ -185,7 +185,7 @@ And an example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this API will also include an `alert` object containing the alert that was just created (including all the auto-generated properties).
 
-See [Alert](data-structures.md#alert) for details on the alert properties.
+See [Alert](data.md#alert) for details on the alert properties.
 
 ### update_alert
 
@@ -193,7 +193,7 @@ See [Alert](data-structures.md#alert) for details on the alert properties.
 POST /api/app/update_alert/v1
 ```
 
-This updates an existing alert definition, specified by its ID.  The [edit_alerts](privileges.md#edit_alerts) privilege is required, as well as a valid user session or API Key.  The request must be sent as an HTTP POST with a JSON body.  See [Alert](data-structures.md#alert) for details on the input properties.  The request is "shallow-merged" into the existing alert, so you can provide a sparse set of properties to update.  Here is an example request:
+This updates an existing alert definition, specified by its ID.  The [edit_alerts](privileges.md#edit_alerts) privilege is required, as well as a valid user session or API Key.  The request must be sent as an HTTP POST with a JSON body.  See [Alert](data.md#alert) for details on the input properties.  The request is "shallow-merged" into the existing alert, so you can provide a sparse set of properties to update.  Here is an example request:
 
 ```json
 {
@@ -316,7 +316,7 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 
 In addition to the [Standard Response Format](#standard-response-format), this API will also include a `rows` array containing information about every bucket definition, and a `list` object containing list metadata.
 
-See [Bucket](data-structures.md#bucket) for details on the properties on each bucket.
+See [Bucket](data.md#bucket) for details on the properties on each bucket.
 
 ### get_bucket
 
@@ -362,7 +362,7 @@ And here is an example response:
 }
 ```
 
-See [Bucket](data-structures.md#bucket) for details on the properties in the `bucket` object.  The `data` object will be populated with the bucket data, which is all user-defined.  The `files` array is a list of all the files in the bucket, if any.  To download a file, use the `path` property, prepended with the app's base URL (and a slash).
+See [Bucket](data.md#bucket) for details on the properties in the `bucket` object.  The `data` object will be populated with the bucket data, which is all user-defined.  The `files` array is a list of all the files in the bucket, if any.  To download a file, use the `path` property, prepended with the app's base URL (and a slash).
 
 ### create_bucket
 
@@ -370,7 +370,7 @@ See [Bucket](data-structures.md#bucket) for details on the properties in the `bu
 POST /api/app/create_bucket/v1
 ```
 
-This creates a new storage bucket.  The [create_buckets](privileges.md#create_buckets) privilege is required, as well as a valid user session or API Key.   The request must be sent as an HTTP POST with a JSON body.  See [Bucket](data-structures.md#bucket) for details on the input properties.  The `id`, `username`, `created` and `modified` properties may be omitted, as they are automatically generated.  Here is an example request:
+This creates a new storage bucket.  The [create_buckets](privileges.md#create_buckets) privilege is required, as well as a valid user session or API Key.   The request must be sent as an HTTP POST with a JSON body.  See [Bucket](data.md#bucket) for details on the input properties.  The `id`, `username`, `created` and `modified` properties may be omitted, as they are automatically generated.  Here is an example request:
 
 ```json
 {
@@ -397,7 +397,7 @@ In addition to the [Standard Response Format](#standard-response-format), this A
 
 As you can see in the above example, you can specify the user-defined bucket data along with the creation of the bucket itself.  Bucket files, however, need to be uploaded separately (see [upload_bucket_files](#upload_bucket_files)).
 
-See [Bucket](data-structures.md#bucket) for details on the bucket properties.
+See [Bucket](data.md#bucket) for details on the bucket properties.
 
 ### update_bucket
 
@@ -405,7 +405,7 @@ See [Bucket](data-structures.md#bucket) for details on the bucket properties.
 POST /api/app/update_bucket/v1
 ```
 
-This updates an existing storage bucket, specified by its ID.  The [edit_buckets](privileges.md#edit_buckets) privilege is required, as well as a valid user session or API Key.  The request must be sent as an HTTP POST with a JSON body.  See [Bucket](data-structures.md#bucket) for details on the input properties.  The request is "shallow-merged" into the existing bucket, so you can provide a sparse set of properties to update.  Here is an example request:
+This updates an existing storage bucket, specified by its ID.  The [edit_buckets](privileges.md#edit_buckets) privilege is required, as well as a valid user session or API Key.  The request must be sent as an HTTP POST with a JSON body.  See [Bucket](data.md#bucket) for details on the input properties.  The request is "shallow-merged" into the existing bucket, so you can provide a sparse set of properties to update.  Here is an example request:
 
 ```json
 {
@@ -544,7 +544,7 @@ Example response:
 }
 ```
 
-See [Category](data-structures.md#category) for details on category properties.
+See [Category](data.md#category) for details on category properties.
 
 ### get_category
 
@@ -589,7 +589,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `category` property containing the requested category definition.  See [Category](data-structures.md#category) for details on category properties.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `category` property containing the requested category definition.  See [Category](data.md#category) for details on category properties.
 
 ### create_category
 
@@ -597,7 +597,7 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 POST /api/app/create_category/v1
 ```
 
-Create a new category. Requires the [create_categories](privileges.md#create_categories) privilege and category-level access to the specified ID (for category-limited accounts), plus a valid user session or API Key. Send as HTTP POST with JSON. See [Category](data-structures.md#category) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, `revision`, and `sort_order` are set by the server.
+Create a new category. Requires the [create_categories](privileges.md#create_categories) privilege and category-level access to the specified ID (for category-limited accounts), plus a valid user session or API Key. Send as HTTP POST with JSON. See [Category](data.md#category) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, `revision`, and `sort_order` are set by the server.
 
 Example request:
 
@@ -626,7 +626,7 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 
 Notes:
 
-- The server validates [Limits](data-structures.md#limit) and [Actions](data-structures.md#action).
+- The server validates [Limits](data.md#limit) and [Actions](data.md#action).
 - `sort_order` is automatically assigned at the end of the current list.
 
 ### update_category
@@ -642,7 +642,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The category ID to update. |
-| (Other) | Various | Any updatable [Category](data-structures.md#category) fields (e.g. `title`, `enabled`, `color`, `notes`, `limits`, `actions`). |
+| (Other) | Various | Any updatable [Category](data.md#category) fields (e.g. `title`, `enabled`, `color`, `notes`, `limits`, `actions`). |
 
 Example request:
 
@@ -662,7 +662,7 @@ Example response:
 }
 ```
 
-See [Limit](data-structures.md#limit) and [Action](data-structures.md#action) for nested structures.
+See [Limit](data.md#limit) and [Action](data.md#action) for nested structures.
 
 ### delete_category
 
@@ -670,7 +670,7 @@ See [Limit](data-structures.md#limit) and [Action](data-structures.md#action) fo
 POST /api/app/delete_category/v1
 ```
 
-Delete an existing category by ID. Requires the [delete_categories](privileges.md#delete_categories) privilege and category-level access to the specified ID (for category-limited accounts), plus a valid user session or API Key. Deletion is blocked if any [Events](data-structures.md#event) are assigned to the category.
+Delete an existing category by ID. Requires the [delete_categories](privileges.md#delete_categories) privilege and category-level access to the specified ID (for category-limited accounts), plus a valid user session or API Key. Deletion is blocked if any [Events](data.md#event) are assigned to the category.
 
 Parameters:
 
@@ -779,7 +779,7 @@ Example response:
 }
 ```
 
-See [Channel](data-structures.md#channel) for details on channel properties.
+See [Channel](data.md#channel) for details on channel properties.
 
 ### get_channel
 
@@ -830,7 +830,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include a `channel` object containing the requested channel.
 
-See [Channel](data-structures.md#channel) for details on channel properties.
+See [Channel](data.md#channel) for details on channel properties.
 
 ### create_channel
 
@@ -838,7 +838,7 @@ See [Channel](data-structures.md#channel) for details on channel properties.
 POST /api/app/create_channel/v1
 ```
 
-Create a new notification channel. Requires the [create_channels](privileges.md#create_channels) privilege, plus a valid user session or API Key. Send as HTTP POST with JSON. See [Channel](data-structures.md#channel) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, and `revision` are set by the server.
+Create a new notification channel. Requires the [create_channels](privileges.md#create_channels) privilege, plus a valid user session or API Key. Send as HTTP POST with JSON. See [Channel](data.md#channel) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, and `revision` are set by the server.
 
 Example request:
 
@@ -881,7 +881,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The channel ID to update. |
-| (Other) | Various | Any updatable [Channel](data-structures.md#channel) fields (e.g. `title`, `enabled`, `users`, `email`, `web_hook`, `run_event`, `sound`, `icon`, `max_per_day`, `notes`). |
+| (Other) | Various | Any updatable [Channel](data.md#channel) fields (e.g. `title`, `enabled`, `users`, `email`, `web_hook`, `run_event`, `sound`, `icon`, `max_per_day`, `notes`). |
 
 Example request:
 
@@ -986,7 +986,7 @@ Example response:
 }
 ```
 
-See [Event](data-structures.md#event) for details on event properties.
+See [Event](data.md#event) for details on event properties.
 
 ### get_event
 
@@ -1023,7 +1023,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include an `event` object containing the requested event, a `jobs` array of currently running jobs for the event, and a `queued` number indicating the count of queued jobs.
 
-See [Event](data-structures.md#event) for details on event properties, and [Job](data-structures.md#job) for job properties.
+See [Event](data.md#event) for details on event properties, and [Job](data.md#job) for job properties.
 
 ### get_event_history
 
@@ -1074,7 +1074,7 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 POST /api/app/create_event/v1
 ```
 
-Create a new event. Requires the [create_events](privileges.md#create_events) privilege, plus category/target access for the event, and a valid user session or API Key. Send as HTTP POST with JSON. See [Event](data-structures.md#event) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, and `modified` are set by the server.
+Create a new event. Requires the [create_events](privileges.md#create_events) privilege, plus category/target access for the event, and a valid user session or API Key. Send as HTTP POST with JSON. See [Event](data.md#event) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, and `modified` are set by the server.
 
 Notes:
 
@@ -1120,7 +1120,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The event ID to update. |
-| (Other) | Various | Any updatable [Event](data-structures.md#event) fields (e.g. `title`, `enabled`, `category`, `targets`, `algo`, `plugin`, `params`, `triggers`, `limits`, `actions`, `notes`). |
+| (Other) | Various | Any updatable [Event](data.md#event) fields (e.g. `title`, `enabled`, `category`, `targets`, `algo`, `plugin`, `params`, `triggers`, `limits`, `actions`, `notes`). |
 
 Special behavior:
 
@@ -1206,8 +1206,8 @@ Parameters (core):
 |---------------|------|-------------|
 | `id` | String | The event ID to run. One of `id` or `title` is required. |
 | `title` | String | The event title to run (alternative to `id`). |
-| `params` | Object | Optional overrides for [Event.params](data-structures.md#event-params). Missing keys fall back to the event's saved params. |
-| `input` | Object | Optional input object; may include `data` and/or `files` (see [Job.input](data-structures.md#job-input)). Uploaded files are appended to `input.files`. |
+| `params` | Object | Optional overrides for [Event.params](data.md#event-params). Missing keys fall back to the event's saved params. |
+| `input` | Object | Optional input object; may include `data` and/or `files` (see [Job.input](data.md#job-input)). Uploaded files are appended to `input.files`. |
 | `test` | Boolean | If `true`, bypasses manual-trigger and enabled checks and marks the job as a test. |
 
 Additional behaviors:
@@ -1259,7 +1259,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include an `id` property containing the newly created [Job.id](data-structures.md#job-id).
+In addition to the [Standard Response Format](#standard-response-format), this will include an `id` property containing the newly created [Job.id](data.md#job-id).
 
 
 
@@ -1311,7 +1311,7 @@ Parameters (form + query):
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The running [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The running [Job.id](data.md#job-id). |
 | `auth` | String | **(Required)** Authentication token or API key (see above). |
 | `server` | String | Optional. Required only for the server token method. |
 | `file1` | File | **(Required)** The uploaded file content (multipart field name must be `file1`). |
@@ -1354,7 +1354,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 | `path` | String | **(Required)** The exact storage path of the file to delete.  Must be a file attached to the specified job. |
 
 Example request:
@@ -1410,7 +1410,7 @@ Example response:
 }
 ```
 
-See [Job.files](data-structures.md#job-files) for how these are consumed by jobs.
+See [Job.files](data.md#job-files) for how these are consumed by jobs.
 
 ### file
 
@@ -1476,7 +1476,7 @@ Example response:
 }
 ```
 
-See [Group](data-structures.md#group) for details on group properties.
+See [Group](data.md#group) for details on group properties.
 
 ### get_group
 
@@ -1520,7 +1520,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include a `group` object containing the requested group.
 
-See [Group](data-structures.md#group) for details on group properties.
+See [Group](data.md#group) for details on group properties.
 
 ### create_group
 
@@ -1528,7 +1528,7 @@ See [Group](data-structures.md#group) for details on group properties.
 POST /api/app/create_group/v1
 ```
 
-Create a new server group. Requires the [create_groups](privileges.md#create_groups) privilege and group-level access to the specified ID, plus a valid user session or API Key. Send as HTTP POST with JSON. See [Group](data-structures.md#group) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, `revision`, and `sort_order` are set by the server.
+Create a new server group. Requires the [create_groups](privileges.md#create_groups) privilege and group-level access to the specified ID, plus a valid user session or API Key. Send as HTTP POST with JSON. See [Group](data.md#group) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, `revision`, and `sort_order` are set by the server.
 
 Parameters (required fields):
 
@@ -1560,7 +1560,7 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 
 Notes:
 
-- Group alert actions are validated (see [Action](data-structures.md#action)) via `alert_actions`.
+- Group alert actions are validated (see [Action](data.md#action)) via `alert_actions`.
 - `sort_order` is automatically assigned at the end of the current list.
 
 ### update_group
@@ -1576,7 +1576,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The group ID to update. |
-| (Other) | Various | Any updatable [Group](data-structures.md#group) fields (e.g. `title`, `hostname_match`, `icon`, `notes`, `alert_actions`). |
+| (Other) | Various | Any updatable [Group](data.md#group) fields (e.g. `title`, `hostname_match`, `icon`, `notes`, `alert_actions`). |
 
 Example request:
 
@@ -1731,7 +1731,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include an `id` property containing the new [GroupSnapshot.id](data-structures.md#groupsnapshot-id).
+In addition to the [Standard Response Format](#standard-response-format), this will include an `id` property containing the new [GroupSnapshot.id](data.md#groupsnapshot-id).
 
 See [Snapshots](snapshots.md) for more details.
 
@@ -1771,7 +1771,7 @@ Example response:
 }
 ```
 
-See [Job](data-structures.md#job) for job properties.
+See [Job](data.md#job) for job properties.
 
 ### get_active_job_summary
 
@@ -1781,7 +1781,7 @@ GET /api/app/get_active_job_summary/v1
 
 Summarize active jobs by event, grouped by state, source, and targets. Accepts the same optional filters as [get_active_jobs](#get_active_jobs). Requires a valid user session or API Key.
 
-In addition to the [Standard Response Format](#standard-response-format), this will include an `events` object keyed by [Event.id](data-structures.md#event-id), each containing `states`, `sources`, and `targets` counters.
+In addition to the [Standard Response Format](#standard-response-format), this will include an `events` object keyed by [Event.id](data.md#event-id), each containing `states`, `sources`, and `targets` counters.
 
 Example response:
 
@@ -1832,7 +1832,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id) to fetch. |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id) to fetch. |
 | `remove` | Array | Optional array of property names to exclude from the returned job object (e.g., heavy fields). |
 
 Example request:
@@ -1853,7 +1853,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include a `job` object containing the requested job, and a `token` string used for viewing/downloading the job log (see [view_job_log](#view_job_log) and [download_job_log](#download_job_log)).
 
-See [Job](data-structures.md#job) for details on the job object.
+See [Job](data.md#job) for details on the job object.
 
 ### get_jobs
 
@@ -1867,7 +1867,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `ids` | Array<String> | **(Required)** Array of [Job.id](data-structures.md#job-id) values. |
+| `ids` | Array<String> | **(Required)** Array of [Job.id](data.md#job-id) values. |
 | `verbose` | Boolean | Optional. If `true`, includes heavy fields; otherwise they are pruned. |
 
 Example request:
@@ -1894,7 +1894,7 @@ Example response:
 Notes:
 
 - When `verbose` is not set, the following heavy fields are removed: `actions`, `activity`, `html`, `limits`, `procs`, `conns`, `table`, `timelines`, `input`, `data`, `files`.
-- See [Job](data-structures.md#job) for details on the job object.
+- See [Job](data.md#job) for details on the job object.
 
 ### get_job_log
 
@@ -1908,7 +1908,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 
 Response:
 
@@ -1927,7 +1927,7 @@ Parameters (query):
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 | `t` | String | **(Required)** The download token from [get_job](#get_job). |
 
 Response:
@@ -1947,7 +1947,7 @@ Parameters (query):
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 | `t` | String | **(Required)** The download token from [get_job](#get_job). |
 
 Response:
@@ -1967,7 +1967,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 | `bytes` | Number | Optional. Approximate number of bytes to return from the end. Defaults to `32678` (32K). |
 
 Example response:
@@ -1993,7 +1993,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 | (Other) | Various | Any writable job fields to update. Running jobs are updated in-memory; completed jobs are updated in storage. |
 
 Example response:
@@ -2016,7 +2016,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 | `params` | Object | Optional. User parameters to merge into the job’s `params` when resuming. |
 
 Behavior:
@@ -2052,7 +2052,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 
 Example response:
 
@@ -2077,7 +2077,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 | `tags` | Array<String> | **(Required)** Full replacement list of tags for the job. |
 
 Example request:
@@ -2111,7 +2111,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 
 Example response:
 
@@ -2131,7 +2131,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Job.id](data-structures.md#job-id). |
+| `id` | String | **(Required)** The [Job.id](data.md#job-id). |
 
 Example response:
 
@@ -2153,7 +2153,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `id` | String | **(Required)** The [Event.id](data-structures.md#event-id) whose queue to flush. |
+| `id` | String | **(Required)** The [Event.id](data.md#event-id) whose queue to flush. |
 
 Example response:
 
@@ -2209,7 +2209,7 @@ Example response:
 }
 ```
 
-See [Monitor](data-structures.md#monitor) for details on monitor properties.
+See [Monitor](data.md#monitor) for details on monitor properties.
 
 ### get_monitor
 
@@ -2250,7 +2250,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include a `monitor` object containing the requested monitor.
 
-See [Monitor](data-structures.md#monitor) for details on monitor properties.
+See [Monitor](data.md#monitor) for details on monitor properties.
 
 ### create_monitor
 
@@ -2258,7 +2258,7 @@ See [Monitor](data-structures.md#monitor) for details on monitor properties.
 POST /api/app/create_monitor/v1
 ```
 
-Create a new monitor. Requires the [create_monitors](privileges.md#create_monitors) privilege and a valid user session or API Key. Send as HTTP POST with JSON. See [Monitor](data-structures.md#monitor) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, `revision`, and `sort_order` are set by the server.
+Create a new monitor. Requires the [create_monitors](privileges.md#create_monitors) privilege and a valid user session or API Key. Send as HTTP POST with JSON. See [Monitor](data.md#monitor) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, `revision`, and `sort_order` are set by the server.
 
 Validation and behavior:
 
@@ -2304,7 +2304,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The monitor ID to update. |
-| (Other) | Various | Any updatable [Monitor](data-structures.md#monitor) fields (e.g. `title`, `source`, `data_type`, `suffix`, `display`, `min_vert_scale`, `groups`, `icon`, `notes`). |
+| (Other) | Various | Any updatable [Monitor](data.md#monitor) fields (e.g. `title`, `source`, `data_type`, `suffix`, `display`, `min_vert_scale`, `groups`, `icon`, `notes`). |
 
 Validation and behavior:
 
@@ -2329,8 +2329,8 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `server` | String | **(Required)** The [Server.id](data-structures.md#server-id) to test against. |
-| `source` | String | **(Required)** The [Monitor.source](data-structures.md#monitor-source) expression to evaluate. |
+| `server` | String | **(Required)** The [Server.id](data.md#server-id) to test against. |
+| `source` | String | **(Required)** The [Monitor.source](data.md#monitor-source) expression to evaluate. |
 | `data_type` | String | **(Required)** One of `integer`, `float`, `bytes`, `seconds`, or `milliseconds`. |
 | `data_match` | String | Optional JavaScript regular expression string to extract a value from text. |
 
@@ -2420,14 +2420,14 @@ Notes:
 GET /api/app/get_quickmon_data/v1
 ```
 
-Fetch the current [QuickMonData](data-structures.md#quickmondata) snapshots for servers (last 60 seconds). No specific privilege is required beyond a valid user session or API Key. Useful for dashboards.
+Fetch the current [QuickMonData](data.md#quickmondata) snapshots for servers (last 60 seconds). No specific privilege is required beyond a valid user session or API Key. Useful for dashboards.
 
 Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `server` | String | Optional. Limit results to a single [Server.id](data-structures.md#server-id). |
-| `group` | String | Optional. Limit results to servers in a specific [Group.id](data-structures.md#group-id). |
+| `server` | String | Optional. Limit results to a single [Server.id](data.md#server-id). |
+| `group` | String | Optional. Limit results to servers in a specific [Group.id](data.md#group-id). |
 
 Example response:
 
@@ -2456,7 +2456,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `server` | String | **(Required)** The [Server.id](data-structures.md#server-id). |
+| `server` | String | **(Required)** The [Server.id](data.md#server-id). |
 | `sys` | String | **(Required)** The timeline system ID to query (e.g., `hourly`, `daily`, `monthly` or `yearly`). |
 | `limit` | Number | **(Required)** The number of timeline entries to return. |
 
@@ -2470,7 +2470,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [ServerTimelineData](data-structures.md#servertimelinedata) entries, and a `data` object containing the server’s current [ServerMonitorData](data-structures.md#servermonitordata).
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [ServerTimelineData](data.md#servertimelinedata) entries, and a `data` object containing the server’s current [ServerMonitorData](data.md#servermonitordata).
 
 See [Monitors](monitors.md) for more details on the monitoring subsystem.
 
@@ -2486,7 +2486,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `server` | String | **(Required)** The [Server.id](data-structures.md#server-id). |
+| `server` | String | **(Required)** The [Server.id](data.md#server-id). |
 | `sys` | String | **(Required)** The timeline system ID to query (e.g., `hourly`, `daily`, `monthly` or `yearly`). |
 | `date` | Number | **(Required)** Unix timestamp (seconds) specifying the start of the range of data to fetch. |
 | `limit` | Number | **(Required)** The number of timeline entries to return. |
@@ -2500,7 +2500,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing the historical [ServerTimelineData](data-structures.md#servertimelinedata) entries.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing the historical [ServerTimelineData](data.md#servertimelinedata) entries.
 
 See [Monitors](monitors.md) for more details on the monitoring subsystem.
 
@@ -2546,7 +2546,7 @@ Example response:
 }
 ```
 
-See [Plugin](data-structures.md#plugin) for details on the plugin object and all its properties.
+See [Plugin](data.md#plugin) for details on the plugin object and all its properties.
 
 ### get_plugin
 
@@ -2593,7 +2593,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include a `plugin` object containing the requested plugin.
 
-See [Plugin](data-structures.md#plugin) for details on the plugin properties.
+See [Plugin](data.md#plugin) for details on the plugin properties.
 
 ### create_plugin
 
@@ -2603,7 +2603,7 @@ POST /api/app/create_plugin/v1
 
 Create a new plugin definition. The [create_plugins](privileges.md#create_plugins) privilege is required, as well as a valid user session or API Key. The request must be sent as an HTTP POST with a JSON body.
 
-See [Plugin](data-structures.md#plugin) for details on the input properties. The `id`, `username`, `created`, `modified` and `revision` properties may be omitted, as they are automatically generated (a unique `id` will be assigned if omitted, and the initial `revision` will be set to `1`). The `type` property must be one of: `event`, `monitor`, `action`, or `scheduler`. If you include [Plugin.params](data-structures.md#plugin-params), they must follow the documented schema and will be validated.
+See [Plugin](data.md#plugin) for details on the input properties. The `id`, `username`, `created`, `modified` and `revision` properties may be omitted, as they are automatically generated (a unique `id` will be assigned if omitted, and the initial `revision` will be set to `1`). The `type` property must be one of: `event`, `monitor`, `action`, or `scheduler`. If you include [Plugin.params](data.md#plugin-params), they must follow the documented schema and will be validated.
 
 Example request:
 
@@ -2639,14 +2639,14 @@ POST /api/app/update_plugin/v1
 
 Update an existing plugin definition, specified by its ID. The [edit_plugins](privileges.md#edit_plugins) privilege is required, as well as a valid user session or API Key. The request must be sent as an HTTP POST with a JSON body.
 
-See [Plugin](data-structures.md#plugin) for details on the input properties. The request is shallow-merged into the existing plugin, so you can provide a sparse set of properties to update. The `modified` timestamp is updated automatically, and the `revision` is incremented.
+See [Plugin](data.md#plugin) for details on the input properties. The request is shallow-merged into the existing plugin, so you can provide a sparse set of properties to update. The `modified` timestamp is updated automatically, and the `revision` is incremented.
 
 Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The alphanumeric ID of the plugin to update. |
-| (Other) | Various | Any updatable [Plugin](data-structures.md#plugin) fields (e.g. `title`, `enabled`, `type`, `command`, `script`, `params`, `groups`, `format`, `uid`, `gid`, `kill`, `icon`, `notes`). |
+| (Other) | Various | Any updatable [Plugin](data.md#plugin) fields (e.g. `title`, `enabled`, `type`, `command`, `script`, `params`, `groups`, `format`, `uid`, `gid`, `kill`, `icon`, `notes`). |
 
 Example request:
 
@@ -2739,7 +2739,7 @@ Example response:
 }
 ```
 
-See [Role](data-structures.md#role) for details on the role object and its properties.
+See [Role](data.md#role) for details on the role object and its properties.
 
 ### get_role
 
@@ -2790,7 +2790,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include a `role` object containing the requested role.
 
-See [Role](data-structures.md#role) for details on the role properties.
+See [Role](data.md#role) for details on the role properties.
 
 ### create_role
 
@@ -2800,7 +2800,7 @@ POST /api/app/create_role/v1
 
 Create a new user role. The [create_roles](privileges.md#create_roles) privilege is required, as well as a valid user session or API Key. The request must be sent as an HTTP POST with a JSON body.
 
-See [Role](data-structures.md#role) for details on the input properties. The `id`, `username`, `created`, `modified` and `revision` properties may be omitted, as they are automatically generated (a unique `id` will be assigned if omitted, and the initial `revision` will be set to `1`). If omitted, `privileges` defaults to an empty object, and `categories`/`groups` default to empty arrays.
+See [Role](data.md#role) for details on the input properties. The `id`, `username`, `created`, `modified` and `revision` properties may be omitted, as they are automatically generated (a unique `id` will be assigned if omitted, and the initial `revision` will be set to `1`). If omitted, `privileges` defaults to an empty object, and `categories`/`groups` default to empty arrays.
 
 Example request:
 
@@ -2838,14 +2838,14 @@ POST /api/app/update_role/v1
 
 Update an existing user role, specified by its ID. The [edit_roles](privileges.md#edit_roles) privilege is required, as well as a valid user session or API Key. The request must be sent as an HTTP POST with a JSON body.
 
-See [Role](data-structures.md#role) for details on the input properties. The request is shallow-merged into the existing role, so you can provide a sparse set of properties to update. The `modified` timestamp is updated automatically, and the `revision` is incremented.
+See [Role](data.md#role) for details on the input properties. The request is shallow-merged into the existing role, so you can provide a sparse set of properties to update. The `modified` timestamp is updated automatically, and the `revision` is incremented.
 
 Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The alphanumeric ID of the role to update. |
-| (Other) | Various | Any updatable [Role](data-structures.md#role) fields (e.g. `title`, `enabled`, `categories`, `groups`, `privileges`, `icon`, `notes`). |
+| (Other) | Various | Any updatable [Role](data.md#role) fields (e.g. `title`, `enabled`, `categories`, `groups`, `privileges`, `icon`, `notes`). |
 
 Example request:
 
@@ -2939,7 +2939,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Job](data-structures.md#job) records, and a `list` object containing list metadata (e.g. `length` for total rows without pagination). When `verbose` is not set, large fields are pruned from the job records.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Job](data.md#job) records, and a `list` object containing list metadata (e.g. `length` for total rows without pagination). When `verbose` is not set, large fields are pruned from the job records.
 
 ### search_servers
 
@@ -2969,7 +2969,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Server](data-structures.md#server) records, and a `list` object containing list metadata.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Server](data.md#server) records, and a `list` object containing list metadata.
 
 ### get_server_summaries
 
@@ -3028,7 +3028,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [AlertInvocation](data-structures.md#alertinvocation) records, and a `list` object containing list metadata.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [AlertInvocation](data.md#alertinvocation) records, and a `list` object containing list metadata.
 
 ### search_snapshots
 
@@ -3059,7 +3059,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Snapshot](data-structures.md#snapshot) records, and a `list` object containing list metadata. When `verbose` is not set, large fields are pruned from the snapshot records.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Snapshot](data.md#snapshot) records, and a `list` object containing list metadata. When `verbose` is not set, large fields are pruned from the snapshot records.
 
 ### search_activity
 
@@ -3089,7 +3089,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Activity](data-structures.md#activity) records, and a `list` object containing list metadata. When available, each activity record will also include a computed `useragent` string derived from the original `headers.user-agent`.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Activity](data.md#activity) records, and a `list` object containing list metadata. When available, each activity record will also include a computed `useragent` string derived from the original `headers.user-agent`.
 
 ### search_revision_history
 
@@ -3120,7 +3120,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Activity](data-structures.md#activity) records matching the selected type, and a `list` object containing list metadata. For security, these records have certain network details removed (e.g., IPs and raw headers).
+In addition to the [Standard Response Format](#standard-response-format), this will include a `rows` array containing [Activity](data.md#activity) records matching the selected type, and a `list` object containing list metadata. For security, these records have certain network details removed (e.g., IPs and raw headers).
 
 ### search_stat_history
 
@@ -3164,13 +3164,13 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 
 Secrets are passed to jobs as environment variables when access is granted via any of the following metadata lists on the secret:
 
-- `events`: Grant to specific [Event.id](data-structures.md#event-id) jobs.
-- `categories`: Grant to all events in selected [Category.id](data-structures.md#category-id)s.
-- `plugins`: Grant to specific [Plugin.id](data-structures.md#plugin-id) jobs when these plugins are launched.
+- `events`: Grant to specific [Event.id](data.md#event-id) jobs.
+- `categories`: Grant to all events in selected [Category.id](data.md#category-id)s.
+- `plugins`: Grant to specific [Plugin.id](data.md#plugin-id) jobs when these plugins are launched.
 
-Jobs automatically receive the variables without calling any API; the system decrypts and injects them at launch time. Variable names follow POSIX environment rules and are listed in [Secret.names](data-structures.md#secret-names). To view or edit values in the UI, an administrator can use [decrypt_secret](#decrypt_secret); accesses are recorded in the activity log.
+Jobs automatically receive the variables without calling any API; the system decrypts and injects them at launch time. Variable names follow POSIX environment rules and are listed in [Secret.names](data.md#secret-names). To view or edit values in the UI, an administrator can use [decrypt_secret](#decrypt_secret); accesses are recorded in the activity log.
 
-Web hooks can expand secret variables using template syntax like `{{ secrets.VAR_NAME }}` when the secret grants access via the `web_hooks` list. See [Secret.web_hooks](data-structures.md#secret-web_hooks).
+Web hooks can expand secret variables using template syntax like `{{ secrets.VAR_NAME }}` when the secret grants access via the `web_hooks` list. See [Secret.web_hooks](data.md#secret-web_hooks).
 
 ### get_secrets
 
@@ -3209,7 +3209,7 @@ Example response:
 }
 ```
 
-See [Secret](data-structures.md#secret) for details on the secret object and its properties. The actual encrypted data structure is described under [Secret.fields](data-structures.md#secret-fields).
+See [Secret](data.md#secret) for details on the secret object and its properties. The actual encrypted data structure is described under [Secret.fields](data.md#secret-fields).
 
 ### get_secret
 
@@ -3257,7 +3257,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this will include a `secret` object containing the requested secret metadata. To retrieve and decrypt the actual variable values, use [decrypt_secret](#decrypt_secret).
 
-See [Secret](data-structures.md#secret) for details on the metadata fields.
+See [Secret](data.md#secret) for details on the metadata fields.
 
 ### decrypt_secret
 
@@ -3294,7 +3294,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `fields` array containing the decrypted [Secret.fields](data-structures.md#secret-fields) entries.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `fields` array containing the decrypted [Secret.fields](data.md#secret-fields) entries.
 
 ### create_secret
 
@@ -3304,7 +3304,7 @@ POST /api/app/create_secret/v1
 
 Create a new secret and store its encrypted variable data. Admin only. Requires a valid administrator session or API Key. The request must be sent as an HTTP POST with a JSON body.
 
-See [Secret](data-structures.md#secret) for details on the metadata properties. The `id`, `username`, `created`, `modified` and `revision` properties may be omitted, as they are automatically generated (a unique `id` will be assigned if omitted, and the initial `revision` will be set to `1`). Include [Secret.fields](data-structures.md#secret-fields) to define the variable names and values; these will be encrypted and stored separately from the metadata. The `names` list is auto-generated from `fields` and stored in plaintext for display.
+See [Secret](data.md#secret) for details on the metadata properties. The `id`, `username`, `created`, `modified` and `revision` properties may be omitted, as they are automatically generated (a unique `id` will be assigned if omitted, and the initial `revision` will be set to `1`). Include [Secret.fields](data.md#secret-fields) to define the variable names and values; these will be encrypted and stored separately from the metadata. The `names` list is auto-generated from `fields` and stored in plaintext for display.
 
 Example request:
 
@@ -3345,14 +3345,14 @@ POST /api/app/update_secret/v1
 
 Update an existing secret’s metadata and/or encrypted variable data. Admin only. Requires a valid administrator session or API Key. The request must be sent as an HTTP POST with a JSON body.
 
-See [Secret](data-structures.md#secret) for details on the metadata properties. The request is shallow-merged into the existing secret, so you can provide a sparse set of properties to update. If you include [Secret.fields](data-structures.md#secret-fields), the variables will be re-encrypted and stored; the `names` list will be regenerated from the provided field names. The `modified` timestamp is updated automatically, and the `revision` is incremented.
+See [Secret](data.md#secret) for details on the metadata properties. The request is shallow-merged into the existing secret, so you can provide a sparse set of properties to update. If you include [Secret.fields](data.md#secret-fields), the variables will be re-encrypted and stored; the `names` list will be regenerated from the provided field names. The `modified` timestamp is updated automatically, and the `revision` is incremented.
 
 Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The alphanumeric ID of the secret to update. |
-| (Other) | Various | Any updatable [Secret](data-structures.md#secret) fields (e.g. `title`, `enabled`, `fields`, `events`, `categories`, `plugins`, `web_hooks`, `icon`, `notes`). |
+| (Other) | Various | Any updatable [Secret](data.md#secret) fields (e.g. `title`, `enabled`, `fields`, `events`, `categories`, `plugins`, `web_hooks`, `icon`, `notes`). |
 
 Example request (metadata-only update):
 
@@ -3455,7 +3455,7 @@ In addition to the [Standard Response Format](#standard-response-format), this w
 }
 ```
 
-See [Server](data-structures.md#server) for server object details.
+See [Server](data.md#server) for server object details.
 
 ### get_active_server
 
@@ -3505,7 +3505,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `server` object. See [Server](data-structures.md#server) for details.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `server` object. See [Server](data.md#server) for details.
 
 ### get_server
 
@@ -3543,7 +3543,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a [Server](data-structures.md#server) object, a `data` object containing [ServerMonitorData](data-structures.md#servermonitordata), and an `online` boolean indicating current connection status.
+In addition to the [Standard Response Format](#standard-response-format), this will include a [Server](data.md#server) object, a `data` object containing [ServerMonitorData](data.md#servermonitordata), and an `online` boolean indicating current connection status.
 
 ### update_server
 
@@ -3558,7 +3558,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The server ID to update. |
-| (Other) | Various | Any updatable [Server](data-structures.md#server) fields: e.g. `title`, `enabled`, `icon`, `groups` (array of [Group.id](data-structures.md#group-id)), `autoGroup` (boolean). |
+| (Other) | Various | Any updatable [Server](data.md#server) fields: e.g. `title`, `enabled`, `icon`, `groups` (array of [Group.id](data.md#group-id)), `autoGroup` (boolean). |
 
 Special behavior:
 
@@ -3675,7 +3675,7 @@ Example response:
 { "code": 0, "id": "snmhr6zkefh1" }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include an `id` property containing the new [Snapshot.id](data-structures.md#snapshot-id).
+In addition to the [Standard Response Format](#standard-response-format), this will include an `id` property containing the new [Snapshot.id](data.md#snapshot-id).
 
 See [Snapshots](snapshots.md) for more details.
 
@@ -3716,7 +3716,7 @@ Example response:
 }
 ```
 
-See [Tag](data-structures.md#tag) for tag object details.
+See [Tag](data.md#tag) for tag object details.
 
 ### get_tag
 
@@ -3754,7 +3754,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `tag` object. See [Tag](data-structures.md#tag) for details.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `tag` object. See [Tag](data.md#tag) for details.
 
 ### create_tag
 
@@ -3792,7 +3792,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this will include a `tag` object containing the newly created tag, including auto-generated fields such as `id`, `username`, `created`, `modified` (and `revision`). See [Tag](data-structures.md#tag) for properties.
+In addition to the [Standard Response Format](#standard-response-format), this will include a `tag` object containing the newly created tag, including auto-generated fields such as `id`, `username`, `created`, `modified` (and `revision`). See [Tag](data.md#tag) for properties.
 
 ### update_tag
 
@@ -3807,7 +3807,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The tag ID to update. |
-| (Other) | Various | Any updatable [Tag](data-structures.md#tag) fields (e.g. `title`, `icon`, `notes`). |
+| (Other) | Various | Any updatable [Tag](data.md#tag) fields (e.g. `title`, `icon`, `notes`). |
 
 Example request:
 
@@ -3901,7 +3901,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes a `ticket` object. See [Ticket](data-structures.md#ticket) for details.
+In addition to the [Standard Response Format](#standard-response-format), this includes a `ticket` object. See [Ticket](data.md#ticket) for details.
 
 ### get_tickets
 
@@ -3936,7 +3936,7 @@ Example response (non-verbose):
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes a `tickets` array in the same order as `ids`. When `verbose` is not set, large fields are pruned. If a ticket cannot be loaded, its array entry will contain an `err` property instead of a ticket object. See [Ticket](data-structures.md#ticket) for field definitions.
+In addition to the [Standard Response Format](#standard-response-format), this includes a `tickets` array in the same order as `ids`. When `verbose` is not set, large fields are pruned. If a ticket cannot be loaded, its array entry will contain an `err` property instead of a ticket object. See [Ticket](data.md#ticket) for field definitions.
 
 ### search_tickets
 
@@ -3969,7 +3969,7 @@ Example response (compact):
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes a `rows` array of [Ticket](data-structures.md#ticket) records and a `list` object with list metadata (e.g., `length` for total rows without pagination). When `compact` is set, `body` is omitted and `changes` is the count of changes.
+In addition to the [Standard Response Format](#standard-response-format), this includes a `rows` array of [Ticket](data.md#ticket) records and a `list` object with list metadata (e.g., `length` for total rows without pagination). When `compact` is set, `body` is omitted and `changes` is the count of changes.
 
 ### create_ticket
 
@@ -3988,12 +3988,12 @@ Parameters (JSON):
 |---------------|------|-------------|
 | `id` | String | Optional. If omitted, a unique ID is generated. Must be alphanumeric if provided. |
 | `subject` | String | **(Required)** Short summary for the ticket. HTML is stripped. |
-| (Other) | Various | Any [Ticket](data-structures.md#ticket) fields, e.g. `type`, `status`, `category`, `server`, `assignees` (array), `cc` (array), `notify` (array of email), `due` (Unix seconds), `tags` (array), `body` (Markdown). |
+| (Other) | Various | Any [Ticket](data.md#ticket) fields, e.g. `type`, `status`, `category`, `server`, `assignees` (array), `cc` (array), `notify` (array of email), `due` (Unix seconds), `tags` (array), `body` (Markdown). |
 | `template` | String | Optional. Auto-generate the `body` from a template. Allowed values: `job` or `alert` (see below). |
-| `job` | String | Required when `template` is `job`. The [Job.id](data-structures.md#job-id) to use for the template content. |
-| `alert` | String | Required when `template` is `alert`. The [AlertInvocation.id](data-structures.md#alertinvocation-id) to use for the template content. |
+| `job` | String | Required when `template` is `job`. The [Job.id](data.md#job-id) to use for the template content. |
+| `alert` | String | Required when `template` is `alert`. The [AlertInvocation.id](data.md#alertinvocation-id) to use for the template content. |
 
-When using `multipart/form-data`, attach one or more file fields (any field names). Files are saved and added to [Ticket.files](data-structures.md#ticket-files) with metadata. Files auto-expire per [file_expiration](configuration.md#file_expiration) configuration setting.
+When using `multipart/form-data`, attach one or more file fields (any field names). Files are saved and added to [Ticket.files](data.md#ticket-files) with metadata. Files auto-expire per [file_expiration](configuration.md#file_expiration) configuration setting.
 
 Defaults: If not provided, the server sets `status` to `open`, `body` to an empty string, `due` to `0`, and initializes `changes` with an initial “created” entry.
 
@@ -4019,7 +4019,7 @@ Example response:
 }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes a `ticket` object containing the newly created [Ticket](data-structures.md#ticket) (including generated fields like `id`, `num`, `created`, `modified` and `changes`).
+In addition to the [Standard Response Format](#standard-response-format), this includes a `ticket` object containing the newly created [Ticket](data.md#ticket) (including generated fields like `id`, `num`, `created`, `modified` and `changes`).
 
 ### update_ticket
 
@@ -4034,12 +4034,12 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The ticket ID to update. |
-| (Other) | Various | Any updatable [Ticket](data-structures.md#ticket) fields, e.g. `subject`, `body`, `status`, `type`, `category`, `assignees`, `cc`, `notify`, `due`, `tags`, `server`. |
+| (Other) | Various | Any updatable [Ticket](data.md#ticket) fields, e.g. `subject`, `body`, `status`, `type`, `category`, `assignees`, `cc`, `notify`, `due`, `tags`, `server`. |
 
 Notes:
 
 - HTML in `subject` is stripped; `body` is sanitized as Markdown.
-- Changes are detected and appended to [Ticket.changes](data-structures.md#ticket-changes) (draft tickets do not record changes).
+- Changes are detected and appended to [Ticket.changes](data.md#ticket-changes) (draft tickets do not record changes).
 
 Example request:
 
@@ -4053,7 +4053,7 @@ Example response:
 { "code": 0, "ticket": { "id": "tmgpmoorz6p", "status": "closed" } }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes an updated `ticket` object. See [Ticket](data-structures.md#ticket).
+In addition to the [Standard Response Format](#standard-response-format), this includes an updated `ticket` object. See [Ticket](data.md#ticket).
 
 ### add_ticket_change
 
@@ -4061,14 +4061,14 @@ In addition to the [Standard Response Format](#standard-response-format), this i
 POST /api/app/add_ticket_change/v1
 ```
 
-Add a [change](data-structures.md#ticket-changes) to a ticket (usually a comment). Requires the [edit_tickets](privileges.md#edit_tickets) privilege and a valid user session or API Key. Send as HTTP POST with JSON.
+Add a [change](data.md#ticket-changes) to a ticket (usually a comment). Requires the [edit_tickets](privileges.md#edit_tickets) privilege and a valid user session or API Key. Send as HTTP POST with JSON.
 
 Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The ticket ID to update. |
-| `change` | Object | **(Required)** The change object. For comments, set `type` to `comment` and provide `body` (Markdown). See [Ticket.changes](data-structures.md#ticket-changes) for details. |
+| `change` | Object | **(Required)** The change object. For comments, set `type` to `comment` and provide `body` (Markdown). See [Ticket.changes](data.md#ticket-changes) for details. |
 
 Example request (add comment):
 
@@ -4085,7 +4085,7 @@ Example response:
 { "code": 0, "ticket": { "id": "tmgpmoorz6p", "changes": [ /* ... */ ] } }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes the updated [Ticket](data-structures.md#ticket) object. Comment bodies are sanitized as Markdown. See [Ticket.changes](data-structures.md#ticket-changes).
+In addition to the [Standard Response Format](#standard-response-format), this includes the updated [Ticket](data.md#ticket) object. Comment bodies are sanitized as Markdown. See [Ticket.changes](data.md#ticket-changes).
 
 ### update_ticket_change
 
@@ -4093,7 +4093,7 @@ In addition to the [Standard Response Format](#standard-response-format), this i
 POST /api/app/update_ticket_change/v1
 ```
 
-Edit or delete an existing ticket [change](data-structures.md#ticket-changes) (e.g., a comment). Requires the [edit_tickets](privileges.md#edit_tickets) privilege and a valid user session or API Key. A user may edit/delete their own comments; editing/deleting others’ comments requires administrator privileges.
+Edit or delete an existing ticket [change](data.md#ticket-changes) (e.g., a comment). Requires the [edit_tickets](privileges.md#edit_tickets) privilege and a valid user session or API Key. A user may edit/delete their own comments; editing/deleting others’ comments requires administrator privileges.
 
 Parameters:
 
@@ -4101,7 +4101,7 @@ Parameters:
 |---------------|------|-------------|
 | `id` | String | **(Required)** The ticket ID. |
 | `change_id` | String | **(Required)** The change ID to edit or delete. |
-| `change` | Object | Optional. New change fields to merge (e.g., `body` for comment edits). See [Ticket.changes](data-structures.md#ticket-changes) for details. |
+| `change` | Object | Optional. New change fields to merge (e.g., `body` for comment edits). See [Ticket.changes](data.md#ticket-changes) for details. |
 | `delete` | Boolean | Optional. If `true`, delete the specified change. |
 
 Example request (edit comment):
@@ -4122,7 +4122,7 @@ Example response:
 { "code": 0, "ticket": { "id": "tmgpmoorz6p", "changes": [ /* ... */ ] } }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes the updated [Ticket](data-structures.md#ticket) object. Comment bodies are sanitized and edits record an `edited` timestamp. See [Ticket.changes](data-structures.md#ticket-changes).
+In addition to the [Standard Response Format](#standard-response-format), this includes the updated [Ticket](data.md#ticket) object. Comment bodies are sanitized and edits record an `edited` timestamp. See [Ticket.changes](data.md#ticket-changes).
 
 ### delete_ticket_file
 
@@ -4151,7 +4151,7 @@ Example response:
 { "code": 0, "files": [ /* remaining File objects */ ] }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes a `files` array with the ticket’s remaining [File](data-structures.md#file) objects.
+In addition to the [Standard Response Format](#standard-response-format), this includes a `files` array with the ticket’s remaining [File](data.md#file) objects.
 
 ### delete_ticket
 
@@ -4237,7 +4237,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| (Other) | Various | Any non-critical [User](data-structures.md#user) fields such as `language`, `region`, `num_format`, `hour_cycle`, `timezone`, `color_acc`, `privacy_mode`, `effects`, `page_info`, `contrast`, `motion`, `volume`, or `icon`. |
+| (Other) | Various | Any non-critical [User](data.md#user) fields such as `language`, `region`, `num_format`, `hour_cycle`, `timezone`, `color_acc`, `privacy_mode`, `effects`, `page_info`, `contrast`, `motion`, `volume`, or `icon`. |
 
 Example request:
 
@@ -4343,7 +4343,7 @@ Example response:
 }
 ```
 
-See [WebHook](data-structures.md#webhook) for details on web hook properties.
+See [WebHook](data.md#webhook) for details on web hook properties.
 
 ### get_web_hook
 
@@ -4398,7 +4398,7 @@ Example response:
 
 In addition to the [Standard Response Format](#standard-response-format), this includes a `web_hook` object containing the requested web hook.
 
-See [WebHook](data-structures.md#webhook) for property details and templating behavior.
+See [WebHook](data.md#webhook) for property details and templating behavior.
 
 ### create_web_hook
 
@@ -4406,13 +4406,13 @@ See [WebHook](data-structures.md#webhook) for property details and templating be
 POST /api/app/create_web_hook/v1
 ```
 
-Create a new web hook. Requires the [create_web_hooks](privileges.md#create_web_hooks) privilege, plus a valid user session or API Key. Send as HTTP POST with JSON. See [WebHook](data-structures.md#webhook) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, and `revision` are set by the server.
+Create a new web hook. Requires the [create_web_hooks](privileges.md#create_web_hooks) privilege, plus a valid user session or API Key. Send as HTTP POST with JSON. See [WebHook](data.md#webhook) for property details. The `id` may be omitted and will be auto-generated; `username`, `created`, `modified`, and `revision` are set by the server.
 
 Notes:
 
 - The server validates `id` (alphanumeric/underscore), `method` (letters only), and `url` (must be `http` or `https`).
 - If `body` is provided, any `{{ ... }}` templates are precompiled and a syntax error returns an error response.
-- Web hooks can expand secrets at runtime when allowed via [Secret.web_hooks](data-structures.md#secret-web_hooks).
+- Web hooks can expand secrets at runtime when allowed via [Secret.web_hooks](data.md#secret-web_hooks).
 
 Example request:
 
@@ -4461,7 +4461,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The web hook ID to update. |
-| (Other) | Various | Any updatable [WebHook](data-structures.md#webhook) fields (e.g. `title`, `enabled`, `url`, `method`, `headers`, `body`, `timeout`, `retries`, `follow`, `ssl_cert_bypass`, `max_per_day`, `notes`, `icon`). |
+| (Other) | Various | Any updatable [WebHook](data.md#webhook) fields (e.g. `title`, `enabled`, `url`, `method`, `headers`, `body`, `timeout`, `retries`, `follow`, `ssl_cert_bypass`, `max_per_day`, `notes`, `icon`). |
 
 Notes:
 
@@ -4523,7 +4523,7 @@ Test a web hook configuration by performing a live HTTP request and returning a 
 Behavior:
 
 - If the provided `id` matches an existing web hook, the server merges it with the request body, allowing you to override fields for testing without saving them.
-- Templates in `url`, `headers[].value`, and `body` are expanded using the same data as runtime actions. When testing an existing, saved hook, secrets are included if granted via [Secret.web_hooks](data-structures.md#secret-web_hooks).
+- Templates in `url`, `headers[].value`, and `body` are expanded using the same data as runtime actions. When testing an existing, saved hook, secrets are included if granted via [Secret.web_hooks](data.md#secret-web_hooks).
 - Timeouts, retries, redirect behavior (`follow`), and TLS validation (`ssl_cert_bypass`) are honored during the test.
 
 Parameters:
@@ -4534,7 +4534,7 @@ Parameters:
 | `title` | String | **(Required)** A title for the test. Required even when testing an existing hook. |
 | `method` | String | **(Required)** HTTP method to use (e.g., `GET`, `POST`). |
 | `url` | String | **(Required)** Fully-qualified `http` or `https` URL to call. |
-| (Other) | Various | Any [WebHook](data-structures.md#webhook) fields to apply for this test only (e.g., `headers`, `body`, `timeout`, `retries`, `follow`, `ssl_cert_bypass`). |
+| (Other) | Various | Any [WebHook](data.md#webhook) fields to apply for this test only (e.g., `headers`, `body`, `timeout`, `retries`, `follow`, `ssl_cert_bypass`). |
 
 Example request (override headers and timeout for an existing hook):
 
@@ -4587,8 +4587,8 @@ No input parameters.
 
 In addition to the [Standard Response Format](#standard-response-format), this returns:
 
-- `servers`: Object keyed by server ID containing [Server](data-structures.md#server) objects for all currently connected workers.
-- `masters`: Object keyed by master/peer host ID with [Master](data-structures.md#master) objects for master status, version and basic stats.
+- `servers`: Object keyed by server ID containing [Server](data.md#server) objects for all currently connected workers.
+- `masters`: Object keyed by master/peer host ID with [Master](data.md#master) objects for master status, version and basic stats.
 
 Example response:
 
@@ -4610,7 +4610,7 @@ Example response:
 GET /api/app/get_master_state/v1
 ```
 
-Fetch the in-memory master [State](data-structures.md#state) object. This includes runtime flags (e.g., scheduler enabled), watches, and other internal state used by the master. Admin session or API Key is required.
+Fetch the in-memory master [State](data.md#state) object. This includes runtime flags (e.g., scheduler enabled), watches, and other internal state used by the master. Admin session or API Key is required.
 
 No input parameters.
 
@@ -4628,7 +4628,7 @@ Example response:
 }
 ```
 
-See [State](data-structures.md#state) for more details.
+See [State](data.md#state) for more details.
 
 ### update_master_state
 
@@ -4636,7 +4636,7 @@ See [State](data-structures.md#state) for more details.
 POST /api/app/update_master_state/v1
 ```
 
-Update one or more master state values using “dot” property paths in the [State](data-structures.md#state) object. Admin only. Useful for toggling system features without a restart (e.g., pausing the scheduler).
+Update one or more master state values using “dot” property paths in the [State](data.md#state) object. Admin only. Useful for toggling system features without a restart (e.g., pausing the scheduler).
 
 Parameters:
 
@@ -4952,7 +4952,7 @@ GET /api/app/get_api_keys/v1
 
 Fetch all API Keys. Admin only. No input parameters.
 
-In addition to the [Standard Response Format](#standard-response-format), this includes a `rows` array of [APIKey](data-structures.md#apikey) objects and a `list` object with list metadata.
+In addition to the [Standard Response Format](#standard-response-format), this includes a `rows` array of [APIKey](data.md#apikey) objects and a `list` object with list metadata.
 
 Example response:
 
@@ -4980,7 +4980,7 @@ Example response:
 { "code": 0, "api_key": { "id": "k1", "title": "My App", "key": "rPEu2GRpK3TPgVnmSFVPFTT9", "active": 1 } }
 ```
 
-In addition to the [Standard Response Format](#standard-response-format), this includes an `api_key` object. See [APIKey](data-structures.md#apikey) for field details.
+In addition to the [Standard Response Format](#standard-response-format), this includes an `api_key` object. See [APIKey](data.md#apikey) for field details.
 
 ### create_api_key
 
@@ -4996,7 +4996,7 @@ Parameters:
 |---------------|------|-------------|
 | `title` | String | **(Required)** Visual title for the API Key. |
 | `key` | String | **(Required)** API Key string (minimum 16 characters). |
-| (Other) | Various | Optional [APIKey](data-structures.md#apikey) fields such as `active`, `description`, `privileges`, `roles`. |
+| (Other) | Various | Optional [APIKey](data.md#apikey) fields such as `active`, `description`, `privileges`, `roles`. |
 
 Example request:
 
@@ -5029,7 +5029,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** API Key ID to update. |
-| (Other) | Various | Any updatable [APIKey](data-structures.md#apikey) fields except `key`. |
+| (Other) | Various | Any updatable [APIKey](data.md#apikey) fields except `key`. |
 
 Example request:
 

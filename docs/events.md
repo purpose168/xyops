@@ -141,7 +141,7 @@ Workflow events are special "multi-event" graphs with connected nodes. Triggers 
 
 ## Related Reading
 
-- Event schema: [Event](data-structures.md#event)
+- Event schema: [Event](data.md#event)
 - Triggers: [Triggers](triggers.md)
 - Plugins: [Plugins](plugins.md)
 - Limits: [Limits](limits.md)
@@ -150,7 +150,7 @@ Workflow events are special "multi-event" graphs with connected nodes. Triggers 
 
 ## Example
 
-Here is a trimmed example of an event in JSON format (see [Data Structures](data-structures.md#event) for the complete version):
+Here is a trimmed example of an event in JSON format (see [Data Structures](data.md#event) for the complete version):
 
 ```json
 {

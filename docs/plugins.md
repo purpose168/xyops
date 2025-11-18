@@ -33,9 +33,9 @@ When Event Plugins are invoked via a job launching, they are passed a JSON docum
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `xy` | Number | Indicates the [xyOps Wire Protocol](xywp.md) version.  Will be set to `1`. |
-| `type` | String | The [Plugin.type](data-structures.md#plugin-type), which will be set to `event`. |
+| `type` | String | The [Plugin.type](data.md#plugin-type), which will be set to `event`. |
 | `params` | Object | If the Plugin defines any parameters, their values will be here. |
-| (Other) | Various | All the properties from the [Job](data-structures.md#job) object are included here. |
+| (Other) | Various | All the properties from the [Job](data.md#job) object are included here. |
 
 Here is an example JSON document sent to an Event Plugin's STDIN as part of a job launch:
 
@@ -127,7 +127,7 @@ Here is an example JSON document sent to an Event Plugin's STDIN as part of a jo
 }
 ```
 
-See the [Job](data-structures.md#job) structure for more details on these properties.
+See the [Job](data.md#job) structure for more details on these properties.
 
 Note that all Plugin parameters are also passed to your Plugin process as environment variables (with IDs converted as needed).
 
@@ -359,7 +359,7 @@ To **add** tags to the current job, use the following "push" message format:
 }
 ```
 
-The `push` object is used here to instruct xyOps to "push" (append) tags onto the existing set (you cannot replace or delete tags).  The tags themselves should be valid [Tag.id](data-structures.md#tag-id)s, and duplicates are automatically removed.
+The `push` object is used here to instruct xyOps to "push" (append) tags onto the existing set (you cannot replace or delete tags).  The tags themselves should be valid [Tag.id](data.md#tag-id)s, and duplicates are automatically removed.
 
 ##### Actions
 
@@ -408,12 +408,12 @@ When Action Plugins are invoked, they are passed a JSON document on STDIN (compr
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `xy` | Number | Indicates the [xyOps Wire Protocol](xywp.md) version.  Will be set to `1`. |
-| `type` | String | The [Plugin.type](data-structures.md#plugin-type), which will be set to `action`. |
-| `condition` | String | The [Action.condition](data-structures.md#action-condition) which activated the Plugin. |
+| `type` | String | The [Plugin.type](data.md#plugin-type), which will be set to `action`. |
+| `condition` | String | The [Action.condition](data.md#action-condition) which activated the Plugin. |
 | `params` | Object | If the Plugin defines any parameters, their values will be here. |
 | (Other) | Various | Based on context; see below. |
 
-If the Action Plugin is being invoked in job-related context (i.e. on job start, job complete, or other job actions) the contents of [JobHookData](data-structures.md#jobhookdata) will also be merged in at the top-level.  Similarly, if the plugin is being invoked in an alert-related context (alert fired or cleared), then the contents of [AlertHookData](data-structures.md#alerthookdata) will be merged in.
+If the Action Plugin is being invoked in job-related context (i.e. on job start, job complete, or other job actions) the contents of [JobHookData](data.md#jobhookdata) will also be merged in at the top-level.  Similarly, if the plugin is being invoked in an alert-related context (alert fired or cleared), then the contents of [AlertHookData](data.md#alerthookdata) will be merged in.
 
 Here is an example JSON document sent to an Action Plugin's STDIN as part of a job completion:
 
@@ -474,7 +474,7 @@ Here is an example JSON document sent to an Action Plugin's STDIN as part of a j
 }
 ```
 
-See [JobHookData](data-structures.md#jobhookdata) for more details on these properties.
+See [JobHookData](data.md#jobhookdata) for more details on these properties.
 
 And here is an example JSON document sent to an Action Plugin's STDIN as part of a new alert triggering:
 
@@ -527,7 +527,7 @@ And here is an example JSON document sent to an Action Plugin's STDIN as part of
 }
 ```
 
-See [AlertHookData](data-structures.md#alerthookdata) for more details on these properties.
+See [AlertHookData](data.md#alerthookdata) for more details on these properties.
 
 #### Output
 
@@ -711,7 +711,7 @@ When your trigger plugin decides to launch a job, you can optionally include arb
 }
 ```
 
-The format of the `data` property is user-defined, and it will be passed verbatim to the launched job, becoming the [input.data](data-structures.md#job-input) property inside the [Job](data-structures.md#job) object (same as if data is passed to it from a previous chained job, workflow, action, etc.).
+The format of the `data` property is user-defined, and it will be passed verbatim to the launched job, becoming the [input.data](data.md#job-input) property inside the [Job](data.md#job) object (same as if data is passed to it from a previous chained job, workflow, action, etc.).
 
 ##### Files
 
@@ -763,7 +763,7 @@ If you would like to delay a job launch, send back a `delay` property alongside 
 }
 ```
 
-Note that this mechanism works similarly to the built-in [Delay](triggers.md#delay) scheduler option.  Meaning, the job still "launches" but is set to a special pending state until the specified delay elapses, at which time the job becomes active and runs proper.  Also note that the delay value is computed relative to the job's original start time (i.e. the [Job.now](data-structures.md#job-now) actual on-the-minute time).
+Note that this mechanism works similarly to the built-in [Delay](triggers.md#delay) scheduler option.  Meaning, the job still "launches" but is set to a special pending state until the specified delay elapses, at which time the job becomes active and runs proper.  Also note that the delay value is computed relative to the job's original start time (i.e. the [Job.now](data.md#job-now) actual on-the-minute time).
 
 ### Monitor Plugins
 
@@ -793,7 +793,7 @@ The output of this is obviously just plain text:
 1056	0	9223372036854775807
 ```
 
-But that's fine!  The syntax doesn't matter at this point.  What happens is, this raw data gets included with the server's [ServerMonitorData.commands](data-structures.md#servermonitordata-commands), keyed by the [Plugin.id](data-structures.md#plugin-id), and is then made available to monitors and alerts in this format:
+But that's fine!  The syntax doesn't matter at this point.  What happens is, this raw data gets included with the server's [ServerMonitorData.commands](data.md#servermonitordata-commands), keyed by the [Plugin.id](data.md#plugin-id), and is then made available to monitors and alerts in this format:
 
 ```json
 "commands": {
@@ -816,7 +816,7 @@ If your Monitor Plugin is set to XML or JSON format, you can actually output a l
 
 ## Plugin Parameters
 
-Most Plugins accept one or more "parameters", which are configurable user fields.  These are displayed in the UI for users to populate when they are configuring events or workflows.  See below for all the types of parameters available.  See [Plugin.params](data-structures.md#plugin-params) for the internal data structure.
+Most Plugins accept one or more "parameters", which are configurable user fields.  These are displayed in the UI for users to populate when they are configuring events or workflows.  See below for all the types of parameters available.  See [Plugin.params](data.md#plugin-params) for the internal data structure.
 
 ### Text
 
@@ -941,7 +941,7 @@ This data object is then passed into the next job's input (either by workflow or
 My favorite animal is {{ data.animal }}, and my favorite color is {{ data.green }}.
 ```
 
-When the job runs, those `{{ mustache }}` placeholders are automatically expanded using the [Job](data-structures.md#job) object as the context.  In addition, the [Job.input](data-structures.md#job-input) sub-object is "flattened" into the outer context for convenience (just so you can skip the `input` prefix in the macros).  This allows you to access all the output data from the previous job in the current job, and copy it into Plugin parameters.
+When the job runs, those `{{ mustache }}` placeholders are automatically expanded using the [Job](data.md#job) object as the context.  In addition, the [Job.input](data.md#job-input) sub-object is "flattened" into the outer context for convenience (just so you can skip the `input` prefix in the macros).  This allows you to access all the output data from the previous job in the current job, and copy it into Plugin parameters.
 
 The mustache macros can do more than just data lookups.  They can also evaluate simple JavaScript-style expressions (specifically, we use the [jexl](https://github.com/TomFrost/Jexl) library).  See below for a few examples.
 

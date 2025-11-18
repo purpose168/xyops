@@ -48,7 +48,7 @@ Minimal example (JSON):
 
 ## Limit Object
 
-All [Limit](data-structures.md#limit) objects include these common properties:
+All [Limit](data.md#limit) objects include these common properties:
 
 | Property | Type | Description |
 |---------|------|-------------|
@@ -71,10 +71,10 @@ Parameters:
 |------|------|----------|-------------|
 | `type` | String | Set to `time` for max run time. |
 | `duration` | Number | Yes | Maximum runtime in seconds. |
-| `tags` | Array<String> | Optional | Apply these [Tag.id](data-structures.md#tag-id) values when exceeded. |
-| `users` | Array<String> | Optional | Email these [User.username](data-structures.md#user-username) users. |
+| `tags` | Array<String> | Optional | Apply these [Tag.id](data.md#tag-id) values when exceeded. |
+| `users` | Array<String> | Optional | Email these [User.username](data.md#user-username) users. |
 | `email` | String | Optional | Additional comma‑separated email addresses. |
-| `web_hook` | String | Optional | Fire this [WebHook.id](data-structures.md#webhook-id) when exceeded. |
+| `web_hook` | String | Optional | Fire this [WebHook.id](data.md#webhook-id) when exceeded. |
 | `text` | String | Optional | Custom text appended to the web hook message. |
 | `snapshot` | Boolean | Optional | Take a server snapshot when exceeded. |
 | `abort` | Boolean | Optional | Abort the job when exceeded. |
@@ -311,4 +311,4 @@ Example:
 - Multiple similar limits: If multiple sources define the same type, the event/workflow definition takes precedence for start‑time checks.
 - Queues and scope: Queues are per event. For ad‑hoc workflow node runs, the queue scope includes the node identifier to avoid cross‑contending unrelated nodes. Queues are used both when `job` concurrency is saturated and when no matching servers are currently available.
 
-See also: [Limit](data-structures.md#limit) and [Limit Types](data-structures.md#limit-type) for the canonical data structure definitions.
+See also: [Limit](data.md#limit) and [Limit Types](data.md#limit-type) for the canonical data structure definitions.
