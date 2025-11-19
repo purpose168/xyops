@@ -57,7 +57,7 @@ TL;DR; we do not accept feature PRs, but there are **lots** of other ways you ca
 
 # Development
 
-See our **[Development Guide](docs/development.md)** for local dev setup.  In short, install [Node.js LTS](https://nodejs.org/en/download) and then:
+See our **[Development Guide](docs/dev.md)** for local dev setup.  In short, install [Node.js LTS](https://nodejs.org/en/download) and then:
 
 ```sh
 git clone https://github.com/pixlcore/xyops.git

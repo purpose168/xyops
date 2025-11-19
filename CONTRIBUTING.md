@@ -22,7 +22,7 @@ There are plenty of other valuable ways to contribute:
 - Small, well-scoped fixes are welcome.  
 - Your PR should clearly describe the issue and the reasoning behind your change.  
 - All unit tests must pass (`npm test`).  
-- Follow our code style (see the [Development Guide](https://github.com/pixlcore/xyops/blob/main/docs/development.md)).  
+- Follow our code style (see the [Development Guide](https://github.com/pixlcore/xyops/blob/main/docs/dev.md)).  
 - Commits must be **signed off (DCO)** and **GPG-signed**.
 
 ### Security Issues
@@ -46,7 +46,7 @@ Our biggest need right now is **Plugins**!  xyOps is built around an open plugin
 We happily accept PRs that improve our docs!  
 
 - All documentation lives in `/docs`.  
-- Follow the writing style in the [Development Guide](https://github.com/pixlcore/xyops/blob/main/docs/development.md).  
+- Follow the writing style in the [Development Guide](https://github.com/pixlcore/xyops/blob/main/docs/dev.md).  
 - Screenshots/diagrams should be **PNG** or **WebP (lossless)** with proper **alt-text**.
 
 ### Spread the Word
@@ -62,7 +62,7 @@ If you enjoy xyOps, help us grow the community:
 - Runtime: **Node.js LTS**
 - Language: **Plain JavaScript**, no frameworks
 - Testing: [pixl-unit](https://github.com/jhuckaby/pixl-unit)
-- Code style and setup: see the [Development Guide](https://github.com/pixlcore/xyops/blob/main/docs/development.md)
+- Code style and setup: see the [Development Guide](https://github.com/pixlcore/xyops/blob/main/docs/dev.md)
 - License: [BSD-3-Clause](https://github.com/pixlcore/xyops/blob/main/LICENSE.md)
 
 ## Code of Conduct
