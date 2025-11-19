@@ -4,7 +4,7 @@ This chapter is for users of [Cronicle](https://github.com/jhuckaby/cronicle), t
 
 ## Prerequisites
 
-Before you import your Cronicle data, please make sure you [add all your worker servers](usage.md#adding-servres) to your xyOps installation.  The reason is, Cronicle events can target servers directly by their hostname, but xyOps does this differently.  It is important to have all your servers in your xyOps cluster before importing, so the code can properly match up your Cronicle server targets to your new xyOps servers.
+Before you import your Cronicle data, please make sure you [add all your worker servers](servers.md#adding-servers) to your xyOps installation.  The reason is, Cronicle events can target servers directly by their hostname, but xyOps does this differently.  It is important to have all your servers in your xyOps cluster before importing, so the code can properly match up your Cronicle server targets to your new xyOps servers.
 
 ## Data Export
 
@@ -29,7 +29,7 @@ Before you reenable the scheduler, please ensure all your Events, Categories, Se
 
 ## Plugin Compatibility Mode
 
-While both xyOps and Cronicle communicate with Plugins via JSON over STDIO, the API itself is a little different.  xyOps requires that each JSON message have a top-level `xy` property set to `1`, alongside any other job properties.  Example:
+While both xyOps and Cronicle communicate with Plugins via JSON over STDIO, the APIs differ slightly.  xyOps requires that each JSON message have a top-level `xy` property set to `1`, alongside any other job properties.  Example:
 
 ```json
 { "xy": 1, "progress": 0.5 }

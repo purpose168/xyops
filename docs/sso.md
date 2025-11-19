@@ -16,7 +16,7 @@ The trusted header flow works as follows:
 
 # Setup
 
-The first step is to pick an authentication tool, and get it all configured and working before we throw xyOps in the mix.  We'll focus on [OAuth2-Proxy](https://github.com/oauth2-proxy/oauth2-proxy) for this guide, as it is extremely quick and easy to get up and running.  It is also free, open source, and supports all the major OIDC providers.
+The first step is to pick an authentication tool, and get it all configured and working before we throw xyOps in the mix.  We'll focus on [OAuth2-Proxy](https://github.com/oauth2-proxy/oauth2-proxy) for this guide, as it is extremely quick and easy to get up and running.  It is also free, open source, and supports all the major OIDC providers (SAML is covered separately below).
 
 You can follow their [installation guide](https://oauth2-proxy.github.io/oauth2-proxy/installation), or use the following [Docker Compose](https://docs.docker.com/compose/) configuration with a generic OIDC provider as a starting point:
 
@@ -47,7 +47,7 @@ services:
     image: ealen/echo-server
 ```
 
-Notice how this docker compose actually starts *two* separate containers: the OAuth2-Proxy itself, and also something called [echo-server](https://hub.docker.com/r/ealen/echo-server).  The latter is a simple passthrough web server for testing, which echoes request metadata back to the browser in JSON format.  This is extremely useful for the initial SSO setup process, because you can test your auth implementation *in isolation*, and see exactly which headers will be passed down to the app after login (we'll need to map these headers to standard fields in xyOps, which is covered below).
+Notice how this docker compose actually starts *two* separate containers: the OAuth2-Proxy itself, and also something called [echo-server](https://hub.docker.com/r/ealen/echo-server).  The latter is a simple passthrough web server for testing, which echoes request metadata back to the browser in JSON format.  This is extremely useful for the initial SSO setup process, because you can test your auth implementation *in isolation*, and see exactly which headers will be passed down to the app after authentication (we'll need to map these headers to standard fields in xyOps, which is covered below).
 
 Check out the [OAuth2-Proxy configuration docs](https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview/) for details on all the environment variables used above.  OAuth2-Proxy also provides a set of [example setup files](https://github.com/oauth2-proxy/oauth2-proxy/tree/master/contrib/local-environment) which are quite useful for specific configurations.
 
@@ -336,7 +336,7 @@ A few things to note here:
 - You'll need to point a domain at the proxy, and add it to `OAUTH2_PROXY_WHITELIST_DOMAINS` (as well as your IdP domain).
 - Generate your TLS certificate files, and place them where Docker can find them (see `volumes:` above).
 
-For the xyOps container, it needs two configuration files.  Grab our sample [config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [ssl.conf](https://github.com/pixlcore/xyops/blob/main/sample_conf/ssl.json) files to use as starting points to create yours.  See the [xyOps Configuration Guide](configuration.md) for details on how to customize these files.
+For the xyOps container, it needs two configuration files.  Grab our sample [config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [sso.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/sso.json) files to use as starting points to create yours.  See the [xyOps Configuration Guide](configuration.md) for details on how to customize these files.
 
 At the very least, make sure you set the [base_app_url](configuration.md#base_app_url) property to the domain that routes to the proxy (which sits in front), with a `https://` prefix.  You should also set the `XYOPS_hostname` to the same hostname (without the protocol prefix).  This is what xyOps uses to advertise itself to the server cluster, and generate URLs for new servers to connect.
 
@@ -360,7 +360,7 @@ A few prerequisites for this setup:
 
 - For multi-master setups, **you must have an external storage backend**, such as NFS, S3, or S3-compatible (MinIO, etc.).
 - You will need a custom domain configured and TLS certs created and ready to attach.
-- You have your xyOps configuration files customized and ready to go ([config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [ssl.conf](https://github.com/pixlcore/xyops/blob/main/sample_conf/ssl.json)) (see below).
+- You have your xyOps configuration files customized and ready to go ([config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [sso.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/sso.json)) (see below).
 - And of course you should have a pretested SSO configuration for OAuth2-Proxy, so you are confident that piece works before integrating it here.
 
 For the examples below, we'll be using the following domain placeholders:
@@ -453,7 +453,7 @@ A few things to note here:
 - The timezone (`TZ`) should be set to your company's main timezone, so things like midnight log rotation and daily stat resets work as expected.
 - You will need to supply two configuration files, `config.json` and `sso.json`.  See below.
 
-Grab our sample [config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [ssl.conf](https://github.com/pixlcore/xyops/blob/main/sample_conf/ssl.json) files to use as starting points to create yours.  See the [xyOps Configuration Guide](configuration.md) for details on how to customize these files.  Specifically though, let's talk about `sso.conf` for this configuration.  This file is largely discussed above (see [Configuration](#configuration) above), but the [Header Map](#header-map) in particular is going to be different for Nginx + OAuth2-Proxy: 
+Grab our sample [config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [sso.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/sso.json) files to use as starting points to create yours.  See the [xyOps Configuration Guide](configuration.md) for details on how to customize these files.  Specifically though, let's talk about `sso.conf` for this configuration.  This file is largely discussed above (see [Configuration](#configuration) above), but the [Header Map](#header-map) in particular is going to be different for Nginx + OAuth2-Proxy: 
 
 ```json
 "header_map": {
