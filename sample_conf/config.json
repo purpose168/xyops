@@ -81,14 +81,14 @@
 	},
 	
 	"hook_text_templates": {
-		"job_start": "xyOps Job started on {{nice_server}}: {{event.title}}: {{links.job_details}}",
-		"job_success": "xyOps Job completed successfully on {{nice_server}}: {{event.title}}: {{links.job_details}}",
-		"job_error": "xyOps Job failed on {{nice_server}}: {{event.title}}: Error ({{job.code}}): {{job.description}}: {{links.job_details}}",
-		"job_progress": "xyOps Job is in progress on {{nice_server}} ({{event.title}}): {{links.job_details}}",
-		"job_suspended": "xyOps Job is suspended and requires human intervention: {{event.title}}: {{links.job_details}}&resume=1",
-		"job_limited": "xyOps {{action.msg}}: {{links.job_details}}",
-		"alert_new": "xyOps Alert: {{nice_server}}: {{def.title}}: {{alert.message}}: {{links.alert_url}}",
-		"alert_cleared": "xyOps Alert Cleared: {{nice_server}}: {{def.title}}"
+		"job_start": "Job started on {{nice_server}}: {{event.title}}: {{links.job_details}}",
+		"job_success": "Job completed successfully on {{nice_server}}: {{event.title}}: {{links.job_details}}",
+		"job_error": "Job failed on {{nice_server}}: {{event.title}}: Error ({{job.code}}): {{job.description}}: {{links.job_details}}",
+		"job_progress": "Job is in progress on {{nice_server}} ({{event.title}}): {{links.job_details}}",
+		"job_suspended": "Job is suspended and requires human intervention: {{event.title}}: {{links.job_details}}&resume=1",
+		"job_limited": "{{action.msg}}: {{links.job_details}}",
+		"alert_new": "Alert: {{nice_server}}: {{def.title}}: {{alert.message}}: {{links.alert_url}}",
+		"alert_cleared": "Alert Cleared: {{nice_server}}: {{def.title}}"
 	},
 	
 	"multi": {

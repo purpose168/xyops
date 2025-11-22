@@ -266,7 +266,20 @@ This object defines system-wide web hook triggers that can fire on any logged ac
 
 ## hook_text_templates
 
-This object provides message templates for jobs and alerts; Mustache-style placeholders populate human‑readable text for emails and web hooks (default includes templates like `{{links.job_details}}`).
+This object provides message templates for jobs and alerts; Mustache-style placeholders populate human‑readable text for emails and web hooks (default includes templates like `{{links.job_details}}`).  Example set:
+
+```json
+{
+  "job_start": "Job started on {{nice_server}}: {{event.title}}: {{links.job_details}}",
+  "job_success": "Job completed successfully on {{nice_server}}: {{event.title}}: {{links.job_details}}",
+  "job_error": "Job failed on {{nice_server}}: {{event.title}}: Error ({{job.code}}): {{job.description}}: {{links.job_details}}",
+  "job_progress": "Job is in progress on {{nice_server}} ({{event.title}}): {{links.job_details}}",
+  "job_suspended": "Job is suspended and requires human intervention: {{event.title}}: {{links.job_details}}&resume=1",
+  "job_limited": "{{action.msg}}: {{links.job_details}}",
+  "alert_new": "Alert: {{nice_server}}: {{def.title}}: {{alert.message}}: {{links.alert_url}}",
+  "alert_cleared": "Alert Cleared: {{nice_server}}: {{def.title}}"
+}
+```
 
 See [JobHookData](data.md#jobhookdata) and [AlertHookData](data.md#alerthookdata) for a list of the placeholder macros you can use here.
 
