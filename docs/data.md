@@ -3386,3 +3386,18 @@ A file object is used to represent a file in storage.  It is used for [Job.files
 | `date` | Number | The file's creation date as Unix seconds. |
 | `job` | String | If the file was created from a job, this will contain the [Job.id](#job-id). |
 | `server` | String | If the file was created on a server, this will contain the [Server.id](#server-id). |
+| `ticket` | String | If the file was created for a ticket, this will contain the [Ticket.id](#ticket-id). |
+
+Here is an example in JSON format:
+
+```json
+{
+	"id": "fmi4us46yno",
+	"date": 1763487257,
+	"filename": "report-optimized.png",
+	"path": "files/tmhzbmbagig/admin/tQq3xZEQR2_vhvhh4L8WnA/report-optimized.png",
+	"size": 29959,
+	"username": "admin",
+	"ticket": "tmhzbmbagig"
+}
+```
