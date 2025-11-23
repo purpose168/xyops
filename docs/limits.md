@@ -185,7 +185,7 @@ Example:
 }
 ```
 
-### Max CPU % Limit
+### Max CPU Limit
 
 Cap CPU usage for the job (including child processes). The limit triggers only if CPU stays over the threshold continuously for the sustain duration. Optional actions can be taken and the job can be aborted.
 
