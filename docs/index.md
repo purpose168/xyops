@@ -69,3 +69,4 @@ Welcome to the xyOps documentation. xyOps is a job scheduler, workflow engine, a
 - [Code of Conduct](https://github.com/pixlcore/xyops/blob/main/CODE_OF_CONDUCT.md): Contributor Covenant Code of Conduct
 - [License](https://github.com/pixlcore/xyops/blob/main/LICENSE.md): Open source BSD 3-Clause license (OSI-approved).
 - [Trademarks](https://github.com/pixlcore/xyops/blob/main/TRADEMARKS.md): xyOps, xySat and PixlCore are trademarks.
+- [Colophon](colophon.md): We stand on the shoulders of giants.
