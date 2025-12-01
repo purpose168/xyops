@@ -543,6 +543,9 @@ Page.Base = class Base extends Page {
 		// get formatted target, which may be a group or a server
 		if (find_object(app.groups, { id: target })) return this.getNiceGroup(target, link);
 		if (find_object(app.servers, { id: target })) return this.getNiceServer(target, link);
+		
+		// if target looks like a server, still call getNiceServer, for offline icon
+		if (target && (''+target).match(/^s/)) return this.getNiceServer(target, link);
 		return target;
 	}
 	
