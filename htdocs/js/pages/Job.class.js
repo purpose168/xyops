@@ -2452,7 +2452,7 @@ Page.Job = class Job extends Page.PageUtils {
 		}
 		
 		// sort pids by parent/child relationship
-		var root_proc = procs[job.pid];
+		var root_proc = procs[job.rpid || job.pid];
 		if (!root_proc) return '<div style="margin:50px; text-align:center; font-style:italic;">Root process not found for job.</div>';
 		
 		rows.push( root_proc );
@@ -2885,7 +2885,7 @@ Page.Job = class Job extends Page.PageUtils {
 				self.getRelativeDateTime(file.date),
 				nice_source,
 				self.getNiceJob(file.job || job.id, self.isWorkflow),
-				self.getNiceServer(file.server || job.server, true),
+				self.getNiceServer(file.server, true),
 				actions.join(' | ')
 			];
 			
