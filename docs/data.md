@@ -836,6 +836,14 @@ This is set to a string when a job is launched via a special scheduler trigger l
 
 This is set to a Plugin ID by the scheduler when a job was launched from a Plugin based trigger configuration.  Only used for UI hinting.
 
+## Job.pid
+
+When the job starts running on a server, this will contain the local PID of the process directly spawned by xySat.
+
+## Job.rpid
+
+When the job is running via a remote script layer (i.e. Docker container or remote SSH via [xyRun](https://github.com/pixlcore/xyrun)), this will contain the actual root PID of the remote job process group.
+
 ## Job.label
 
 User writable property for providing a visual label for the Job.  Should be specified as a string, and will be displayed alongside the Job ID on completion screens and history lists.
@@ -1042,6 +1050,12 @@ This string specifies how xySat should terminate processes when a job is aborted
 - `none` means that **no** processes are killed on abort.  This is only used for very special cases.
 - `parent` means that only the **parent** process is killed on abort.  This is the default behavior for new Plugins.
 - `all` means that **all** processes are killed on abort.  Meaning, xySat will traverse the process tree from the parent process down, and kill everything.
+
+## Plugin.runner
+
+This boolean, when `true`, indicates that the job will be running remotely (i.e. not a direct child process of xySat).  This is only used for Event Plugins.
+
+The idea is that when a job is running remotely, we cannot monitor system resources for it.  Also, input and output files simply do not work in these cases (because xySat expects them to be on the local filesystem where it is running).  The `runner` property tells xyOps (and ultimately xySat) that the job is running remotely out if its reach, and it should not perform the usual process and network monitoring, and file management.  Those duties get delegated to a tool such as [xyRun](https://github.com/pixlcore/xyrun).
 
 ## Plugin.notes
 
