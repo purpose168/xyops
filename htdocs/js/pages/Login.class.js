@@ -83,7 +83,7 @@ Page.Login = class Login extends Page.Base {
 		html += '</div>';
 		
 		html += '</form>';
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		setTimeout( function() {
 			$( app.getPref('username') ? '#fe_login_password' : '#fe_login_username' ).focus();
@@ -221,7 +221,7 @@ Page.Login = class Login extends Page.Base {
 		html += '</div>';
 		
 		html += '</form>';
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		setTimeout( function() {
 			$( '#fe_ca_username' ).focus();
@@ -339,7 +339,7 @@ Page.Login = class Login extends Page.Base {
 		html += '</div>';
 		
 		html += '</form>';
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		setTimeout( function() { 
 			$('#fe_pr_username, #fe_pr_email').keypress( function(event) {
@@ -431,7 +431,7 @@ Page.Login = class Login extends Page.Base {
 		html += '</div>';
 		
 		html += '</form>';
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		setTimeout( function() {
 			$( '#fe_reset_password' ).focus();

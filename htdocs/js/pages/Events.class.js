@@ -224,7 +224,7 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		html += '<div id="d_search_results"></div>';
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		// MultiSelect.init( this.div.find('#fe_el_tags') );
 		SingleSelect.init( this.div.find('#fe_el_status, #fe_el_category, #fe_el_target, #fe_el_plugin, #fe_el_tag, #fe_el_trigger, #fe_el_username, #fe_el_action') );
@@ -342,7 +342,7 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		var is_floater_vis = !!this.div.find('.box_buttons.floater').length;
 		
-		this.div.find('#d_search_results').html( html );
+		this.div.find('#d_search_results').html( html ).buttonize();
 		this.applyTableFilters();
 		this.setupBoxButtonFloater(is_floater_vis);
 		
@@ -899,7 +899,7 @@ Page.Events = class Events extends Page.PageUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ve_filter') );
 		
@@ -1823,7 +1823,7 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_ee_icon, #fe_ee_cat, #fe_ee_algo, #fe_ee_plugin') );
@@ -1942,7 +1942,7 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_ee_icon, #fe_ee_cat, #fe_ee_algo, #fe_ee_plugin') );
@@ -2556,7 +2556,7 @@ Page.Events = class Events extends Page.PageUtils {
 	renderTriggerTable() {
 		// render res limit editor
 		var html = this.getTriggerTable();
-		this.div.find('#d_ee_trigger_table').html( html );
+		this.div.find('#d_ee_trigger_table').html( html ).buttonize();
 	}
 	
 	getSortedTriggers() {
@@ -3301,7 +3301,7 @@ Page.Events = class Events extends Page.PageUtils {
 				case 'plugin':
 					$('#d_et_plugin').show();
 					$('#d_et_plugin_params').show();
-					$('#d_et_param_editor').html( self.getPluginParamEditor( $('#fe_et_plugin').val(), trigger.params || {} ) );
+					$('#d_et_param_editor').html( self.getPluginParamEditor( $('#fe_et_plugin').val(), trigger.params || {} ) ).buttonize();
 					$('#d_et_tz').show();
 				break;
 			} // switch new_type
@@ -3319,7 +3319,7 @@ Page.Events = class Events extends Page.PageUtils {
 		}); // type change
 		
 		$('#fe_et_plugin').on('change', function() {
-			$('#d_et_param_editor').html( self.getPluginParamEditor( $(this).val(), trigger.params || {} ) );
+			$('#d_et_param_editor').html( self.getPluginParamEditor( $(this).val(), trigger.params || {} ) ).buttonize();
 			Dialog.autoResize();
 		}); // type change
 		
@@ -3525,7 +3525,7 @@ Page.Events = class Events extends Page.PageUtils {
 	renderPluginParamEditor() {
 		// render plugin paral editor
 		var html = this.getPluginParamEditor( this.div.find('#fe_ee_plugin').val(), this.event.params, true );
-		this.div.find('#d_ee_params').html( html );
+		this.div.find('#d_ee_params').html( html ).buttonize();
 	}
 	
 	get_event_form_json(force) {

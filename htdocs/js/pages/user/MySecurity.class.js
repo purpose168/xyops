@@ -131,7 +131,7 @@ Page.MySecurity = class MySecurity extends Page.Base {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 	}
 	
 	logoutAll() {

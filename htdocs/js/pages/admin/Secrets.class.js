@@ -100,7 +100,7 @@ Page.Secrets = class Secrets extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 	}
 	
@@ -206,7 +206,7 @@ Page.Secrets = class Secrets extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_se_icon') );
@@ -287,7 +287,7 @@ Page.Secrets = class Secrets extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_se_icon') );
@@ -495,7 +495,7 @@ Page.Secrets = class Secrets extends Page.PageUtils {
 	renderSecretEditor() {
 		// render secret file editor
 		var html = this.getSecretTable();
-		this.div.find('#d_se_data_table').html( html );
+		this.div.find('#d_se_data_table').html( html ).buttonize();
 	}
 	
 	getSecretTable() {

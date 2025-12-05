@@ -143,7 +143,7 @@ Page.Alerts = class Alerts extends Page.PageUtils {
 		
 		html += '<div id="d_search_results"><div class="loading_container"><div class="loading"></div></div></div>';
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		var sargs = this.getSearchArgs();
 		
@@ -472,7 +472,7 @@ Page.Alerts = class Alerts extends Page.PageUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		this.getAlertSnapshots();
 		this.getAlertTickets();

@@ -106,7 +106,7 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 	}
 	
@@ -213,7 +213,7 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ep_icon, #fe_ep_type, #fe_ep_format, #fe_ep_kill') );
 		MultiSelect.init( this.div.find('select[multiple]') );
@@ -302,7 +302,7 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ep_icon, #fe_ep_type, #fe_ep_format, #fe_ep_kill') );
 		MultiSelect.init( this.div.find('select[multiple]') );

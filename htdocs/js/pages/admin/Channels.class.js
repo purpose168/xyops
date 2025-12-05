@@ -100,7 +100,7 @@ Page.Channels = class Channels extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 	}
 	
@@ -203,7 +203,7 @@ Page.Channels = class Channels extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_ech_run_event, #fe_ech_icon, #fe_ech_web_hook, #fe_ech_sound') );
@@ -287,7 +287,7 @@ Page.Channels = class Channels extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_ech_run_event, #fe_ech_icon, #fe_ech_web_hook, #fe_ech_sound') );

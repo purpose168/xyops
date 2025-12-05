@@ -203,7 +203,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.applyTableFilters();
 		SingleSelect.init( this.div.find('#fe_es_filter') );
 		
@@ -538,7 +538,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 		
 		html += '<div id="d_search_results"><div class="loading_container"><div class="loading"></div></div></div>';
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		var sargs = this.getSearchArgs();
 		// if (!sargs) this.div.find('#btn_s_save').addClass('disabled');
@@ -765,7 +765,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 	
 	updateWatchButton() {
 		// update dynamic watch button based on current state
-		this.div.find('#d_vs_watch_btn').html( this.getWatchButton() );
+		this.div.find('#d_vs_watch_btn').html( this.getWatchButton() ).buttonize();
 	}
 	
 	receive_snapshot(resp) {
@@ -1044,7 +1044,7 @@ Page.Servers = class Servers extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		SingleSelect.init( this.div.find('select.sel_chart_size') );
 		

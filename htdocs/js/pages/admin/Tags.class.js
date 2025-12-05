@@ -90,7 +90,7 @@ Page.Tags = class Tags extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 	}
 	
@@ -167,7 +167,7 @@ Page.Tags = class Tags extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		$('#fe_et_title').focus();
 		SingleSelect.init( this.div.find('#fe_et_icon') );
@@ -249,7 +249,7 @@ Page.Tags = class Tags extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_et_icon') );
 		this.setupBoxButtonFloater();

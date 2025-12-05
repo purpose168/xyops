@@ -112,7 +112,7 @@ Page.Categories = class Categories extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 		
 		if (!app.isCategoryLimited()) this.setupDraggableGrid({
@@ -225,7 +225,7 @@ Page.Categories = class Categories extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ec_color, #fe_ec_icon') );
 		// MultiSelect.init( this.div.find('select[multiple]') );
@@ -310,7 +310,7 @@ Page.Categories = class Categories extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ec_color, #fe_ec_icon') );
 		this.setupBoxButtonFloater();

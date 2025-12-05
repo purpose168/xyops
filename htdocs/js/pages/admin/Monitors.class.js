@@ -101,7 +101,7 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 		
 		this.setupDraggableGrid({
@@ -213,7 +213,7 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_em_icon, #fe_em_data_type') );
 		MultiSelect.init( this.div.find('select[multiple]') );
@@ -297,7 +297,7 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_em_icon, #fe_em_data_type') );
 		MultiSelect.init( this.div.find('select[multiple]') );

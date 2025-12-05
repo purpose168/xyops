@@ -400,7 +400,7 @@ Page.MySettings = class MySettings extends Page.Base {
 			html += '</div>'; // box
 		} // admin
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		SingleSelect.init( this.div.find('#fe_ms_language, #fe_ms_region, #fe_ms_tz, #fe_ms_numformat, #fe_ms_hrcycle, #fe_ms_motionacc, #fe_ms_contrastacc') );
 		this.update_date_time_preview();
 	}

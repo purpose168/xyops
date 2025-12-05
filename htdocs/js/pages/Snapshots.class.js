@@ -149,7 +149,7 @@ Page.Snapshots = class Snapshots extends Page.ServerUtils {
 		
 		html += '<div id="d_search_results"><div class="loading_container"><div class="loading"></div></div></div>';
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		var sargs = this.getSearchArgs();
 		
@@ -544,7 +544,7 @@ Page.Snapshots = class Snapshots extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		SingleSelect.init( this.div.find('select.sel_chart_size') );
 		
@@ -966,7 +966,7 @@ Page.Snapshots = class Snapshots extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		SingleSelect.init( this.div.find('select.sel_chart_size, select.sel_cpu_mem_merge') );
 		

@@ -101,7 +101,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 	}
 	
@@ -213,7 +213,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		// MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_ewh_icon, #fe_ewh_method') );
@@ -301,7 +301,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ewh_icon, #fe_ewh_method') );
 		RelativeTime.init( $('#fe_ewh_timeout') );
@@ -590,7 +590,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		// render header editor
 		var dom_prefix = this.dom_prefix;
 		var html = this.getHeaderGrid();
-		this.div.find('#d_' + dom_prefix + '_header_table').html( html );
+		this.div.find('#d_' + dom_prefix + '_header_table').html( html ).buttonize();
 	}
 	
 	getHeaderGrid() {

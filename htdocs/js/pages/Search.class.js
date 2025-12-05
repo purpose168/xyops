@@ -268,7 +268,7 @@ Page.Search = class Search extends Page.PageUtils {
 		
 		html += '<div id="d_search_results"><div class="loading_container"><div class="loading"></div></div></div>';
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		// var sargs = this.getSearchArgs();
 		// if (!sargs) this.div.find('#btn_s_save').addClass('disabled');
@@ -589,7 +589,7 @@ Page.Search = class Search extends Page.PageUtils {
 		// we need to know if the search is DONE DONE, or just "hit max done"
 		else if (pdata.hit_max) {
 			var html = '<div class="load_more"><div class="button" onClick="$P().loadMoreFileResults()"><i class="mdi mdi-arrow-down-circle-outline">&nbsp;</i>Load More...</div></div>';
-			$results.find('.box_content').append(html);
+			$results.find('.box_content').append(html).buttonize();
 			this.jobFileSearch.opts.offset = pdata.offset; // resume at last offset
 		}
 	}
@@ -672,7 +672,7 @@ Page.Search = class Search extends Page.PageUtils {
 		html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		$results.html( html );
+		$results.html( html ).buttonize();
 	}
 	
 	do_bulk_delete() {

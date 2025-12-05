@@ -136,7 +136,7 @@ Page.System = class System extends Page.Base {
 		
 		html += '</div>'; // maint_grid
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		this.renderSystemComponents();
 		this.renderInternalJobs();

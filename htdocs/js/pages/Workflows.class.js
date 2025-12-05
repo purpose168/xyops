@@ -138,7 +138,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			<div class="button right mobile_collapse" onClick="$P().cancel_workflow_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>${config.ui.buttons.cancel}</span></div>
 		`);
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_wf_icon, #fe_wf_cat, #fe_wf_algo') );
@@ -256,7 +256,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			<div class="button cancel right mobile_collapse sm_hide" onClick="$P().cancel_workflow_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>${config.ui.buttons.close}</span></div>
 		`);
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		MultiSelect.init( this.div.find('select[multiple]') );
 		SingleSelect.init( this.div.find('#fe_wf_icon, #fe_wf_cat, #fe_wf_algo') );
@@ -1397,7 +1397,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			// refresh param editor
 			var event_id = $('#fe_wfde_event').val();
 			var event = find_object( app.events, { id: event_id } );
-			$('#d_wfde_param_editor').html( self.getParamEditor( event.fields, params, true ) );
+			$('#d_wfde_param_editor').html( self.getParamEditor( event.fields, params, true ) ).buttonize();
 			Dialog.autoResize();
 		}
 		
@@ -1581,7 +1581,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			// refresh plugin param editor
 			var plugin_id = $('#fe_wfdj_plugin').val();
 			var plugin = find_object( app.plugins, { id: plugin_id } );
-			$('#d_wfdj_param_editor').html( self.getPluginParamEditor( plugin_id, node.data.params, true ) );
+			$('#d_wfdj_param_editor').html( self.getPluginParamEditor( plugin_id, node.data.params, true ) ).buttonize();
 			Dialog.autoResize();
 		}
 		

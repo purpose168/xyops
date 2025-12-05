@@ -965,7 +965,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		// render res limit editor
 		var dom_prefix = this.dom_prefix;
 		var html = this.getResLimitTable();
-		this.div.find('#d_' + dom_prefix + '_reslim_table').html( html );
+		this.div.find('#d_' + dom_prefix + '_reslim_table').html( html ).buttonize();
 	}
 	
 	getResLimitDisplayArgs(item) {
@@ -1480,7 +1480,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		// render job action editor
 		var dom_prefix = this.dom_prefix;
 		var html = this.getJobActionTable();
-		this.div.find('#d_' + dom_prefix + '_jobact_table').html( html );
+		this.div.find('#d_' + dom_prefix + '_jobact_table').html( html ).buttonize();
 	}
 	
 	getJobActionDisplayArgs(action, link) {
@@ -2050,7 +2050,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				case 'plugin':
 					$('#d_eja_plugin').show();
 					$('#d_eja_plugin_params').show();
-					$('#d_eja_param_editor').html( self.getPluginParamEditor( $('#fe_eja_plugin').val(), action.params || {} ) );
+					$('#d_eja_param_editor').html( self.getPluginParamEditor( $('#fe_eja_plugin').val(), action.params || {} ) ).buttonize();
 				break;
 			} // switch new_type
 			
@@ -2064,7 +2064,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		}); // type change
 		
 		$('#fe_eja_plugin').on('change', function() {
-			$('#d_eja_param_editor').html( self.getPluginParamEditor( $(this).val(), action.params || {} ) );
+			$('#d_eja_param_editor').html( self.getPluginParamEditor( $(this).val(), action.params || {} ) ).buttonize();
 			Dialog.autoResize();
 		}); // type change
 		
@@ -2109,7 +2109,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			if (param.type == 'hidden') return;
 			
 			if (param.type != 'checkbox') html += '<div class="info_label">' + param.title + '</div>';
-			html += '<div class="info_value">';
+			html += '<div class="info_value" aria-label="' + param.title + '">';
 			
 			switch (param.type) {
 				case 'text':
@@ -2220,7 +2220,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		html += `<div class="tool_desc">${strip_html(tool.description)}</div>`;
 		if (tool.fields && tool.fields.length) html += this.getParamEditor(tool.fields, {}, explore);
 		
-		$fieldset.html(html);
+		$fieldset.html(html).buttonize();
 	}
 	
 	viewPluginParamCode(plugin_id, param_id) {
@@ -3727,7 +3727,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		if (!this.active) return; // sanity
 		
 		var html = this.getParamsTable();
-		this.div.find('#d_params_table').html( html );
+		this.div.find('#d_params_table').html( html ).buttonize();
 		
 		this.setupDraggableGrid({
 			table_sel: this.div.find('#d_params_table div.data_grid'), 
@@ -4277,7 +4277,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			if (param.type == 'hidden') return;
 			
 			if (param.type != 'checkbox') html += '<div class="info_label">' + param.title + '</div>';
-			html += '<div class="info_value">';
+			html += '<div class="info_value" aria-label="' + param.title + '">';
 			
 			switch (param.type) {
 				case 'text':

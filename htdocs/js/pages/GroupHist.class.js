@@ -259,7 +259,7 @@ Page.GroupHist = class GroupHist extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		this.updateGroupServerTable(); // this populates visibleServerIDs, mind
 		

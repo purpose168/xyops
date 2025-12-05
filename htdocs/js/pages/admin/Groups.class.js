@@ -121,7 +121,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 		
 		if (!app.isGroupLimited()) this.setupDraggableGrid({
@@ -239,7 +239,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_eg_icon, #fe_eg_web_hook') );
 		$('#fe_eg_title').focus();
@@ -323,7 +323,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_eg_icon, #fe_eg_web_hook') );
 		this.setupBoxButtonFloater();
@@ -823,7 +823,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		SingleSelect.init( this.div.find('select.sel_chart_size, select.sel_cpu_mem_merge') );
 		
@@ -1301,7 +1301,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 	
 	updateWatchButton() {
 		// update dynamic watch button based on current state
-		this.div.find('#d_vg_watch_btn').html( this.getWatchButton() );
+		this.div.find('#d_vg_watch_btn').html( this.getWatchButton() ).buttonize();
 	}
 	
 	renderGroupFilteredSections() {

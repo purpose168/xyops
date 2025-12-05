@@ -90,7 +90,7 @@ Page.Users = class Users extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 		
 		setTimeout( function() {
@@ -184,7 +184,7 @@ Page.Users = class Users extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_eu_status') );
 		MultiSelect.init( this.div.find('select[multiple]') );
@@ -329,7 +329,7 @@ Page.Users = class Users extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_eu_status') );
 		MultiSelect.init( this.div.find('select[multiple]') );

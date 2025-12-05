@@ -2853,6 +2853,8 @@ Page.Base = class Base extends Page {
 			CodeEditor.hide();
 			callback(value);
 		});
+		
+		this.editor.focus();
 	}
 	
 	toggleDialogCodeEditorSize(span) {

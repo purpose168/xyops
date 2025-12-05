@@ -248,7 +248,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		
 		html += '<div id="d_search_results"><div class="loading_container"><div class="loading"></div></div></div>';
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		// var sargs = this.getSearchArgs();
 		// if (!sargs) this.div.find('#btn_s_save').addClass('disabled');
@@ -454,7 +454,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		$results.html( html );
+		$results.html( html ).buttonize();
 	}
 	
 	do_bulk_delete() {
@@ -652,7 +652,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setup_dynamic_elements();
 		this.setupBoxButtonFloater();
 		
@@ -1216,7 +1216,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 			html += '</div>'; // box_buttons
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.expandInlineImages('#d_ticket_main_body');
 		this.highlightCodeBlocks('#d_ticket_main_body');
 		this.setupBoxButtonFloater();
@@ -1410,7 +1410,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 			// refresh param editor
 			var event_id = $('#fe_td_event').val();
 			var event_def = find_object( app.events, { id: event_id } );
-			$('#d_td_param_editor').html( self.getParamEditor( event_def.fields, params ) );
+			$('#d_td_param_editor').html( self.getParamEditor( event_def.fields, params ) ).buttonize();
 			Dialog.autoResize();
 		}
 		
@@ -1950,7 +1950,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		html += '</div>'; // box_buttons
 		
 		this.div.find('#d_ticket_main_body').hide();
-		this.div.find('#d_ticket_main_editor').show().html(html);
+		this.div.find('#d_ticket_main_editor').show().html(html).buttonize();
 		
 		// setup codemirror
 		this.setupEditor();
@@ -2163,7 +2163,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 			last_hidden = yes_hide;
 		} ); // foreach group
 		
-		this.div.find('#d_ticket_changes').html(html);
+		this.div.find('#d_ticket_changes').html(html).buttonize();
 		this.expandInlineImages('#d_ticket_changes');
 		this.highlightCodeBlocks('#d_ticket_changes');
 	}
@@ -2219,7 +2219,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		$box.after( html );
+		$box.after( html ).buttonize();
 		$box.hide();
 		
 		// setup codemirror
@@ -2344,7 +2344,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		html += '</div>'; // box
 		
 		this.div.find('#d_ticket_add_comment_btn').hide();
-		this.div.find('#d_ticket_add_comment_editor').show().html(html);
+		this.div.find('#d_ticket_add_comment_editor').show().html(html).buttonize();
 		
 		// setup codemirror
 		this.setupEditor();

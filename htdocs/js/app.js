@@ -1223,8 +1223,9 @@ app.extend({
 		return this.epoch + ((performance.now() - this.serverPerfStart) / 1000);
 	},
 	
-	buttonize: function($cont, sel = '.button') {
+	buttonize: function($cont, sel) {
 		// add aria roles and keyboard handlers to all buttons inside container
+		if (!sel) sel = '.button, .form_suffix_icon';
 		$cont.find(sel).attr({ role: 'button', tabindex: '0', onkeypress: 'app.buttonKey(this,event)' });
 	},
 	

@@ -209,7 +209,7 @@ Page.ServerHist = class ServerHist extends Page.ServerUtils {
 			html += '</div>'; // box_content
 		html += '</div>'; // box
 		
-		this.div.html(html);
+		this.div.html(html).buttonize();
 		
 		this.setupMonitors();
 		this.fetchAlertHistory();

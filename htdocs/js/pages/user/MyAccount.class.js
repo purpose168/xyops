@@ -182,7 +182,7 @@ Page.MyAccount = class MyAccount extends Page.Base {
 		html += '</div>'; // box
 		
 		html += '</form>';
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ma_icon') );
 	}

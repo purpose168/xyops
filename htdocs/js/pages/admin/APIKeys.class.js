@@ -95,7 +95,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
 	}
 	
@@ -168,7 +168,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ak_status') );
 		MultiSelect.init( this.div.find('select[multiple]') );
@@ -283,7 +283,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		
 		html += '</div>'; // box
 		
-		this.div.html( html );
+		this.div.html( html ).buttonize();
 		
 		SingleSelect.init( this.div.find('#fe_ak_status') );
 		MultiSelect.init( this.div.find('select[multiple]') );
