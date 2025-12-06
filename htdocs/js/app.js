@@ -71,7 +71,7 @@ app.extend({
 				
 				if (html.match(/^\[\!(\w+)\]\s*/)) {
 					var type = RegExp.$1.toLowerCase();
-					var title = Tools.ucfirst(type);
+					var title = ucfirst(type);
 					var icons = { note: 'information-outline', tip: 'lightbulb-on-outline', important: 'alert-decagram', warning: 'alert-circle', caution: 'fire-alert' };
 					var icon = icons[type];
 					
