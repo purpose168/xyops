@@ -2052,7 +2052,7 @@ Page.Job = class Job extends Page.PageUtils {
 		var nice_server = '-';
 		if (row.server) {
 			if (row.server.match(/^\w+$/)) nice_server = this.getNiceServer(row.server);
-			else nice_server = this.getNiceMaster(row.server);
+			else nice_server = this.getNiceMaster( row.server.replace(/^m\:/, '') );
 		}
 		else if (row.username) {
 			nice_server = this.getNiceUser(row.username);
