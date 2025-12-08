@@ -1295,8 +1295,8 @@ body.dark .box_buttons.floater {
 .plugin_param_editor_cont .info_label {
 	text-transform: none;
 	font-size: 13px;
-	/* font-weight: bold; */
-	margin-bottom: 4px;
+	font-weight: bold;
+	margin-bottom: 5px;
 }
 .plugin_param_editor_cont .info_label i.mdi:before {
 	transform: scale(1.30);
@@ -1304,8 +1304,15 @@ body.dark .box_buttons.floater {
 
 .plugin_param_editor_cont .info_value {
 	margin-top: 2px;
-	margin-bottom: 15px;
+	margin-bottom: 16px;
 	font-size: 13px;
+}
+
+.plugin_param_editor_cont .info_caption a {
+	color: var(--blue);
+}
+.plugin_param_editor_cont .info_caption a:hover {
+	color: var(--theme-color);
 }
 
 .plugin_param_editor_cont textarea {
