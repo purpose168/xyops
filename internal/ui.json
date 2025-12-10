@@ -908,6 +908,66 @@
 		"code_editor": "Code editor. Press escape to move to next element."
 	},
 	
+	"hot_keys": {
+		"Global": {
+			"clickSearchNavPrev": { "keys": ["ArrowLeft"], "title": "Previous Search Page" },
+			"clickSearchNavNext": { "keys": ["ArrowRight"], "title": "Next Search Page" },
+			"clickNewButton": { "keys": ["KeyN"], "title": "Create New" },
+			"clickSaveButton": { "keys": ["Meta+KeyS", "Control+KeyS"], "title": "Save Changes" },
+			"clickCloseButton": { "keys": ["Escape"], "title": "Close Editor" },
+			"scrollToPageBox": { "keys": ["Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0"], "title": "Scroll to Section" }
+		},
+		"Events": {
+			"do_edit_from_view": { "sub": "view", "keys": ["KeyE"], "title": "Edit Event or Workflow" },
+			"do_run_current_event": { "sub": "view", "keys": ["KeyR"], "title": "Run Current Event" }
+		},
+		"Workflows": {
+			"cancelSolder": { "keys": ["Escape"], "title": "Cancel Solder" },
+			"selectAll": { "keys": ["Meta+KeyA", "Control+KeyA"], "title": "Select All" },
+			"deselectAll": { "keys": ["Meta+KeyD", "Control+KeyD"], "title": "Select None" },
+			"doDeleteSelection": { "keys": ["Backspace"], "title": "Delete Selection" },
+			"doDetachSelection": { "keys": [], "title": "Detach Selection" },
+			"doDuplicateSelection": { "keys": [], "title": "Duplicate Selection" },
+			"doUndo": { "keys": ["Meta+KeyZ", "Control+KeyZ"], "title": "Undo" },
+			"doRedo": { "keys": ["Meta+KeyY", "Control+KeyY"], "title": "Redo" },
+			"doEditSelection": { "keys": ["KeyE"], "title": "Edit Selection" },
+			"doTestSelection": { "keys": ["KeyT"], "title": "Test Selection" },
+			"nudgeSelectionLeft": { "keys": ["ArrowLeft"], "title": "Nudge Selection Left" },
+			"nudgeSelectionRight": { "keys": ["ArrowRight"], "title": "Nudge Selection Right" },
+			"nudgeSelectionUp": { "keys": ["ArrowUp"], "title": "Nudge Selection Up" },
+			"nudgeSelectionDown": { "keys": ["ArrowDown"], "title": "Nudge Selection Down" },
+			"doAddNode": { "keys": ["KeyN"], "title": "Add New Node" }
+		},
+		"Job": {
+			"do_confirm_run_again": { "keys": ["KeyR"], "title": "Run Job Again" },
+			"doAddToTicket": { "keys": ["KeyA"], "title": "Add Job to Ticket" },
+			"doCreateTicket": { "keys": ["KeyC"], "title": "Create Job Ticket" },
+			"do_delete_job": { "keys": ["Backspace"], "title": "Delete Job" }
+		},
+		"Servers": {
+			"showEditServerDialog": { "sub": "view", "keys": ["KeyE"], "title": "Edit Server" },
+			"chooseHistoricalView": { "sub": "view", "keys": ["KeyH"], "title": "Historical View" },
+			"createSnapshot": { "sub": "view", "keys": ["Meta+KeyS", "Control+KeyS"], "title": "Take Snapshot" },
+			"openWatchDialog": { "sub": "view", "keys": ["KeyW"], "title": "Add Server Watch" },
+			"showAddServerDialog": { "sub": "list", "keys": ["KeyA"], "title": "Add New Server" }
+		},
+		"ServerHist": {
+			"histNavPrev": { "keys": ["ArrowLeft"], "title": "Previous Time Slice" },
+			"histNavNext": { "keys": ["ArrowRight"], "title": "Next Time Slice" }
+		},
+		"Groups": {
+			"goEditGroup": { "sub": "view", "keys": ["KeyE"], "title": "Edit Group" },
+			"chooseHistoricalView": { "sub": "view", "keys": ["KeyH"], "title": "Historical View" },
+			"createSnapshot": { "sub": "view", "keys": ["Meta+KeyS", "Control+KeyS"], "title": "Take Snapshot" },
+			"openWatchDialog": { "sub": "view", "keys": ["KeyW"], "title": "Add Group Watch" },
+			"addServerToGroup": { "sub": "view", "keys": ["KeyA"], "title": "Add Server to Group" }
+		},
+		"GroupHist": {
+			"histNavPrev": { "keys": ["ArrowLeft"], "title": "Previous Time Slice" },
+			"histNavNext": { "keys": ["ArrowRight"], "title": "Next Time Slice" }
+		}
+	},
+	
 	"snapshot_source_menu": [
 		{ "id": "alert", "title": "Alert", "icon": "bell-outline" },
 		{ "id": "user", "title": "User", "icon": "account" },

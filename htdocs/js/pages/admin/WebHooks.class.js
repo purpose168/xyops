@@ -96,7 +96,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			if (app.hasAnyPrivilege('create_web_hooks', 'edit_web_hooks')) html += '<div class="button phone_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
-			if (app.hasPrivilege('create_web_hooks')) html += '<div class="button default" onClick="$P().edit_web_hook(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Web Hook...</span></div>';
+			if (app.hasPrivilege('create_web_hooks')) html += '<div class="button default" id="btn_new" onClick="$P().edit_web_hook(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Web Hook...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -208,7 +208,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 			html += '<div class="button mobile_collapse" onClick="$P().cancel_web_hook_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_test_web_hook()"><i class="mdi mdi-test-tube">&nbsp;</i><span>Test...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
-			html += '<div class="button primary phone_collapse" onClick="$P().do_new_web_hook()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Web Hook</span></div>';
+			html += '<div class="button primary phone_collapse" id="btn_save" onClick="$P().do_new_web_hook()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Web Hook</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -296,7 +296,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_test_web_hook()"><i class="mdi mdi-test-tube">&nbsp;</i><span>Test...</span></div>';
 			html += '<div class="button secondary mobile_collapse sm_hide" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse sm_hide" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save phone_collapse" onClick="$P().do_save_web_hook()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" id="btn_save" onClick="$P().do_save_web_hook()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

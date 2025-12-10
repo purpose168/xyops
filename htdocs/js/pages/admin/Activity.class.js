@@ -281,7 +281,8 @@ Page.ActivityLog = class ActivityLog extends Page.PageUtils {
 			offset: this.args.offset || 0,
 			limit: this.args.limit,
 			class: 'data_grid activity_grid',
-			pagination_link: '$P().searchPaginate'
+			pagination_link: '$P().searchPaginate',
+			primary: true
 		};
 		
 		html += '<div class="box">';

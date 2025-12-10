@@ -90,13 +90,18 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			html += '<div class="button phone_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
-			html += '<div class="button default" onClick="$P().edit_api_key(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New API Key...</span></div>';
+			html += '<div class="button default" id="btn_new" onClick="$P().do_new_from_list()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New API Key...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
 		
 		this.div.html( html ).buttonize();
 		this.setupBoxButtonFloater();
+	}
+	
+	do_new_from_list() {
+		// start new key
+		this.edit_api_key(-1);
 	}
 	
 	edit_api_key(idx) {
@@ -161,7 +166,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			html += '<div class="button phone_collapse" onClick="$P().cancel_api_key_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_new_api_key()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Key</span></div>';
+			html += '<div class="button primary" id="btn_save" onClick="$P().do_new_api_key()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Key</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -295,7 +300,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_api_key_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save phone_collapse" onClick="$P().do_save_api_key()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" id="btn_save" onClick="$P().do_save_api_key()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

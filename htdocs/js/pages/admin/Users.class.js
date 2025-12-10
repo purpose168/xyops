@@ -42,13 +42,14 @@ Page.Users = class Users extends Page.PageUtils {
 	
 	receive_users(resp) {
 		// receive page of users from server, render it
-		this.lastUsersResp = resp;
+		var self = this;
 		var html = '';
-		
-		this.users = [];
-		if (resp.rows) this.users = resp.rows;
-		
 		if (!this.active) return; // sanity
+		
+		this.lastUsersResp = resp;
+		this.users = [];
+		
+		if (resp.rows) this.users = resp.rows;
 		
 		// NOTE: Don't change these columns without also changing the responsive css column collapse rules in style.css
 		var cols = ['Display Name', 'Username', 'Email Address', 'Status', 'Type', 'Created', 'Actions'];
@@ -63,8 +64,16 @@ Page.Users = class Users extends Page.PageUtils {
 		
 		html += '<div class="box_content table">';
 		
-		var self = this;
-		html += this.getPaginatedGrid( resp, cols, 'user', function(user, idx) {
+		var grid_args = {
+			resp: resp,
+			cols: cols,
+			data_type: 'user',
+			offset: this.args.offset || 0,
+			limit: this.args.limit,
+			primary: true
+		};
+		
+		html += this.getPaginatedGrid( grid_args, function(user, idx) {
 			var actions = [
 				'<button class="link" onClick="$P().edit_user('+idx+')"><b>Edit</b></button>',
 				'<button class="link danger" onClick="$P().delete_user('+idx+')"><b>Delete</b></button>'
@@ -85,7 +94,7 @@ Page.Users = class Users extends Page.PageUtils {
 		
 		html += '<div class="box_buttons">';
 			html += '<div class="button secondary phone_collapse" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
-			html += '<div class="button default" onClick="$P().edit_user(-1)"><i class="mdi mdi-account-plus">&nbsp;</i><span>New User...</span></div>';
+			html += '<div class="button default" id="btn_new" onClick="$P().edit_user(-1)"><i class="mdi mdi-account-plus">&nbsp;</i><span>New User...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -179,7 +188,7 @@ Page.Users = class Users extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			html += '<div class="button phone_collapse" onClick="$P().cancel_user_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 			if (config.debug) html += '<div class="button phone_collapse" onClick="$P().populate_random_user()"><i class="mdi mdi-dice-5">&nbsp;</i><span>Randomize...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_new_user()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create User</span></div>';
+			html += '<div class="button primary" id="btn_save" onClick="$P().do_new_user()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create User</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -324,7 +333,7 @@ Page.Users = class Users extends Page.PageUtils {
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_account_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button danger mobile_collapse" onClick="$P().logout_all()"><i class="mdi mdi-power-standby">&nbsp;</i>Logout...</div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save phone_collapse" onClick="$P().do_save_user()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" id="btn_save" onClick="$P().do_save_user()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

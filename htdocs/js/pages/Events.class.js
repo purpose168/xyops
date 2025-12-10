@@ -331,10 +331,10 @@ Page.Events = class Events extends Page.PageUtils {
 			html += '<div class="button tablet_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
 			html += '<div class="button tablet_collapse secondary" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
 			if (this.args.plugin && (this.args.plugin == '_workflow')) {
-				html += '<div class="button phone_collapse default" onClick="$P().go_new_workflow()"><i class="mdi mdi-clipboard-plus-outline">&nbsp;</i><span>New Workflow...</span></div>';
+				html += '<div class="button phone_collapse default" id="btn_new" onClick="$P().go_new_workflow()"><i class="mdi mdi-clipboard-plus-outline">&nbsp;</i><span>New Workflow...</span></div>';
 			}
 			else {
-				html += '<div class="button phone_collapse default" onClick="$P().edit_event(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Event...</span></div>';
+				html += '<div class="button phone_collapse default" id="btn_new" onClick="$P().edit_event(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Event...</span></div>';
 			}
 		html += '</div>'; // box_buttons
 		
@@ -348,6 +348,12 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		// SingleSelect.init( this.div.find('#fe_ee_filter') );
 		// MultiSelect.init( this.div.find('#fe_ee_filter') );
+	}
+	
+	do_new_from_list() {
+		// jump to new event or workflow, depending on context
+		if (this.args.plugin && (this.args.plugin == '_workflow')) this.go_new_workflow();
+		else this.edit_event(-1);
 	}
 	
 	go_new_workflow() {
@@ -1816,9 +1822,9 @@ Page.Events = class Events extends Page.PageUtils {
 		
 		// buttons at bottom
 		html += '<div class="box_buttons">';
-			html += '<div class="button" onClick="$P().cancel_event_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i>Cancel</div>';
+			html += '<div class="button" onClick="$P().cancel_event_new()"><i class="mdi mdi-close-circle-outline">&nbsp;</i>Cancel</div>';
 			html += '<div class="button secondary" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_new_event()"><i class="mdi mdi-floppy">&nbsp;</i>Create Event</div>';
+			html += '<div class="button primary" id="btn_save" onClick="$P().do_new_event()"><i class="mdi mdi-floppy">&nbsp;</i>Create Event</div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -1836,7 +1842,7 @@ Page.Events = class Events extends Page.PageUtils {
 		if (do_snap) this.savePageSnapshot( this.get_event_form_json(true) );
 	}
 	
-	cancel_event_edit() {
+	cancel_event_new() {
 		// cancel editing event and return to list
 		// delete draft + snap
 		this.deletePageDraft();
@@ -1937,7 +1943,7 @@ Page.Events = class Events extends Page.PageUtils {
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_test_event()"><i class="mdi mdi-test-tube">&nbsp;</i><span>Test...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save" onClick="$P().do_save_event()"><i class="mdi mdi-floppy">&nbsp;</i>Save Changes</div>';
+			html += '<div class="button save" id="btn_save" onClick="$P().do_save_event()"><i class="mdi mdi-floppy">&nbsp;</i>Save Changes</div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -1953,6 +1959,16 @@ Page.Events = class Events extends Page.PageUtils {
 		this.setupEditTriggers();
 		
 		if (do_snap) this.savePageSnapshot( this.get_event_form_json(true) );
+	}
+	
+	cancel_event_edit() {
+		// cancel editing event and return to list
+		// delete draft + snap
+		this.deletePageDraft();
+		this.deletePageSnapshot();
+		
+		if (this.event.id) Nav.go( '#Events?sub=view&id=' + this.event.id );
+		else Nav.go( '#Events?sub=list' );
 	}
 	
 	do_export() {

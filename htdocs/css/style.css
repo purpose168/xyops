@@ -1909,3 +1909,22 @@ i.mdi.mdi-moon-waning-crescent:before {
 i.mdi.mdi-content-duplicate:before {
 	transform: scale(1.15) !important;
 }
+
+/* Hot Keys */
+
+span.hot_key {
+	padding-left: 8px;
+	padding-right: 8px;
+	line-height: 15px;
+	
+	background: var(--form-background-color);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	box-shadow: 1px 1px 1px var(--shadow-color);
+	
+	font-family: var(--font-family-monospace);
+	font-size: 12px;
+	font-weight: normal;
+	
+	cursor: default;
+}

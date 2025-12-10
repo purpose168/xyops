@@ -12,6 +12,9 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		this.div.find('input, textarea').on('input', this.triggerEditChange.bind(this));
 		if (this.editor) this.editor.on('change', this.triggerEditChange.bind(this));
 		
+		// allow cancel button to be clicked via hot key initially
+		$('.button.cancel').attr('id', 'btn_close');
+		
 		// if page is in rollback draft mode, trigger the button right away
 		if (this.args.rollback) this.triggerEditChange();
 	}
@@ -23,6 +26,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			$btn.addClass('primary pulse');
 			setTimeout( function() { $btn.removeClass('pulse'); }, 1000 );
 			$('.button.cancel > span').html( config.ui.buttons.cancel );
+			$('.button.cancel').attr('id', '');
 		}
 	}
 	
@@ -30,6 +34,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		// remove highlight on save button
 		$('.button.save').removeClass('primary pulse');
 		$('.button.cancel > span').html( config.ui.buttons.close );
+		$('.button.cancel').attr('id', 'btn_close');
 	}
 	
 	goRevisionHistory(opts) {
@@ -244,7 +249,8 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			offset: args.offset || 0,
 			limit: config.items_per_page,
 			class: 'data_grid event_revision_grid',
-			pagination_link: '$P().revHistNav'
+			pagination_link: '$P().revHistNav',
+			primary: true
 		};
 		
 		html += this.getPaginatedGrid( grid_args, function(item, idx) {

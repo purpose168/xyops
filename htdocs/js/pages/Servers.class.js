@@ -662,7 +662,8 @@ Page.Servers = class Servers extends Page.ServerUtils {
 			sort_by: 'hostname', // FUTURE: Add a sort menu?
 			sort_dir: 1,
 			class: 'data_grid server_search_grid',
-			pagination_link: '$P().searchPaginate'
+			pagination_link: '$P().searchPaginate',
+			primary: true
 		};
 		
 		html += '<div class="box">';

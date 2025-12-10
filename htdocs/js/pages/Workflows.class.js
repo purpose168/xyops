@@ -133,7 +133,7 @@ Page.Workflows = class Workflows extends Page.Events {
 		
 		// render workflow editor
 		html += this.get_wf_editor_html(`
-			<div class="button primary right tablet_collapse" onClick="$P().do_new_workflow()"><i class="mdi mdi-floppy">&nbsp;</i><span>${config.ui.buttons.wf_new_save}<span></div>
+			<div class="button primary right tablet_collapse" id="btn_save" onClick="$P().do_new_workflow()"><i class="mdi mdi-floppy">&nbsp;</i><span>${config.ui.buttons.wf_new_save}<span></div>
 			<div class="button secondary right mobile_collapse sm_hide" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>${config.ui.buttons.export}</span></div>
 			<div class="button right mobile_collapse" onClick="$P().cancel_workflow_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>${config.ui.buttons.cancel}</span></div>
 		`);
@@ -199,6 +199,7 @@ Page.Workflows = class Workflows extends Page.Events {
 		
 		var event = find_object( app.events, { id: args.id } );
 		if (!event) return this.doFullPageError("Workflow not found: " + args.id);
+		if (!event.workflow) return this.doFullPageError("Event is not a workflow: " + args.id);
 		
 		if (args.rollback && this.rollbackData) {
 			event = this.rollbackData;
@@ -251,7 +252,7 @@ Page.Workflows = class Workflows extends Page.Events {
 		
 		// render workflow editor
 		html += this.get_wf_editor_html(`
-			<div class="button save right tablet_collapse" onClick="$P().do_save_workflow()"><i class="mdi mdi-floppy">&nbsp;</i><span>${config.ui.buttons.save_changes}</span></div>
+			<div class="button save right tablet_collapse" id="btn_save" onClick="$P().do_save_workflow()"><i class="mdi mdi-floppy">&nbsp;</i><span>${config.ui.buttons.save_changes}</span></div>
 			<div class="button secondary right mobile_collapse sm_hide" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>${config.ui.buttons.history}</span></div>
 			<div class="button secondary right mobile_collapse sm_hide" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>${config.ui.buttons.export}</span></div>
 			<div class="button danger right mobile_collapse" onClick="$P().show_delete_event_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>${config.ui.buttons.delete}</span></div>
@@ -528,9 +529,50 @@ Page.Workflows = class Workflows extends Page.Events {
 		}); // pointerup
 	}
 	
+	nudgeSelection(dx, dy) {
+		// move selection around (i.e. arrow keys)
+		var workflow = this.workflow;
+		var $cont = this.wfGetContainer();
+		var selection = this.wfSelection;
+		
+		if (!first_key(selection)) return;
+		
+		for (var id in selection) {
+			var node = find_object( workflow.nodes, { id: id } );
+			
+			node.x += dx;
+			node.y += dy;
+			
+			var pos = this.getWFPos(node);
+			var $elem = $cont.find('#d_wfn_' + node.id);
+			$elem.css({ left: '' + pos.x + 'px', top: '' + pos.y + 'px' });
+		} // foreach selected node
+		
+		this.renderWFConnections();
+		this.addState();
+	}
+	
+	// convenience aliases for hot keys:
+	nudgeSelectionLeft() { this.nudgeSelection(-20, 0); }
+	nudgeSelectionRight() { this.nudgeSelection(20, 0); }
+	nudgeSelectionUp() { this.nudgeSelection(0, -20); }
+	nudgeSelectionDown() { this.nudgeSelection(0, 20); }
+	
 	deselectAll() {
 		// deselect all nodes and refresh
 		this.wfSelection = {};
+		this.updateSelection();
+	}
+	
+	selectAll() {
+		// select all nodes and refresh
+		var self = this;
+		this.wfSelection = {};
+		
+		this.workflow.nodes.forEach( function(node) {
+			self.wfSelection[ node.id ] = 1;
+		});
+		
 		this.updateSelection();
 	}
 	
@@ -814,6 +856,8 @@ Page.Workflows = class Workflows extends Page.Events {
 		var self = this;
 		var workflow = this.workflow;
 		var $cont = this.wfGetContainer();
+		
+		if (!workflow || !$cont.length || !this.wfSoldering) return;
 		
 		$cont.find('#d_wf_mouse_tracker').remove();
 		$cont.off('.solder');
@@ -1266,6 +1310,8 @@ Page.Workflows = class Workflows extends Page.Events {
 	doEditSelection() {
 		// edit current selection
 		var id = first_key(this.wfSelection);
+		if (!id) return;
+		
 		var node = find_object( this.workflow.nodes, { id: id } );
 		var func = 'doEditNode_' + node.type;
 		this[func](node);
@@ -2154,6 +2200,8 @@ Page.Workflows = class Workflows extends Page.Events {
 		var selection = this.wfSelection;
 		var id_map = {};
 		
+		if (!first_key(selection)) return;
+		
 		Object.keys(selection).forEach( function(id) {
 			var old_node = find_object( workflow.nodes, { id: id } );
 			var new_node = deep_copy_object(old_node);
@@ -2200,6 +2248,8 @@ Page.Workflows = class Workflows extends Page.Events {
 		var selection = this.wfSelection;
 		var new_conns = [];
 		
+		if (!first_key(selection)) return;
+		
 		workflow.connections.forEach( function(conn) {
 			if (!selection[conn.source] && !selection[conn.dest]) new_conns.push(conn);
 		});
@@ -2220,6 +2270,8 @@ Page.Workflows = class Workflows extends Page.Events {
 		var $cont = this.wfGetContainer();
 		var new_nodes = [];
 		var new_conns = [];
+		
+		if (!first_key(selection)) return;
 		
 		workflow.nodes.forEach( function(node) {
 			var $elem = $cont.find('#d_wfn_' + node.id);

@@ -391,14 +391,6 @@ Page.GroupHist = class GroupHist extends Page.ServerUtils {
 		}, handleError); // api.get
 	}
 	
-	onKeyDown(event) {
-		// key was pressed while not in a text field or dialog
-		switch (event.key) {
-			case 'ArrowLeft': this.histNavPrev(); break;
-			case 'ArrowRight': this.histNavNext(); break;
-		}
-	}
-	
 	onDeactivate() {
 		// called when page is deactivated
 		delete this.servers;

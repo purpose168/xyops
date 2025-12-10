@@ -414,7 +414,8 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 			data_type: 'ticket',
 			offset: this.args.offset || 0,
 			limit: this.args.limit,
-			pagination_link: '$P().searchPaginate'
+			pagination_link: '$P().searchPaginate',
+			primary: true
 		};
 		
 		html += '<div class="box">';

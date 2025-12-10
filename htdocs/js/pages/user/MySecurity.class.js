@@ -57,6 +57,7 @@ Page.MySecurity = class MySecurity extends Page.Base {
 			offset: this.args.offset || 0,
 			limit: this.args.limit,
 			class: 'data_grid activity_grid',
+			primary: true
 		};
 		
 		html += this.getPaginatedGrid( grid_args, function(item, idx) {		

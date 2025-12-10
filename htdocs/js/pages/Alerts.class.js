@@ -269,7 +269,8 @@ Page.Alerts = class Alerts extends Page.PageUtils {
 			class: 'data_grid alert_invo_grid',
 			offset: this.args.offset || 0,
 			limit: this.args.limit,
-			pagination_link: '$P().searchPaginate'
+			pagination_link: '$P().searchPaginate',
+			primary: true
 		};
 		
 		html += '<div class="box">';

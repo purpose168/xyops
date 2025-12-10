@@ -366,6 +366,18 @@ Page.MySettings = class MySettings extends Page.Base {
 		html += '</div>'; // box_content
 		html += '</div>'; // box
 		
+		// hot keys
+		html += '<div class="box" id="d_hot_keys">';
+			html += '<div class="box_title">';
+				html += '<span>Keyboard Shortcuts</span>';
+				html += '<div class="button right phone_collapse" onClick="$P().reset_keys()"><i class="mdi mdi-undo-variant">&nbsp;</i>Reset to Defaults</div>';
+			html += '</div>';
+			html += '<div class="box_content table">';
+				html += this.getHotKeyTable();
+			html += '</div>'; // box_content
+		html += '</div>'; // box
+		
+		// admin section
 		if (app.isAdmin()) {
 			html += '<div class="box">';
 			html += '<div class="box_title">';
@@ -479,6 +491,172 @@ Page.MySettings = class MySettings extends Page.Base {
 		
 		this.div.find('#d_ms_dt_preview').html( (new Date()).toLocaleString( opts.locale, opts ) );
 		this.saveChanges();
+	}
+	
+	/* "global": {
+		"clickSearchNavPrev": { "keys": ["ArrowLeft"], "title": "Previous Search Page" },
+		"clickSearchNavNext": { "keys": ["ArrowRight"], "title": "Next Search Page" },
+		"clickNewButton": { "keys": ["KeyN"], "title": "Create New" },
+		"clickSaveButton": { "keys": ["Meta+KeyS", "Control+KeyS"], "title": "Save Changes" },
+		"clickCloseButton": { "keys": ["Escape"], "title": "Close Editor" },
+		"scrollToPageBox": { "keys": ["Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0"], "title": "Scroll to Section" }
+	},
+	"Groups": {
+		"goEditGroup": { "sub": "view", "keys": ["KeyE"], "title": "Edit Group" },
+		"chooseHistoricalView": { "sub": "view", "keys": ["KeyH"], "title": "Historical View" },
+		"createSnapshot": { "sub": "view", "keys": ["Meta+KeyS", "Control+KeyS"], "title": "Take Snapshot" },
+		"openWatchDialog": { "sub": "view", "keys": ["KeyW"], "title": "Add Group Watch" },
+		"addServerToGroup": { "sub": "view", "keys": ["KeyA"], "title": "Add Server to Group" }
+	}, */
+	
+	renderHotKeys() {
+		// refresh hot key table
+		this.div.find('#d_hot_keys > div.box_content').html( this.getHotKeyTable() );
+	}
+	
+	getHotKeyTable() {
+		// get HTML for hot key table
+		var self = this;
+		var cols = ["Group", "Action", "Bound Keys", "Edited", "Actions"];
+		var html = '';
+		var rows = [];
+		var user_keys = app.user.hot_keys || {};
+		
+		for (var page_id in config.ui.hot_keys) {
+			var page_keys = config.ui.hot_keys[page_id];
+			
+			for (var key_id in page_keys) {
+				var key_def = page_keys[key_id];
+				var full_key_id = page_id + '-' + key_id;
+				
+				var row = {
+					id: full_key_id,
+					page_id: page_id,
+					title: key_def.title,
+					keys: key_def.keys
+				};
+				if (user_keys[full_key_id]) {
+					row.keys = user_keys[full_key_id];
+					row.edited = true;
+				}
+				
+				rows.push(row);
+			} // foreach key
+		} // foreach page
+		
+		var grid_args = {
+			rows: rows,
+			cols: cols,
+			data_type: 'action',
+			class: 'data_grid hot_key_grid',
+		};
+		
+		html += this.getBasicGrid( grid_args, function(item, idx) {
+			var tds = [
+				'<span><i class="mdi mdi-' + ((item.page_id == 'Global') ? 'earth' : 'folder-open-outline') + '">&nbsp;</i>' + item.page_id + '</span>',
+				`<button class="link icon_pad" onClick="$P().doEditHotKey(this)" data-keyid="${item.id}"><i class="mdi mdi-keyboard-outline"></i><b>${item.title}</b></button>`,
+				self.getNiceHotKeyList(item.keys) || '&nbsp;',
+				item.edited ? '<i class="mdi mdi-checkbox-marked-outline"></i>' : '-',
+				`<button class="link" onClick="$P().doEditHotKey(this)" data-keyid="${item.id}"><b>Edit Keys</b></button>`
+			];
+			return tds;
+		}); // grid
+		
+		return html;
+	}
+	
+	getNiceHotKeyList(keys, glue = ', ') {
+		// get nice list of hot keys
+		var self = this;
+		if (!keys || !keys.length) return '';
+		return keys.map( function(key) { return self.getNiceHotKey(key); } ).join(glue);
+	}
+	
+	getNiceHotKey(key) {
+		// get nice hot key for display
+		var label = KeySelect.getkeyLabel(key);
+		return `<span class="hot_key">${label}</span>`;
+	}
+	
+	doEditHotKey(elem) {
+		// pop dialog to edit keybind
+		var self = this;
+		var full_key_id = $(elem).data('keyid');
+		var [ page_id, key_id ] = full_key_id.split(/\-/);
+		var page_keys = config.ui.hot_keys[page_id];
+		var key_def = page_keys[key_id];
+		var user_keys = app.user.hot_keys || {};
+		var values = user_keys[full_key_id] || key_def.keys;
+		var title = page_id + ': ' + key_def.title;
+		var html = '<div class="dialog_box_content maximize">';
+		
+		// hot key
+		html += this.getFormRow({
+			label: 'Bound Keys:',
+			content: this.getFormMenuMulti({
+				id: 'fe_hot_keys',
+				title: 'Type new key combo:',
+				placeholder: '(None)',
+				options: values.map( function(key) { return { id: key, title: KeySelect.getkeyLabel(key) }; } ),
+				values: values,
+				icon: 'keyboard-outline',
+				default_icon: 'keyboard-outline',
+				// 'data-shrinkwrap': 1
+			}),
+			caption: 'Click above to add a key combo, or click the "X" icons to remove.'
+		});
+		
+		html += '</div>';
+		
+		var buttons_html = "";
+		buttons_html += '<div class="button mobile_collapse" onClick="Dialog.hide()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
+		buttons_html += '<div class="button danger mobile_collapse" id="btn_hotkey_reset"><i class="mdi mdi-undo-variant">&nbsp;</i><span>Reset to Defaults</span></div>';
+		buttons_html += '<div class="button primary" id="btn_hotkey_save"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+		
+		Dialog.showSimpleDialog(title, html, buttons_html);
+		
+		// special mode for key capture
+		Dialog.active = 'confirmation';
+		Dialog.confirm_callback = function(result) { 
+			if (result) Dialog.hide(); 
+		};
+		
+		$('#btn_hotkey_reset').on('click', function() {
+			// $('#fe_hot_keys').val( key_def.keys ).trigger('change');
+			if (!app.user.hot_keys) app.user.hot_keys = {};
+			delete app.user.hot_keys[full_key_id];
+			Dialog.hide();
+			self.receiveUser({ user: app.user });
+			self.saveHotKeyChanges();
+		});
+		
+		$('#btn_hotkey_save').on('click', function() {
+			if (!app.user.hot_keys) app.user.hot_keys = {};
+			app.user.hot_keys[full_key_id] = $('#fe_hot_keys').val();
+			Dialog.hide();
+			self.receiveUser({ user: app.user });
+			self.saveHotKeyChanges();
+		});
+		
+		KeySelect.init( '#fe_hot_keys' );
+		Dialog.autoResize();
+	}
+	
+	saveHotKeyChanges() {
+		// persist hot keys back to user storage
+		app.api.post( 'app/user_settings', { hot_keys: app.user.hot_keys }, function(resp) {
+			app.user = resp.user;
+		});
+	}
+	
+	reset_keys() {
+		// reset hot keys to defaults
+		var user = app.user;
+		
+		user.hot_keys = {};
+		
+		this.receiveUser({ user: app.user });
+		this.saveHotKeyChanges();
 	}
 	
 	reset_loc() {

@@ -313,7 +313,6 @@ app.extend({
 		html += '<div id="d_pending_counter" class="header_widget combo" onClick="app.goPending()" title="Pending Jobs" style="display:none">...</div>';
 		html += '<div id="d_alert_counter" class="header_widget combo red" onClick="app.goAlerts()" title="Active Alerts" style="display:none">...</div>';
 		
-		// html += '<div class="header_search_widget"><i class="mdi mdi-magnify">&nbsp;</i><input type="text" size="15" id="fe_header_search" placeholder="Quick Search" onKeyDown="app.qsKeyDown(this,event)"/></div>';
 		$('#d_header_user_container').html( html ).buttonize('.header_widget');
 		
 		this.$headerClock = $('#d_header_clock');
@@ -1329,6 +1328,93 @@ app.extend({
 		if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 1) {
 			window.scrollTo(0, document.documentElement.scrollHeight);
 		}
+	},
+	
+	onKeyDown(event) {
+		// route hot key to page
+		if (!this.page_manager || !this.page_manager.current_page_id) return;
+		
+		var page_id = this.page_manager.current_page_id;
+		var page = this.page_manager.find(page_id);
+		if (!page || !page.div) return;
+		
+		var key_id = KeySelect.getKeyID(event);
+		if (!key_id) return;
+		
+		var user_keys = (this.user && this.user.hot_keys) ? this.user.hot_keys : {};
+		var page_keys = config.ui.hot_keys[ page_id ] || {};
+		var page_args = page.args || {};
+		
+		// check page hot keys first
+		for (var func in page_keys) {
+			var key_def = page_keys[func];
+			if (key_def.sub && (page_args.sub != key_def.sub)) continue;
+			
+			// see if user has overridden the key,
+			// e.g. ServerHist-histNavNext: [Shift+ArrowRight]
+			var user_key_id = page_id + '-' + func;
+			if (user_keys[user_key_id]) key_def = { ...key_def, keys: user_keys[user_key_id] };
+			
+			if (key_def.keys.includes(key_id) && page[func]) {
+				Debug.trace('events', `${page_id} Page Hot Key Pressed: [${key_id}] → ${func} (${key_def.title})`);
+				event.stopPropagation();
+				event.preventDefault();
+				page[func].apply( page, key_def.args || [] );
+				return;
+			}
+		}
+		
+		// check global hot keys here
+		var global_keys = config.ui.hot_keys.Global || {};
+		for (var func in global_keys) {
+			var key_def = global_keys[func];
+			
+			// see if user has overridden the key,
+			// e.g. global-clickSave: [Shift+KeyS]
+			var user_key_id = 'Global-' + func;
+			if (user_keys[user_key_id]) key_def = { ...key_def, keys: user_keys[user_key_id] };
+			
+			if (key_def.keys.includes(key_id) && app[func]) {
+				Debug.trace('events', `Global Hot Key Pressed: [${key_id}] → ${func} (${key_def.title})`);
+				event.stopPropagation();
+				event.preventDefault();
+				app[func]( page, event );
+				return;
+			}
+		}
+	},
+	
+	clickSearchNavPrev(page, event) {
+		// global hot key: click search prev
+		page.div.find('#btn_nav_prev').click();
+	},
+	
+	clickSearchNavNext(page, event) {
+		// global hot key: click search next
+		page.div.find('#btn_nav_next').click();
+	},
+	
+	clickNewButton(page, event) {
+		// global hot key: click new button
+		page.div.find('#btn_new').click();
+	},
+	
+	clickSaveButton(page, event) {
+		// global hot key: click save button
+		page.div.find('#btn_save').click();
+	},
+	
+	clickCloseButton(page, event) {
+		// global hot key: click close button
+		// note: when changes occur, the button's ID is removed, to prevent accidental data loss
+		page.div.find('#btn_close').click();
+	},
+	
+	scrollToPageBox(page, event) {
+		// global hot key: scroll to numbered page box
+		var nth = parseInt( event.key ) || 10;
+		var elem = page.div.find('div.box:visible')[ nth - 1 ];
+		if (elem && elem.scrollIntoView) elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}
 	
 }); // app

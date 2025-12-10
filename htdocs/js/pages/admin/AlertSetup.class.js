@@ -96,7 +96,7 @@ Page.AlertSetup = class AlertSetup extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			if (app.hasAnyPrivilege('create_alerts', 'edit_alerts')) html += '<div class="button phone_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
-			if (app.hasPrivilege('create_alerts')) html += '<div class="button default" onClick="$P().edit_alert(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Alert...</span></div>';
+			if (app.hasPrivilege('create_alerts')) html += '<div class="button default" id="btn_new" onClick="$P().do_new_from_list()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Alert...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -123,6 +123,11 @@ Page.AlertSetup = class AlertSetup extends Page.PageUtils {
 			if (item.enabled) $(elem).closest('ul').removeClass('disabled');
 			else $(elem).closest('ul').addClass('disabled');
 		} );
+	}
+	
+	do_new_from_list() {
+		// start new alert
+		this.edit_alert(-1);
 	}
 	
 	edit_alert(idx) {
@@ -200,7 +205,7 @@ Page.AlertSetup = class AlertSetup extends Page.PageUtils {
 			html += '<div class="button phone_collapse" onClick="$P().cancel_alert_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().do_test_alert()"><i class="mdi mdi-test-tube">&nbsp;</i><span>Test...</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_new_alert()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Alert</span></div>';
+			html += '<div class="button primary" id="btn_save" onClick="$P().do_new_alert()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Alert</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -288,7 +293,7 @@ Page.AlertSetup = class AlertSetup extends Page.PageUtils {
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_test_alert()"><i class="mdi mdi-test-tube">&nbsp;</i><span>Test...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save phone_collapse" onClick="$P().do_save_alert()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" id="btn_save" onClick="$P().do_save_alert()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

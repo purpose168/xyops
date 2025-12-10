@@ -629,7 +629,8 @@ Page.Search = class Search extends Page.PageUtils {
 			offset: this.args.offset || 0,
 			limit: this.args.limit,
 			class: 'data_grid job_search_grid',
-			pagination_link: '$P().searchPaginate'
+			pagination_link: '$P().searchPaginate',
+			primary: true
 		};
 		
 		html += '<div class="box">';

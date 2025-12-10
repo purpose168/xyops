@@ -107,7 +107,7 @@ Page.Categories = class Categories extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			if (app.hasAnyPrivilege('create_categories', 'edit_categories')) html += '<div class="button phone_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
-			if (app.hasPrivilege('create_categories')) html += '<div class="button default" onClick="$P().edit_category(-1)"><i class="mdi mdi-folder-plus-outline">&nbsp;</i><span>New Category...</span></div>';
+			if (app.hasPrivilege('create_categories')) html += '<div class="button default" id="btn_new" onClick="$P().do_new_from_list()"><i class="mdi mdi-folder-plus-outline">&nbsp;</i><span>New Category...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -143,6 +143,11 @@ Page.Categories = class Categories extends Page.PageUtils {
 		app.api.post( 'app/multi_update_category', data, function(resp) {
 			// done
 		} );
+	}
+	
+	do_new_from_list() {
+		// start new category
+		this.edit_category(-1);
 	}
 	
 	edit_category(idx) {
@@ -220,7 +225,7 @@ Page.Categories = class Categories extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			html += '<div class="button phone_collapse" onClick="$P().cancel_category_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_new_category()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Category</span></div>';
+			html += '<div class="button primary" id="btn_save" onClick="$P().do_new_category()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Category</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -305,7 +310,7 @@ Page.Categories = class Categories extends Page.PageUtils {
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_category_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save phone_collapse" onClick="$P().do_save_category()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" id="btn_save" onClick="$P().do_save_category()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

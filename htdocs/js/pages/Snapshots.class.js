@@ -262,7 +262,8 @@ Page.Snapshots = class Snapshots extends Page.ServerUtils {
 			data_type: 'snapshot',
 			offset: this.args.offset || 0,
 			limit: this.args.limit,
-			pagination_link: '$P().searchPaginate'
+			pagination_link: '$P().searchPaginate',
+			primary: true
 		};
 		
 		html += '<div class="box">';

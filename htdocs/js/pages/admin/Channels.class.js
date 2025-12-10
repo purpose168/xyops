@@ -95,7 +95,7 @@ Page.Channels = class Channels extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			if (app.hasAnyPrivilege('create_channels', 'edit_channels')) html += '<div class="button phone_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
-			if (app.hasPrivilege('create_channels')) html += '<div class="button default" onClick="$P().edit_channel(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Channel...</span></div>';
+			if (app.hasPrivilege('create_channels')) html += '<div class="button default" id="btn_new" onClick="$P().do_new_from_list()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Channel...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -122,6 +122,11 @@ Page.Channels = class Channels extends Page.PageUtils {
 			if (item.enabled) $(elem).closest('ul').removeClass('disabled');
 			else $(elem).closest('ul').addClass('disabled');
 		} );
+	}
+	
+	do_new_from_list() {
+		// start new channel
+		this.edit_channel(-1);
 	}
 	
 	edit_channel(idx) {
@@ -198,7 +203,7 @@ Page.Channels = class Channels extends Page.PageUtils {
 		html += '<div class="box_buttons">';
 			html += '<div class="button phone_collapse" onClick="$P().cancel_channel_edit()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_new_channel()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Channel</span></div>';
+			html += '<div class="button primary" id="btn_save" onClick="$P().do_new_channel()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Channel</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -282,7 +287,7 @@ Page.Channels = class Channels extends Page.PageUtils {
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_channel_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save phone_collapse" onClick="$P().do_save_channel()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" id="btn_save" onClick="$P().do_save_channel()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box

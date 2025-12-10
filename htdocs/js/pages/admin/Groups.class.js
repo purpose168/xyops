@@ -116,7 +116,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		html += '<div class="box_buttons">';
 			if (app.hasAnyPrivilege('create_groups', 'edit_groups')) html += '<div class="button phone_collapse" onClick="$P().doFileImportPrompt()"><i class="mdi mdi-cloud-upload-outline">&nbsp;</i><span>Import File...</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().go_history()"><i class="mdi mdi-history">&nbsp;</i><span>Revision History...</span></div>';
-			if (app.hasPrivilege('create_groups')) html += '<div class="button default" onClick="$P().edit_group(-1)"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Group...</span></div>';
+			if (app.hasPrivilege('create_groups')) html += '<div class="button default" id="btn_new" onClick="$P().do_new_from_list()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Group...</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -162,6 +162,11 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		app.api.post( 'app/multi_update_group', data, function(resp) {
 			// done
 		} );
+	}
+	
+	do_new_from_list() {
+		// start new group
+		this.edit_group(-1);
 	}
 	
 	edit_group(idx) {
@@ -234,7 +239,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		html += '<div class="box_buttons">';
 			html += '<div class="button phone_collapse" onClick="$P().cancel_group_new()"><i class="mdi mdi-close-circle-outline">&nbsp;</i><span>Cancel</span></div>';
 			html += '<div class="button secondary phone_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
-			html += '<div class="button primary" onClick="$P().do_new_group()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Group</span></div>';
+			html += '<div class="button primary" id="btn_save" onClick="$P().do_new_group()"><i class="mdi mdi-floppy">&nbsp;</i><span>Create Group</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
@@ -318,7 +323,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 			html += '<div class="button danger mobile_collapse" onClick="$P().show_delete_group_dialog()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().do_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export...</span></div>';
 			html += '<div class="button secondary mobile_collapse" onClick="$P().go_edit_history()"><i class="mdi mdi-history">&nbsp;</i><span>History...</span></div>';
-			html += '<div class="button save phone_collapse" onClick="$P().do_save_group()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
+			html += '<div class="button save phone_collapse" id="btn_save" onClick="$P().do_save_group()"><i class="mdi mdi-floppy">&nbsp;</i><span>Save Changes</span></div>';
 		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
