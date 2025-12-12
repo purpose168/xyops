@@ -655,6 +655,7 @@ Page.Buckets = class Buckets extends Page.PageUtils {
 	onDeactivate() {
 		// called when page is deactivated
 		this.cleanupRevHistory();
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		
 		delete this.bucket;

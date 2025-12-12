@@ -727,6 +727,7 @@ Page.Plugins = class Plugins extends Page.PageUtils {
 		delete this.params;
 		delete this.defaultEditorMode;
 		this.cleanupRevHistory();
+		this.cleanupBoxButtonFloater();
 		this.killEditor();
 		this.div.html( '' );
 		return true;

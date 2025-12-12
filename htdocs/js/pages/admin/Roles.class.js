@@ -497,6 +497,7 @@ Page.Roles = class Roles extends Page.PageUtils {
 	onDeactivate() {
 		// called when page is deactivated
 		delete this.roles;
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		return true;
 	}

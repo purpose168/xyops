@@ -3633,6 +3633,7 @@ Page.Events = class Events extends Page.PageUtils {
 			delete this.charts;
 		}
 		
+		this.cleanupBoxButtonFloater();
 		this.cleanupRevHistory();
 		this.div.html( '' );
 		return true;

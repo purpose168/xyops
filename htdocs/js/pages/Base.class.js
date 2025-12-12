@@ -1731,13 +1731,16 @@ Page.Base = class Base extends Page {
 	
 	setupBoxButtonFloater(initially_visible) {
 		// float box buttons if original is offscreen
-		this.boxButtons = this.div.find('.box_buttons');
+		this.boxButtons = this.div.find('.box_buttons').last();
 		
 		// add hover tooltips to mobile_collapse buttons
 		this.boxButtons.find('.button.mobile_collapse').each( function() {
 			var $this = $(this);
 			$this.attr('title', $this.find('span').text() );
 		} );
+		
+		// delete previous if leftover
+		if (this.boxFloater) this.boxFloater.remove();
 		
 		var $copy = this.boxButtons.clone();
 		$copy.addClass('floater');
@@ -1796,6 +1799,13 @@ Page.Base = class Base extends Page {
 			}
 			if (this.boxFloater.hasClass('hidden')) this.boxFloater.removeClass('hidden');
 		}
+	}
+	
+	cleanupBoxButtonFloater() {
+		// remove our mess
+		if (this.boxFloater) this.boxFloater.remove();
+		delete this.boxButtons;
+		delete this.boxFloater;
 	}
 	
 	buildOptGroup(items, title, default_icon, id_prefix) {

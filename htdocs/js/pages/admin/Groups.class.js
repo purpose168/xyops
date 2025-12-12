@@ -1743,6 +1743,7 @@ Page.Groups = class Groups extends Page.ServerUtils {
 		}
 		
 		this.cleanupRevHistory();
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		
 		return true;

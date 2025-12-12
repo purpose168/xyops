@@ -726,6 +726,7 @@ Page.AlertSetup = class AlertSetup extends Page.PageUtils {
 		
 		this.killEditor();
 		this.cleanupRevHistory();
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		return true;
 	}

@@ -756,6 +756,7 @@ Page.WebHooks = class WebHooks extends Page.PageUtils {
 		// called when page is deactivated
 		this.killEditor();
 		this.cleanupRevHistory();
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		return true;
 	}

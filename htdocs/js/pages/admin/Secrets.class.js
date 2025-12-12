@@ -689,6 +689,7 @@ Page.Secrets = class Secrets extends Page.PageUtils {
 	onDeactivate() {
 		// called when page is deactivated
 		this.cleanupRevHistory();
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		
 		delete this.secret;

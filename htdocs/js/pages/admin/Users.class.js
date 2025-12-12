@@ -745,6 +745,7 @@ Page.Users = class Users extends Page.PageUtils {
 	
 	onDeactivate() {
 		// called when page is deactivated
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		return true;
 	}

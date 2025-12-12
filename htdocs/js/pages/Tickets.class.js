@@ -445,17 +445,32 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 			];
 		} );
 		
-		if (this.tickets.length && app.hasPrivilege('delete_tickets')) {
-			html += '<div style="margin-top: 30px;">';
-			html += '<div class="button right danger" onClick="$P().do_bulk_delete()"><i class="mdi mdi-trash-can-outline">&nbsp;</i>Delete All...</div>';
-			html += '<div class="clear"></div>';
+		html += '</div>'; // box_content
+		
+		var yes_buttons = (this.tickets.length && app.hasPrivilege('delete_tickets')) || app.hasPrivilege('create_tickets');
+		
+		if (yes_buttons) {
+			html += '<div class="box_buttons">';
+			if (this.tickets.length && app.hasPrivilege('delete_tickets')) {
+				html += '<div class="button danger" onClick="$P().do_bulk_delete()"><i class="mdi mdi-trash-can-outline">&nbsp;</i>Delete All...</div>';
+			}
+			if (app.hasPrivilege('create_tickets')) {
+				html += '<div class="button default" id="btn_new" onClick="$P().do_new_ticket_from_list()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Ticket...</span></div>';
+			}
 			html += '</div>';
 		}
 		
-		html += '</div>'; // box_content
 		html += '</div>'; // box
 		
 		$results.html( html ).buttonize();
+		
+		if (yes_buttons) this.setupBoxButtonFloater();
+		else this.cleanupBoxButtonFloater();
+	}
+	
+	do_new_ticket_from_list() {
+		// jump to new ticket page
+		Nav.go('Tickets?sub=new');
 	}
 	
 	do_bulk_delete() {
@@ -2759,6 +2774,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		
 		// this.killEditor();
 		this.close_current_editor();
+		this.cleanupBoxButtonFloater();
 		
 		// this.editHidePreview();
 		this.div.html('');

@@ -689,6 +689,7 @@ Page.Monitors = class Monitors extends Page.PageUtils {
 	onDeactivate() {
 		// called when page is deactivated
 		this.cleanupRevHistory();
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		return true;
 	}

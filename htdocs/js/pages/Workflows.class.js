@@ -2575,6 +2575,7 @@ Page.Workflows = class Workflows extends Page.Events {
 			this.confetti.reset();
 			delete this.confetti;
 		}
+		this.cleanupBoxButtonFloater();
 		
 		delete this.event;
 		delete this.workflow;

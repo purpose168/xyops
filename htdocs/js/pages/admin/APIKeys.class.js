@@ -533,6 +533,7 @@ Page.APIKeys = class APIKeys extends Page.PageUtils {
 	onDeactivate() {
 		// called when page is deactivated
 		delete this.api_keys;
+		this.cleanupBoxButtonFloater();
 		this.div.html( '' );
 		return true;
 	}
