@@ -46,6 +46,7 @@ Welcome to the xyOps documentation. xyOps is a job scheduler, workflow engine, a
 
 - **[REST API](api.md)**: REST API endpoints, API keys, authentication, and standard response format.
 - **[Data Structures](data.md)**: Complete schemas for all xyOps objects (jobs, events, users, servers, alerts, etc.).
+- **[Database Tables](db.md)**: A list of all the xyOps database tables and column indexes.
 
 ## Access & Identity
 
