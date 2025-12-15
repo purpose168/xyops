@@ -73,6 +73,6 @@
 		"zeroupload": "^1.0.0"
 	},
 	"devDependencies": {
-		"pixl-unit": "^1.0.14"
+		"pixl-unit": "^2.0.0"
 	}
 }
