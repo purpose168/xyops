@@ -49,6 +49,7 @@ module.exports = {
 			require('./suites/test-groups-api.js').tests,
 			require('./suites/test-monitors-api.js').tests,
 			require('./suites/test-plugins-api.js').tests,
+			require('./suites/test-secrets-api.js').tests,
 			require('./suites/test-roles-api.js').tests
 		);
 		
