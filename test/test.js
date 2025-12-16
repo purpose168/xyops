@@ -50,7 +50,8 @@ module.exports = {
 			require('./suites/test-monitors-api.js').tests,
 			require('./suites/test-plugins-api.js').tests,
 			require('./suites/test-secrets-api.js').tests,
-			require('./suites/test-roles-api.js').tests
+			require('./suites/test-roles-api.js').tests,
+			require('./suites/test-servers-api.js').tests
 		);
 		
 		// start pixl-server
