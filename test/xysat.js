@@ -265,7 +265,8 @@ var satellite = {
 				}
 				else {
 					// fire off initial monitoring pass
-					this.runMonitors({  });
+					this.runQuickMonitors({});
+					this.runMonitors({});
 				}
 			break;
 			
