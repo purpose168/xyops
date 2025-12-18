@@ -142,19 +142,6 @@ exports.tests = [
 		let { data } = await this.request.json( this.api_url + '/app/get_category/v1', { id: this.category_id } );
 		assert.ok( !!data.code, "expected error for missing category" );
 		delete this.category_id;
-	},
-
-	async function test_api_create_category_final(test) {
-		// create a final category for use by other suites
-		let { data } = await this.request.json( this.api_url + '/app/create_category/v1', {
-			"title": "Unit Test Category Final",
-			"enabled": true,
-			"color": "plain",
-			"notes": "Keep me for future tests"
-		});
-		assert.ok( data.code === 0, "successful api response" );
-		assert.ok( data.category && data.category.id, "expected category in response" );
-		this.category_final_id = data.category.id;
 	}
 
 ];

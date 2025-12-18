@@ -1,7 +1,5 @@
 {
 	"foreground": true,
-	"echo": false,
-	"repl": false,
 	"hostname": "localhost",
 	"masters": false,
 	
@@ -16,6 +14,8 @@
 	
 	"ping_freq_sec": 10,
 	"ping_timeout_sec": 20,
+	
+	"max_jobs_per_min": 1000,
 	
 	"tickets.email_enabled": false,
 	"airgap.enabled": false,

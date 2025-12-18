@@ -107,18 +107,6 @@ exports.tests = [
 		let { data } = await this.request.json( this.api_url + '/app/get_tag/v1', { id: this.tag_id } );
 		assert.ok( !!data.code, 'expected error for missing tag' );
 		delete this.tag_id;
-	},
-
-	async function test_api_create_tag_final(test) {
-		// create a final tag for use by other suites
-		let { data } = await this.request.json( this.api_url + '/app/create_tag/v1', {
-			title: 'Unit Test Tag Final',
-			icon: 'tag',
-			notes: 'Keep me for future tests'
-		});
-		assert.ok( data.code === 0, 'successful api response' );
-		assert.ok( data.tag && data.tag.id, 'expected tag in response' );
-		this.tag_final_id = data.tag.id;
 	}
 
 ];

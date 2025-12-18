@@ -358,16 +358,84 @@ var satellite = {
 	
 	// JOBS:
 	
-	prepLaunchJob(job, details, sec) {
+	updateJob(job) {
+		// send separate, single update to master for specific job
+		// (do not send procs or conns, as those need to be sent on a tick schedule)
+		if (!this.socket || !this.socket.connected || !this.socket.auth) return;
 		
+		var jobs = {};
+		jobs[ job.id ] = Tools.copyHashRemoveKeys(job, { procs:1, conns:1 });
+		
+		this.socket.send('jobs', jobs);
+		
+		// clean up push system
+		delete job.push;
+	},
+	
+	prepLaunchJob(job, details, sec) {
+		// fake job run
+		var self = this;
+		this.logDebug(9, "Starting job", { job, details, sec } );
+		
+		if (!job.params) job.params = {};
+		if (!job.params.duration) job.params.duration = 1;
+		job.params.duration = parseInt( job.params.duration );
+		
+		this.activeJobs[ job.id ] = job;
+		
+		job.pid = 1234;
+		job.progress = 0.5;
+		self.updateJob(job);
+		
+		setTimeout( function() {
+			job.complete = true;
+			job.progress = 1.0;
+			job.data = { 
+				random: Math.random(),
+				num: 42,
+				str: "foo",
+				bool: true,
+				obj: { key1: "value1" },
+				arr: ["aa", "bb", "cc"],
+				secrets: sec // echo secrets so unit test can verify
+			};
+			job.code = 0;
+			job.description = "Unit Test Job Complete";
+			job.state = 'finishing';
+			
+			self.logDebug(9, "Finishing job: " + job.id);
+			self.updateJob(job);
+			
+			setTimeout( function() {
+				// finalize job
+				job.state = 'complete';
+				self.updateJob(job);
+				delete self.activeJobs[ job.id ];
+				self.logDebug(9, "Job complete: " + job.id);
+			}, 250 );
+		}, job.params.duration * 1000 );
 	},
 	
 	appendMetaLogAllJobs() {
-		
+		// no-op
 	},
 	
 	jobTick() {
 		// called every second
+		var self = this;
+		if (!this.socket || !this.socket.connected || !this.socket.auth) return;
+		
+		if (!Tools.numKeys(this.activeJobs)) {
+			return;
+		}
+		
+		this.socket.send('jobs', this.activeJobs);
+		
+		// cleanup push system
+		for (var job_id in this.activeJobs) {
+			var job = this.activeJobs[job_id];
+			delete job.push;
+		}
 	},
 	
 	debugLevel: function(level) {

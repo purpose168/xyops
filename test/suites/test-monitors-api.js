@@ -172,7 +172,7 @@ exports.tests = [
 
 	async function test_api_get_historical_monitor_data(test) {
 		// fetch historical timeline entries for current time window
-		const now = Math.floor(Date.now() / 1000);
+		const now = Tools.timeNow(true) - 60; // last minute, in case we cross the minute boundary during the test run
 		let { data } = await this.request.json( this.api_url + '/app/get_historical_monitor_data/v1', {
 			server: 'satunit1',
 			sys: 'hourly',

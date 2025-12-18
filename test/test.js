@@ -30,7 +30,7 @@ module.exports = {
 		this.request = new PixlRequest( "xyOps Unit Tester" );
 		this.request.setTimeout( 30 * 1000 );
 		this.request.setFollow( 5 );
-		this.request.setAutoError( true );
+		this.request.setAutoError( false );
 		this.request.setKeepAlive( true );
 		
 		// clean out data from last run
@@ -57,8 +57,10 @@ module.exports = {
 			require('./suites/test-servers-api.js').tests,
 			require('./suites/test-webhooks-api.js').tests,
 			require('./suites/test-tickets-api.js').tests,
+			require('./suites/test-jobs.js').tests,
+			require('./suites/test-workflows.js').tests,
 			require('./suites/test-user-api.js').tests,
-			require('./suites/test-admin-api.js').tests
+			require('./suites/test-admin-api.js').tests // do this one last!
 		);
 		
 		// start pixl-server
@@ -105,7 +107,7 @@ module.exports = {
 			assert.ok( data.params.foo === 'bar', 'found our value in params' );
 		},
 		
-		async function testSatellite(test) {
+		async function test_satellite(test) {
 			// make sure satellite is connected
 			assert.ok( !!this.xy.servers['satunit1'], "satunit1 in servers" );
 		}
