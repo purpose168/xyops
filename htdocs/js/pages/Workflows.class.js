@@ -330,6 +330,114 @@ Page.Workflows = class Workflows extends Page.Events {
 		
 		// add effects canvas
 		this.setupEffects();
+		
+		// setup tools (draw / move)
+		this.selectTool( app.getPref('wf_tool') || 'move' );
+	}
+	
+	selectTool(tool) {
+		// select new tool, deselect old one
+		var $cont = this.wfGetContainer();
+		
+		$cont.find('#d_btn_wf_tool_draw, #d_btn_wf_tool_move').removeClass('selected');
+		$cont.find('#d_wf_editor').removeClass('wf_tool_draw wf_tool_move');
+		
+		$cont.find('#d_btn_wf_tool_' + tool).addClass('selected');
+		$cont.find('#d_wf_editor').addClass('wf_tool_' + tool);
+		
+		this.wfTool = tool;
+		app.setPref('wf_tool', tool);
+	}
+	
+	// for keyboard shortcuts:
+	selectDrawTool() { this.selectTool('draw'); }
+	selectMoveTool() { this.selectTool('move'); }
+	
+	quickSelectMoveTool() {
+		// select move tool UNTIL keyup, then revert
+		var self = this;
+		if (this.wfTool != 'draw') return;
+		this.selectMoveTool();
+		
+		$(document).one('keyup', function (e) {
+			self.selectDrawTool();
+		});
+	}
+	
+	drawSelectionStart(event) {
+		// start a selection draw operation
+		var self = this;
+		var native = event.originalEvent;
+		var $cont = this.wfGetContainer();
+		var $fade = $cont.find('.wf_fade');
+		var $this = $cont.find('#d_wf_editor');
+		var rect = $cont[0].getBoundingClientRect();
+		
+		var domRectInRect = function(a, b) {
+			return !(
+				a.right  <= b.left ||
+				a.left   >= b.right ||
+				a.bottom <= b.top ||
+				a.top    >= b.bottom
+			);
+		};
+		
+		var sel_state = this.wfDrawSelection = {
+			additive: event.shiftKey,
+			startPt: { 
+				x: (event.clientX - rect.left) / this.wfZoom, 
+				y: (event.clientY - rect.top) / this.wfZoom 
+			}
+		};
+		
+		if (!sel_state.additive) this.deselectAll();
+		
+		// add sel_state preview div
+		var $tracker = $('<div id="d_wf_selection_draw"></div>');
+		$fade.append($tracker);
+		
+		$this[0].setPointerCapture(native.pointerId);
+		
+		$this.on('pointermove.draw', function(event) {
+			// mouse has moved
+			if (!self.active) return; // sanity
+			
+			var x = (event.clientX - rect.left) / self.wfZoom;
+			var y = (event.clientY - rect.top) / self.wfZoom;
+			
+			var width = Math.abs( x - sel_state.startPt.x );
+			var height = Math.abs( y - sel_state.startPt.y );
+			
+			$tracker.css({
+				left: '' + Math.min( x, sel_state.startPt.x ) + 'px',
+				top: '' + Math.min( y, sel_state.startPt.y ) + 'px',
+				width: '' + width + 'px',
+				height: '' + height + 'px'
+			});
+			
+			// calculate collisions with nodes
+			var trect = $tracker[0].getBoundingClientRect();
+			
+			self.workflow.nodes.forEach( function(node) {
+				var $elem = $cont.find('#d_wfn_' + node.id);
+				var in_sel = domRectInRect( trect, $elem[0].getBoundingClientRect() );
+				if (sel_state.additive) {
+					if (in_sel) self.wfSelection[node.id] = 1;
+				}
+				else {
+					if (in_sel) self.wfSelection[node.id] = 1;
+					else delete self.wfSelection[node.id];
+				}
+			});
+			
+			self.updateSelection();
+		});
+		
+		$this.on('pointerup.draw', function(event) {
+			delete self.wfDrawSelection;
+			$this.off('.draw');
+			$tracker.remove();
+		});
 	}
 	
 	setupEffects() {
@@ -2497,7 +2605,7 @@ Page.Workflows = class Workflows extends Page.Events {
 		// workflow editor
 		html += '<div class="box">';
 		html += '<div class="box_content">';
-		html += '<div class="wf_container" id="d_wf_container" style="height:85vh">';
+		html += '<div class="wf_container" id="d_wf_container" style="height:calc(100vh - 188px);">';
 		
 		// 
 		// <div class="button right"><i class="mdi mdi-clipboard-edit-outline">&nbsp;</i>Edit Info...</div>
@@ -2518,6 +2626,9 @@ Page.Workflows = class Workflows extends Page.Events {
 		html += `<div class="wf_grid_footer">
 			<div class="button icon left disabled" id="d_btn_wf_undo" onClick="$P().doUndo()" title="${config.ui.tooltips.wf_undo}"><i class="mdi mdi-undo"></i></div>
 			<div class="button icon left disabled" id="d_btn_wf_redo" onClick="$P().doRedo()" title="${config.ui.tooltips.wf_redo}"><i class="mdi mdi-redo"></i></div>
+			<div class="wf_button_separator left"></div>
+			<div class="button icon left" id="d_btn_wf_tool_draw" onClick="$P().selectTool('draw')"><i class="mdi mdi-cursor-default-outline"></i></div>
+			<div class="button icon left" id="d_btn_wf_tool_move" onClick="$P().selectTool('move')"><i class="mdi mdi-cursor-move"></i></div>
 			<div class="wf_button_separator left"></div>
 			<div class="button icon left" onClick="$P().wfZoomAuto()" title="${config.ui.tooltips.wf_zoom_auto}"><i class="mdi mdi-home"></i></div>
 			<div class="button icon left" id="d_btn_wf_zoom_out" onClick="$P().wfZoomOut()" title="${config.ui.tooltips.wf_zoom_out}"><i class="mdi mdi-magnify-minus"></i></div>
@@ -2588,6 +2699,8 @@ Page.Workflows = class Workflows extends Page.Events {
 		delete this.wfDragging;
 		delete this.wfSoldering;
 		delete this.wfPausedSolder;
+		delete this.wfTool;
+		delete this.wfDrawSelection;
 		
 		this.div.html('');
 		return true;
