@@ -865,6 +865,10 @@ When the job is itself a workflow, or a sub-job inside a workflow, this object w
 
 An array of [Ticket.id](#ticket-id)s associated with the job.
 
+### Job.position
+
+If the [Job.state](#job-state) is `queued`, this property will indicate what position the job is currently sitting in the queue.
+
 ## Monitor
 
 A monitor keeps track on a specific numeric server metric.  These are graphed in the UI so you can see trends over time, and you can also point alerts at them.  Here is an example monitor in JSON format:
