@@ -2798,10 +2798,10 @@ Page.Workflows = class Workflows extends Page.Events {
 		// blur active text field if wf editor is more than 50% visible
 		if (!this.wfZoom) return; // sanity
 		
-		var cont = this.wfGetContainer().get(0);
-		if (!cont) return; // sanity
-		
 		if (document.activeElement && (document.activeElement.tagName == 'INPUT')) {
+			var cont = this.wfGetContainer().get(0);
+			if (!cont) return; // sanity
+			
 			var rect = cont.getBoundingClientRect();
 			if (rect.top < window.innerHeight / 2) {
 				try { document.activeElement.blur(); } catch (e) {;}
