@@ -129,3 +129,41 @@ Launch jobs at local sunrise and sunset with optional offsets. Useful for energy
 
 - To avoid dependency on external APIs, embed sunrise calculations in the plugin. Any language is fine.
 - Provide an optional test mode that forces a launch to validate the graph end to end.
+
+## Daylight Savings Time
+
+Run a job safely during the Daylight Savings Time changeover window without duplicates or missed runs.  During DST transitions, local clocks jump between 1:00 and 3:00 AM. Two effects occur in many regions:
+
+- Spring ahead: the clock skips from 1:59 to 3:00 AM. Any time between 2:00–2:59 AM does not exist that day.
+- Fall back: the hour from 1:00–1:59 AM repeats twice. Times in that window occur twice.
+
+Classic Unix/Linux cron uses local time and does not de-duplicate or "catch up" around DST. On spring-ahead days, a 2:30 job is skipped. On fall-back days, a 1:30 job runs twice.
+
+### How It Works
+
+Use the [Max Daily Limit](limits.md#max-daily-limit) feature to allow a maximum of one job completion per calendar day, then schedule two daily runs:
+
+- Add a Max Daily Limit to the event (or workflow) with condition set to "Complete" and max daily amount set to "1". This quietly blocks any second run after one job has completed that day. See [Action.condition](data.md#action-condition) for condition meanings.
+- Add two schedule triggers (or one with multiple hours selected): one at the desired time in your timezone, and a second one exactly +1 hour later.
+
+This arrangement covers all three cases:
+
+- **Normal days**: the job runs at the desired time; the +1 hour run is silently blocked by the daily limit.
+- **Spring ahead**: the desired time may not exist (for example 2:30). The +1 hour run exists and executes; the daily limit still allows it because nothing ran yet.
+- **Fall back**: the desired time occurs twice; the first occurrence runs and completes, and both the repeated occurrence and the +1 hour run are blocked by the daily limit.
+
+Note: Manual runs skip the Max Daily Limit check, by design. If you manually re-run the job on a changeover day, it can exceed the daily count.
+
+### Example
+
+The following event configuration runs at 2:30 AM local time, with a safe second attempt at 3:30 AM, and allows at most one completion per day.
+
+- **Schedule Trigger**:
+	- Hours: `2` and `3` selected
+	- Minutes: `30` selected
+	- Timezone: Set to yours
+- **Max Daily Limit**:
+	- Job Condition: "Complete"
+	- Max Daily Amount: 1
+
+You can apply the same pattern to [Workflows](workflows.md) since workflows support limits as well. If you prefer to centralize the cap, you can also define this as a category limit so multiple events inherit the one-per-day rule.
