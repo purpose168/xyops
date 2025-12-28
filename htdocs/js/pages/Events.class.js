@@ -2944,6 +2944,7 @@ Page.Events = class Events extends Page.PageUtils {
 				values: trigger.years || [],
 				'data-hold': 1,
 				'data-shrinkwrap': 1,
+				'data-select-all': 1,
 				// 'data-compact': 1
 			})
 		});
@@ -2960,6 +2961,7 @@ Page.Events = class Events extends Page.PageUtils {
 				values: trigger.months || [],
 				'data-hold': 1,
 				'data-shrinkwrap': 1,
+				'data-select-all': 1,
 				// 'data-compact': 1
 			})
 		});
@@ -2976,6 +2978,7 @@ Page.Events = class Events extends Page.PageUtils {
 				values: trigger.weekdays || [],
 				'data-hold': 1,
 				'data-shrinkwrap': 1,
+				'data-select-all': 1,
 				// 'data-compact': 1
 			})
 		});
@@ -2992,6 +2995,7 @@ Page.Events = class Events extends Page.PageUtils {
 				values: trigger.days || [],
 				'data-hold': 1,
 				'data-shrinkwrap': 1,
+				'data-select-all': 1,
 				// 'data-compact': 1
 			})
 		});
@@ -3008,6 +3012,7 @@ Page.Events = class Events extends Page.PageUtils {
 				values: trigger.hours || [],
 				'data-hold': 1,
 				'data-shrinkwrap': 1,
+				'data-select-all': 1,
 				// 'data-compact': 1
 			})
 		});
@@ -3024,6 +3029,7 @@ Page.Events = class Events extends Page.PageUtils {
 				values: trigger.minutes || [],
 				'data-hold': 1,
 				'data-shrinkwrap': 1,
+				'data-select-all': 1,
 				// 'data-compact': 1
 			})
 		});
@@ -3254,6 +3260,7 @@ Page.Events = class Events extends Page.PageUtils {
 				values: trigger.seconds || [],
 				'data-hold': 1,
 				'data-shrinkwrap': 1,
+				'data-select-all': 1,
 				// 'data-compact': 1
 			})
 		});
