@@ -1843,6 +1843,13 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				disp.icon = 'motion-pause-outline';
 			break;
 			
+			case 'tag':
+				disp.type = "Apply Tags";
+				disp.text = this.getNiceTagListText(action.tags);
+				disp.desc = this.getNiceTagList(action.tags, link);
+				disp.icon = 'tag-plus-outline';
+			break;
+			
 			case 'disable':
 				disp.type = "Disable Event";
 				disp.text = disp.desc = "(Current Event)";
@@ -2187,6 +2194,21 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			})
 		});
 		
+		// tags
+		html += this.getFormRow({
+			id: 'd_eja_tags',
+			label: 'Select Tags:',
+			content: this.getFormMenuMulti({
+				id: 'fe_eja_tags',
+				title: 'Select Tags',
+				placeholder: 'None',
+				options: app.tags,
+				values: action.tags || [],
+				// 'data-shrinkwrap': 1
+			}),
+			caption: 'Select one or more tags to apply.'
+		});
+		
 		// plugin
 		html += this.getFormRow({
 			id: 'd_eja_plugin',
@@ -2268,6 +2290,11 @@ Page.PageUtils = class PageUtils extends Page.Base {
 					action.text = $('#fe_eja_web_hook_text').val().trim();
 				break;
 				
+				case 'tag':
+					action.tags = $('#fe_eja_tags').val();
+					if (!action.tags.length) return app.badField('#fe_eja_tags', "Please select one or more tags to apply.");
+				break;
+				
 				case 'plugin':
 					action.plugin_id = $('#fe_eja_plugin').val();
 					if (!action.plugin_id) return app.badField('#fe_eja_plugin', "Please select a Plugin for the action.");
@@ -2281,7 +2308,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		} ); // Dialog.confirm
 		
 		var change_action_type = function(new_type) {
-			$('#d_eja_email, #d_eja_users, #d_eja_body, #d_eja_web_hook, #d_eja_web_hook_text, #d_eja_run_job, #d_eja_channel, #d_eja_bucket, #d_eja_bucket_sync, #d_eja_bucket_glob, #d_nt_type, #d_nt_assignees, #d_nt_tags, #d_eja_plugin, #d_eja_plugin_params').hide();
+			$('#d_eja_email, #d_eja_users, #d_eja_body, #d_eja_web_hook, #d_eja_web_hook_text, #d_eja_run_job, #d_eja_channel, #d_eja_bucket, #d_eja_bucket_sync, #d_eja_bucket_glob, #d_nt_type, #d_nt_assignees, #d_nt_tags, #d_eja_tags, #d_eja_plugin, #d_eja_plugin_params').hide();
 			
 			switch (new_type) {
 				case 'email':
@@ -2323,6 +2350,10 @@ Page.PageUtils = class PageUtils extends Page.Base {
 					$('#d_eja_web_hook_text').show();
 				break;
 				
+				case 'tag':
+					$('#d_eja_tags').show();
+				break;
+				
 				case 'disable':
 					// hide all
 				break;
@@ -2352,7 +2383,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			Dialog.autoResize();
 		}); // type change
 		
-		MultiSelect.init( $('#fe_eja_users, #fe_nt_assignees, #fe_nt_tags') );
+		MultiSelect.init( $('#fe_eja_users, #fe_nt_assignees, #fe_nt_tags, #fe_eja_tags') );
 		SingleSelect.init( $('#fe_eja_condition, #fe_eja_type, #fe_eja_event, #fe_eja_channel, #fe_eja_web_hook, #fe_eja_plugin, #fe_eja_bucket, #fe_eja_bucket_sync, #fe_nt_type') );
 		
 		Dialog.autoResize();
@@ -3665,6 +3696,12 @@ Page.PageUtils = class PageUtils extends Page.Base {
 				if ((action.users && action.users.length) || action.email.length) label = "Send Email";
 				if (action.web_hook) label += (label.length ? ', ' : '') + "Web Hook";
 				icon = 'motion-pause-outline';
+			break;
+			
+			case 'tag':
+				title = "Apply Tags";
+				label = this.getNiceTagListText(action.tags);
+				icon = 'tag-plus-outline';
 			break;
 			
 			case 'disable':

@@ -502,6 +502,29 @@ Example (job start):
 }
 ```
 
+### Apply Tags
+
+Apply a custom set of tags to the job or workflow.
+
+Parameters:
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `tags` | Array | Yes | A list of [Tag.id](data.md#tag-id)s to apply. |
+
+Example (job complete):
+
+```json
+{
+    "enabled": true,
+    "condition": "complete",
+    "type": "tag",
+    "tags": ["important"]
+}
+```
+
+Note that tags are deduplicated when the job completes.
+
 ## Notes and Tips
 
 - For job actions, the email/web hook payloads include job links, log excerpts, performance metrics and any attached files (where applicable).

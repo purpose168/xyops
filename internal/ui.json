@@ -1156,6 +1156,7 @@
 		{ "id": "fetch", "title": "Fetch Bucket", "icon": "export" },
 		{ "id": "ticket", "title": "Create Ticket", "icon": "text-box-plus-outline" },
 		{ "id": "suspend", "title": "Suspend Job", "icon": "motion-pause-outline" },
+		{ "id": "tag", "title": "Apply Tags", "icon": "tag-plus-outline" },
 		{ "id": "disable", "title": "Disable Event", "icon": "cancel" },
 		{ "id": "delete", "title": "Delete Event", "icon": "trash-can-outline" },
 		{ "id": "plugin", "title": "Plugin", "icon": "power-plug" }

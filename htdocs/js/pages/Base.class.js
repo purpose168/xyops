@@ -568,6 +568,14 @@ Page.Base = class Base extends Page {
 		return tags.map( function(tag) { return self.getNiceTag(tag, link); } ).join(glue);
 	}
 	
+	getNiceTagListText(tags) {
+		// just the text, ma'am
+		return (tags || []).map( function(tag) {
+			var tag_def = find_object( app.tags, { id: tag } );
+			return tag_def ? tag_def.title : `(${tag})`;
+		} ).join(', ') || '(None)';
+	}
+	
 	getNiceTag(tag, link) {
 		// get formatted tag with icon, plus optional link
 		if (!tag) return '(None)';
