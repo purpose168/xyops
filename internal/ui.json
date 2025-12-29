@@ -962,6 +962,8 @@
 			"doDuplicateSelection": { "keys": [], "title": "Duplicate Selection" },
 			"doUndo": { "keys": ["Meta+KeyZ", "Control+KeyZ"], "title": "Undo", "repeatable": true },
 			"doRedo": { "keys": ["Meta+KeyY", "Control+KeyY"], "title": "Redo", "repeatable": true },
+			"wfZoomIn": { "keys": ["Equal"], "title": "Zoom In" },
+			"wfZoomOut": { "keys": ["Minus"], "title": "Zoom Out" },
 			"doEditSelection": { "keys": ["KeyE"], "title": "Edit Selection" },
 			"doTestSelection": { "keys": ["KeyT"], "title": "Test Selection" },
 			"nudgeSelectionLeft": { "keys": ["ArrowLeft"], "title": "Nudge Selection Left", "repeatable": true },
