@@ -327,8 +327,7 @@ services:
       XYOPS_hostname: "xyops.yourcompany.com"
       TZ: America/Los_Angeles
     volumes:
-      - "./config.json:/opt/xyops/conf/config.json:ro"
-      - "./sso.json:/opt/xyops/conf/sso.json:ro"
+      - "/local/path/to/xyops-conf:/opt/xyops/conf"
 ```
 
 A few things to note here:
@@ -336,9 +335,9 @@ A few things to note here:
 - The external port has been changed to 443.
 - We've set `OAUTH2_PROXY_COOKIE_SECURE` to `true`, as we'll be secure from this point onward.
 - You'll need to point a domain at the proxy, and add it to `OAUTH2_PROXY_WHITELIST_DOMAINS` (as well as your IdP domain).
-- Generate your TLS certificate files, and place them where Docker can find them (see `volumes:` above).
+- Generate your TLS certificate files, and place them where Docker can find them (see below).
 
-For the xyOps container, it needs two configuration files.  Grab our sample [config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [sso.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/sso.json) files to use as starting points to create yours.  See the [xyOps Configuration Guide](config.md) for details on how to customize these files.
+For the xyOps container, it needs several configuration files.  We are bind mapping a local host directory in the example above (`/local/path/to/xyops-conf`).  Please change this path to an appropriate location on the host where you want these files stored.  Launch the container once, and it will generate all config files for you.  Then, see the [xyOps Configuration Guide](config.md) for details on how to customize the files.  The TLS cert files also live in this directory.
 
 At the very least, make sure you set the [base_app_url](config.md#base_app_url) property to the domain that routes to the proxy (which sits in front), with a `https://` prefix.  You should also set the `XYOPS_hostname` to the same hostname (without the protocol prefix).  This is what xyOps uses to advertise itself to the server cluster, and generate URLs for new servers to connect.
 
@@ -362,7 +361,7 @@ A few prerequisites for this setup:
 
 - For multi-conductor setups, **you must have an external storage backend**, such as NFS, S3, or S3-compatible (MinIO, etc.).
 - You will need a custom domain configured and TLS certs created and ready to attach.
-- You have your xyOps configuration files customized and ready to go ([config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [sso.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/sso.json)) (see below).
+- You have your xyOps configuration files customized and ready to go ([config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [sso.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/sso.json)) (see below for details).
 - And of course you should have a pretested SSO configuration for OAuth2-Proxy, so you are confident that piece works before integrating it here.
 
 For the examples below, we'll be using the following domain placeholders:
@@ -440,8 +439,7 @@ services:
       XYOPS_masters: xyops01.yourcompany.com,xyops02.yourcompany.com
       TZ: America/Los_Angeles
     volumes:
-      - "./config.json:/opt/xyops/conf/config.json:ro"
-      - "./sso.json:/opt/xyops/conf/sso.json:ro"
+      - "/local/path/to/xyops-conf:/opt/xyops/conf"
     ports:
       - "5522:5522"
       - "5523:5523"
@@ -453,9 +451,8 @@ A few things to note here:
 - All conductor server hostnames need to be listed in the `XYOPS_masters` environment variable, comma-separated.
 - All conductor servers need to be able to route to each other via their hostnames, so they can self-negotiate and hold elections.
 - The timezone (`TZ`) should be set to your company's main timezone, so things like midnight log rotation and daily stat resets work as expected.
-- You will need to supply two configuration files, `config.json` and `sso.json`.  See below.
 
-Grab our sample [config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) and [sso.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/sso.json) files to use as starting points to create yours.  See the [xyOps Configuration Guide](config.md) for details on how to customize these files.  Specifically though, let's talk about `sso.conf` for this configuration.  This file is largely discussed above (see [Configuration](#configuration) above), but the [Header Map](#header-map) in particular is going to be different for Nginx + OAuth2-Proxy: 
+For the xyOps container, it needs several configuration files.  We are bind mapping a local host directory in the example above (`/local/path/to/xyops-conf`).  Please change this path to an appropriate location on the host where you want these files stored.  Launch the container once, and it will generate all the config files for you.  Then, see the [xyOps Configuration Guide](config.md) for details on how to customize the files.  Specifically though, let's talk about `sso.conf` for this configuration.  This file is largely discussed above (see [Configuration](#configuration) above), but the [Header Map](#header-map) in particular is going to be different for Nginx + OAuth2-Proxy: 
 
 ```json
 "header_map": {

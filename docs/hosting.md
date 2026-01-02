@@ -38,13 +38,15 @@ Note that in order to add worker servers, the container needs to be *addressable
 
 ### Configuration
 
-The xyOps main configuration file is located at `/opt/xyops/conf/config.json`.  Grab our [sample file](https://github.com/pixlcore/xyops/sample_conf/config.json) to use as a starting point for building yours.  You can bind a local file to this path on your Docker container by adding this to your Docker run command:
+The xyOps main configuration file is located at `/opt/xyops/conf/config.json`, but there are other useful files in the `/opt/xyops/conf` directory as well.  For e.g. if any configuration properties are updated via the UI, they are written to an `/opt/xyops/conf/overrides.json` file.  If you intend to use the Docker container long term, it is best to map the entire `/opt/xyops/conf` directory.  You can do this as a volume, or bind mount it to a host directory (recommended):
 
 ```
--v /local/path/to/config.json:/opt/xyops/conf/config.json
+-v /local/path/to/xyops-conf:/opt/xyops/conf
 ```
 
-See the [Configuration Guide](config.md) for full details on how to customize this file.
+xyOps will automatically copy over all default configuration files on first launch.
+
+See the [Configuration Guide](config.md) for full details on how to customize the `config.json` file.
 
 ## Manual Install
 
@@ -242,15 +244,14 @@ docker run \
 	--restart unless-stopped \
 	-e XYOPS_masters="xyops01.yourcompany.com,xyops02.yourcompany.com" \
 	-e TZ="America/Los_Angeles" \
-	-v "$(pwd)/config.json:/opt/xyops/conf/config.json:ro" \
-	-v "$(pwd)/sso.json:/opt/xyops/conf/sso.json:ro" \
+	-v "/local/path/to/xyops-conf:/opt/xyops/conf" \
 	-v "/var/run/docker.sock:/var/run/docker.sock" \
 	-p 5522:5522 \
 	-p 5523:5523 \
 	ghcr.io/pixlcore/xyops:latest
 ```
 
-And here it is as a docker compose file.
+And here it is as a docker compose file:
 
 ```yaml
 services:
@@ -262,8 +263,7 @@ services:
       XYOPS_masters: xyops01.yourcompany.com,xyops02.yourcompany.com
       TZ: America/Los_Angeles
     volumes:
-      - "./config.json:/opt/xyops/conf/config.json:ro"
-      - "./sso.json:/opt/xyops/conf/sso.json:ro"
+      - "/local/path/to/xyops-conf:/opt/xyops/conf"
       - "/var/run/docker.sock:/var/run/docker.sock"
     ports:
       - "5522:5522"
@@ -279,9 +279,9 @@ A few things to note here:
 - All conductor servers need to be able to route to each other via their hostnames, so they can self-negotiate and hold elections.
 - The timezone (`TZ`) should be set to your company's main timezone, so things like midnight log rotation and daily stat resets work as expected.
 - The `/var/run/docker.sock` bind allows xyOps to launch its own containers (i.e. for the [Plugin Marketplace](marketplace.md)).
-- You will need to supply the configuration file: `config.json`.  See below.
-
-Grab our sample [config.json](https://github.com/pixlcore/xyops/blob/main/sample_conf/config.json) file to use as a starting point to create yours.  See the [xyOps Configuration Guide](config.md) for details on how to customize this file.
+- The `/local/path/to/xyops-conf` path should be changed to a location on the host where you want to store the xyOps configuration directory.
+	- xyOps will automatically populate this directory on first container launch.
+	- See the [xyOps Configuration Guide](config.md) for details on how to customize the `config.json` file in this directory.
 
 ## Satellite
 
