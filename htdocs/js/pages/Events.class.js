@@ -2848,7 +2848,7 @@ Page.Events = class Events extends Page.PageUtils {
 			rows: rows,
 			cols: cols,
 			data_type: 'item',
-			class: 'data_grid',
+			class: 'data_grid c_trigger_grid',
 			empty_msg: add_link,
 			always_append_empty_msg: true,
 			grid_template_columns: '40px auto auto auto'
