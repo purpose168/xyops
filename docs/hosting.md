@@ -82,7 +82,7 @@ This section covers manually installing xyOps on a server (outside of Docker).
 
 Please note that the xyOps conductor currently only works on POSIX-compliant operating systems, which basically means Unix/Linux and macOS.  You'll also need to have [Node.js](https://nodejs.org/en/download/) pre-installed on your server.  Please note that we **strongly suggest that you install the LTS version of Node.js**.  While xyOps should work on the "current" release channel, LTS is more stable and more widely tested.  See [Node.js Releases](https://nodejs.org/en/about/releases/) for details.
 
-xyOps also requires NPM to be preinstalled.  Now, this is typically bundled with and automatically installed with Node.js, but if you install Node.js by hand, you may have to install NPM yourself.
+xyOps also requires NPM to be preinstalled.  Now, this is typically bundled with and automatically installed with Node.js, but if you install Node.js by hand, you may have to install NPM yourself.  You will likely also need compiler tools (i.e. `apt-get install build-essential python3-setuptools` on Ubuntu).
 
 Once you have Node.js and NPM installed, type this as root:
 
