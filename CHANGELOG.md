@@ -1,5 +1,17 @@
 # xyOps Changelog
 
+## Version v0.9.14
+
+> January 7, 2026
+
+- [`f7317db`](https://github.com/pixlcore/xyops/commit/f7317db0c34f9da9f6b8bf419e38126022e28f37): Version 0.9.14
+- [`16ebe45`](https://github.com/pixlcore/xyops/commit/16ebe454df9b1772b72d0b7a569986dfe53b5430): Predict Upcoming Jobs: Support Trigger Plugins as modifiers
+- [`4eed080`](https://github.com/pixlcore/xyops/commit/4eed0802f5343f1eeeb5627f2fca7640f33753d7): Marketplace: Add colors to status item
+- [`2dd310c`](https://github.com/pixlcore/xyops/commit/2dd310cc679849864e1e0ae9c0ca34d66f2d3745): Fix: Group Process search feature crashing on user input
+- [`124648d`](https://github.com/pixlcore/xyops/commit/124648df4ba031e94fabbd7fbd5db40e16a70bac): Config: Drop default satellite.config.debug_level to 5
+- [`95c3b04`](https://github.com/pixlcore/xyops/commit/95c3b04e17965e0b6297e24b200bb3502c7c6daf): Changelog: Tweak styling of git hash links
+- [`53c6897`](https://github.com/pixlcore/xyops/commit/53c6897b94d9684dceb9e3936dafbd9b8e3a1dab): Changelog Generator: Add more smarts
+
 ## Version v0.9.13
 
 > January 7, 2026
