@@ -1322,6 +1322,11 @@ div.ex_tree_inner pre code.hljs {
 	color: var(--label-color);
 }
 
+.ex_tree_pre {
+	white-space: pre-wrap;
+	color: var(--label-color);
+}
+
 .tree_row {
 	position: relative;
 	height: 20px;
@@ -1385,6 +1390,11 @@ div.ex_tree_inner pre code.hljs {
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
+}
+
+.ex_tree_inner.tree_static .tree_key {
+	cursor: default !important;
+	pointer-events: none;
 }
 
 /* Box Button Floater */
