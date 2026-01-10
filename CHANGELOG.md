@@ -1,5 +1,15 @@
 # xyOps Changelog
 
+## Version v0.9.19
+
+> January 10, 2026
+
+- [`0613740`](https://github.com/pixlcore/xyops/commit/0613740aa3e4419d7211bdcfea95c7a018d7bb95): Version 0.9.19
+- [`74c3cd0`](https://github.com/pixlcore/xyops/commit/74c3cd08161c31712e3e64149f1a1ff0fcb39cd3): create_plugin API: Ensure plugin has an "enabled" property.
+- [`43baa58`](https://github.com/pixlcore/xyops/commit/43baa5895b4bc88ddc7a2b962c08b12f76f1e01f): API Change: Ensure all object IDs are lower-case alphanumeric + underscore only.
+- [`b544050`](https://github.com/pixlcore/xyops/commit/b544050dbbec1104b4720f952937acce6bda87fa): Marketplace Doc: Typo fix: Missing "enabled" property in sample exported plugin.
+- [`b3fd437`](https://github.com/pixlcore/xyops/commit/b3fd437131c8d95d4b8b6febfb29bc47494b1094): Fix: Export PATH variable in control.sh and container-start.sh, so it properly propages out.
+
 ## Version v0.9.18
 
 > January 10, 2026
