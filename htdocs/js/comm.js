@@ -108,7 +108,7 @@ app.comm = {
 			}
 			
 			Debug.trace('comm', "Reconnecting in a moment...");
-			if (!Dialog.progress) {
+			if (!Dialog.active && !Dialog.progress && !CodeEditor.active) {
 				Dialog.showProgress( 1.0, progress_message );
 			}
 			setTimeout( function() { self.socketConnect(); }, 1000 );
