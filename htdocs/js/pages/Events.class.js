@@ -307,7 +307,8 @@ Page.Events = class Events extends Page.PageUtils {
 			actions.push( '<button class="link" onClick="$P().do_run_event_from_list('+idx+')"><b>Run</b></button>' );
 			actions.push( '<button class="link" onClick="$P().edit_event('+idx+')"><b>Edit</b></button>' );
 			actions.push( '<button class="link" onClick="$P().do_clone_from_list('+idx+')"><b>Clone</b></button>' );
-			actions.push( '<button class="link danger" onClick="$P().delete_event('+idx+')"><b>Delete</b></button>' );
+			actions.push( '<button class="link" onClick="$P().go_hist_from_list('+idx+')"><b>History</b></button>' );
+			// actions.push( '<button class="link danger" onClick="$P().delete_event('+idx+')"><b>Delete</b></button>' );
 			
 			var tds = [
 				'<div class="td_drag_handle" style="cursor:default">' + self.getFormCheckbox({
@@ -658,6 +659,11 @@ Page.Events = class Events extends Page.PageUtils {
 			this.clone = clone;
 			Nav.go('Events?sub=new');
 		}
+	}
+	
+	go_hist_from_list(idx) {
+		// jump over to rev history for specific event
+		Nav.go('Events?sub=history&id=' + this.events[idx].id);
 	}
 	
 	delete_event(idx) {
