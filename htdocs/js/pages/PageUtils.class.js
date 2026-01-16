@@ -5318,4 +5318,86 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		else return info;
 	}
 	
+	show_bulk_search_export_dialog(title, sopts) {
+		// show dialog for bulk search export
+		var index = sopts.index;
+		var html = '';
+		html += `<div class="dialog_intro">This allows you to bulk export search results to your local machine.  Please select which table columns to include, and which file format you would prefer.</div>`;
+		html += '<div class="dialog_box_content maximize scroll">';
+		
+		html += this.getFormRow({
+			label: 'Table Columns:',
+			content: this.getFormMenuMulti({
+				id: 'fe_se_ex_cols',
+				title: 'Select Columns',
+				placeholder: '(None)',
+				options: config.ui.db_export_columns[index],
+				values: app.getPref(`bse.${index}.cols`) || config.ui.db_export_columns[index].map( function(item) { return item.id; } ),
+				default_icon: 'database-marker-outline',
+				'data-hold': 1,
+				'data-shrinkwrap': 1,
+				'data-select-all': 1
+				// 'data-compact': 1
+			}),
+			caption: "Choose which table columns to include in your data export."
+		});
+		
+		html += this.getFormRow({
+			label: 'File Format:',
+			content: this.getFormMenuSingle({
+				id: 'fe_se_ex_fmt',
+				title: 'Select Format',
+				options: [ 
+					{ id: 'csv', title: "CSV (Comma-Separated Values)", icon: 'file-delimited-outline' },
+					{ id: 'tsv', title: "TSV (Tab-Separated Values)", icon: 'file-table-outline' },
+					{ id: 'ndjson', title: "NDJSON (Newline-Delimited JSON)", icon: 'code-json' } 
+				],
+				value: app.getPref(`bse.${index}.fmt`) || 'csv',
+				'data-shrinkwrap': 1,
+			}),
+			caption: "Choose which file format to generate for your data export."
+		});
+		
+		// compress
+		html += this.getFormRow({
+			label: 'Compress:',
+			content: this.getFormCheckbox({
+				id: 'fe_se_ex_comp',
+				label: 'Use Gzip Compression',
+				checked: app.getPref(`bse.${index}.comp`) || false
+			}),
+			caption: 'Optionally compress the exported data with Gzip.'
+		});
+		
+		html += '</div>';
+		Dialog.confirm( title, html, ['database-export', "Export Now"], function(result) {
+			if (!result) return;
+			app.clearError();
+			
+			// prepare request
+			var columns = $('#fe_se_ex_cols').val();
+			var format = $('#fe_se_ex_fmt').val();
+			var compress = $('#fe_se_ex_comp').is(':checked');
+			
+			if (!columns.length) {
+				return app.badField('#fe_se_ex_cols', "Please select at least one table column to export.");
+			}
+			
+			app.setPref(`bse.${index}.cols`, columns);
+			app.setPref(`bse.${index}.fmt`, format);
+			app.setPref(`bse.${index}.comp`, compress);
+			
+			sopts.columns = columns.join(',');
+			sopts.format = format;
+			if (compress) sopts.compress = 1;
+			
+			Dialog.hide();
+			window.location = app.base_api_url + '/app/bulk_search_export' + compose_query_string(sopts);
+		});
+		
+		MultiSelect.init( $('#fe_se_ex_cols') );
+		SingleSelect.init( $('#fe_se_ex_fmt') );
+		Dialog.autoResize();
+	}
+	
 };

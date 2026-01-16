@@ -303,10 +303,58 @@ Page.Snapshots = class Snapshots extends Page.ServerUtils {
 			];
 		} );
 		
+		if (this.snapshots.length) {
+			html += '<div style="margin-top: 30px;">';
+			if (app.hasPrivilege('admin')) html += '<div class="button right danger" style="margin-left:15px;" onClick="$P().do_bulk_delete()"><i class="mdi mdi-trash-can-outline">&nbsp;</i>Delete All...</div>';
+			html += '<div class="button right secondary" onClick="$P().do_bulk_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i>Export All...</div>';
+			html += '<div class="clear"></div>';
+			html += '</div>';
+		}
+		
 		html += '</div>'; // box_content
 		html += '</div>'; // box
 		
 		$results.html( html );
+	}
+	
+	do_bulk_export() {
+		// prompt for options, then start bulk download
+		var args = this.args;
+		var query = this.getSearchQuery(args);
+		var sopts = { index: 'snapshots', query };
+		var title = 'Bulk Export Snapshots';
+		
+		switch (args.sort) {
+			case 'date_asc':
+				sopts.sort_by = '_id'; 
+				sopts.sort_dir = 1;
+			break;
+			
+			case 'date_desc':
+				sopts.sort_by = '_id'; 
+				sopts.sort_dir = -1;
+			break;
+		} // sort
+		
+		this.show_bulk_search_export_dialog(title, sopts);
+	}
+	
+	do_bulk_delete() {
+		// start bulk delete job after danger confirmation
+		var total = this.lastSearchResp.list.length;
+		var args = this.args;
+		var query = this.getSearchQuery(args);
+		
+		Dialog.confirmDanger( 'Delete All Snapshots', "Are you sure you want to <b>permanently delete</b> all " + commify(total) + " search results?", ['trash-can', 'Delete All'], function(result) {
+			if (!result) return;
+			app.clearError();
+			Dialog.showProgress( 1.0, "Starting Bulk Delete..." );
+			
+			app.api.post( 'app/bulk_search_delete', { index: 'snapshots', query: query || '*' }, function(resp) {
+				Dialog.hideProgress();
+				app.showMessage('success', "Your bulk delete job was started in the background.  You can monitor its progress on the Dashboard.", 8, '#Dashboard');
+			} ); // api.post
+		} ); // confirm
 	}
 	
 	searchPaginate(offset) {

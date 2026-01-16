@@ -448,30 +448,50 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		
 		html += '</div>'; // box_content
 		
-		var yes_buttons = (this.tickets.length && app.hasPrivilege('delete_tickets')) || app.hasPrivilege('create_tickets');
-		
-		if (yes_buttons) {
-			html += '<div class="box_buttons">';
+		// buttons
+		html += '<div class="box_buttons">';
+			html += '<div class="button secondary mobile_collapse" onClick="$P().do_bulk_export()"><i class="mdi mdi-cloud-download-outline">&nbsp;</i><span>Export All...</span></div>';
+			
 			if (this.tickets.length && app.hasPrivilege('delete_tickets')) {
-				html += '<div class="button danger" onClick="$P().do_bulk_delete()"><i class="mdi mdi-trash-can-outline">&nbsp;</i>Delete All...</div>';
+				html += '<div class="button danger mobile_collapse" onClick="$P().do_bulk_delete()"><i class="mdi mdi-trash-can-outline">&nbsp;</i><span>Delete All...</span></div>';
 			}
 			if (app.hasPrivilege('create_tickets')) {
 				html += '<div class="button default" id="btn_new" onClick="$P().do_new_ticket_from_list()"><i class="mdi mdi-plus-circle-outline">&nbsp;</i><span>New Ticket...</span></div>';
 			}
-			html += '</div>';
-		}
+		html += '</div>'; // box_buttons
 		
 		html += '</div>'; // box
 		
 		$results.html( html ).buttonize();
 		
-		if (yes_buttons) this.setupBoxButtonFloater();
-		else this.cleanupBoxButtonFloater();
+		this.setupBoxButtonFloater();
 	}
 	
 	do_new_ticket_from_list() {
 		// jump to new ticket page
 		Nav.go('Tickets?sub=new');
+	}
+	
+	do_bulk_export() {
+		// prompt for options, then start bulk download
+		var args = this.args;
+		var query = this.getSearchQuery(args);
+		var sopts = { index: 'tickets', query };
+		var title = 'Bulk Export Tickets';
+		
+		switch (args.sort) {
+			case 'date_asc':
+				sopts.sort_by = '_id'; 
+				sopts.sort_dir = 1;
+			break;
+			
+			case 'date_desc':
+				sopts.sort_by = '_id'; 
+				sopts.sort_dir = -1;
+			break;
+		} // sort
+		
+		this.show_bulk_search_export_dialog(title, sopts);
 	}
 	
 	do_bulk_delete() {
@@ -480,7 +500,7 @@ Page.Tickets = class Tickets extends Page.PageUtils {
 		var args = this.args;
 		var query = this.getSearchQuery(args);
 		
-		Dialog.confirmDanger( 'Delete All Results', "Are you sure you want to <b>permanently delete</b> all " + commify(total) + " search results?", ['trash-can', 'Delete All'], function(result) {
+		Dialog.confirmDanger( 'Delete All Tickets', "Are you sure you want to <b>permanently delete</b> all " + commify(total) + " search results?", ['trash-can', 'Delete All'], function(result) {
 			if (!result) return;
 			app.clearError();
 			Dialog.showProgress( 1.0, "Starting Bulk Delete..." );

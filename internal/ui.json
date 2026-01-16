@@ -1243,6 +1243,60 @@
 		"delete": "deleted comment."
 	},
 	
+	"db_export_columns": {
+		"jobs": [
+			{ "id": "id", "title": "Job ID" },
+			{ "id": "event", "title": "Event ID" },
+			{ "id": "category", "title": "Category ID" },
+			{ "id": "plugin", "title": "Plugin ID" },
+			{ "id": "server", "title": "Server ID" },
+			{ "id": "source", "title": "Source" },
+			{ "id": "code", "title": "Code" },
+			{ "id": "description", "title": "Description" },
+			{ "id": "started", "title": "Started" },
+			{ "id": "completed", "title": "Completed" },
+			{ "id": "elapsed", "title": "Elapsed" },
+			{ "id": "log_file_size", "title": "Output Size" },
+			{ "id": "tags", "title": "Tags" }
+		],
+		"tickets": [
+			{ "id": "id", "title": "Ticket ID" },
+			{ "id": "num", "title": "Ticket Number" },
+			{ "id": "type", "title": "Type" },
+			{ "id": "status", "title": "Status" },
+			{ "id": "subject", "title": "Subject" },
+			{ "id": "assignees", "title": "Assignees" },
+			{ "id": "category", "title": "Category ID" },
+			{ "id": "server", "title": "Server ID" },
+			{ "id": "created", "title": "Created" },
+			{ "id": "modified", "title": "Modified" },
+			{ "id": "due", "title": "Due Date" },
+			{ "id": "tags", "title": "Tags" }
+		],
+		"alerts": [
+			{ "id": "id", "title": "Alert Invocation ID" },
+			{ "id": "alert", "title": "Alert Definition ID" },
+			{ "id": "exp", "title": "Expression" },
+			{ "id": "message", "title": "Message" },
+			{ "id": "server", "title": "Server ID" },
+			{ "id": "groups", "title": "Group IDs" },
+			{ "id": "date", "title": "Created" },
+			{ "id": "modified", "title": "Modified" },
+			{ "id": "jobs", "title": "Job IDs" },
+			{ "id": "tickets", "title": "Ticket IDs" }
+		],
+		"snapshots": [
+			{ "id": "id", "title": "Snapshot ID" },
+			{ "id": "type", "title": "Type" },
+			{ "id": "server", "title": "Server ID" },
+			{ "id": "groups", "title": "Group IDs" },
+			{ "id": "source", "title": "Source" },
+			{ "id": "date", "title": "Created" },
+			{ "id": "jobs", "title": "Job IDs" },
+			{ "id": "alerts", "title": "Alert IDs" }
+		]
+	},
+	
 	"satellite_install_menu": [
 		{ "id": "standard", "title": "Linux", "icon": "penguin" },
 		{ "id": "macos", "title": "macOS", "icon": "apple" },
