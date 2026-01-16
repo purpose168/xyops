@@ -1,5 +1,17 @@
 # xyOps Changelog
 
+## Version v0.9.29
+
+> January 15, 2026
+
+- [`0a45c92`](https://github.com/pixlcore/xyops/commit/0a45c92961b0aa73c998058efab13b0c97c38b5f): Version 0.9.29
+- [`506ea86`](https://github.com/pixlcore/xyops/commit/506ea86c529f2f32cdfbaa4e028f0ec8e6fa7e60): API Docs: Add docs for new bulk_search_export API
+- [`7aa85df`](https://github.com/pixlcore/xyops/commit/7aa85df3076e28d92a326789f0bc89d11c66afee): Docs: Change array formatting to not use any HTML metacharacters.
+- [`f016141`](https://github.com/pixlcore/xyops/commit/f0161415a751d5c79586e75683a5fa11943e0aff): New Feature: Bulk export job, ticket, alert and snapshot search results, in CSV / TSV / NDJSON format, with optional gzip wrapper.
+- [`a60bf0c`](https://github.com/pixlcore/xyops/commit/a60bf0c4488069d742cacb4d51315e4f0f3b31e6): Admin: Remove comment about unused API (it is now used).
+- [`16e2bb3`](https://github.com/pixlcore/xyops/commit/16e2bb3a150d12b4ce64838960314dc47e00559d): CSS: Tweak padding above first checkbox container in form row
+- [`e4817c0`](https://github.com/pixlcore/xyops/commit/e4817c0cbb101a7337c144fda70e5473e0a56e46): Event List UI: Replace "Delete" with "History" in action column.
+
 ## Version v0.9.28
 
 > January 15, 2026
