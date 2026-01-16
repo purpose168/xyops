@@ -663,7 +663,8 @@ Page.Events = class Events extends Page.PageUtils {
 	
 	go_hist_from_list(idx) {
 		// jump over to rev history for specific event
-		Nav.go('Events?sub=history&id=' + this.events[idx].id);
+		// Nav.go('Events?sub=history&id=' + this.events[idx].id);
+		Nav.go('Search?event=' + this.events[idx].id);
 	}
 	
 	delete_event(idx) {
