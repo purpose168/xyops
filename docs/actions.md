@@ -90,7 +90,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `users` | Array<String> | Optional | Array of [User.username](data.md#user-username) values to email. |
+| `users` | Array(String) | Optional | Array of [User.username](data.md#user-username) values to email. |
 | `email` | String | Optional | One or more additional recipients, comma-separated. |
 | `body` | String | Optional | Optionally customize the email subject and body using Markdown (see [Custom Email](#custom-email) below). |
 
@@ -323,8 +323,8 @@ Parameters:
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `ticket_type` | String | Yes | See [Ticket.type](data.md#ticket-type) (e.g., `issue`, `task`, etc.). |
-| `ticket_assignees` | Array<String> | Yes | Array of [User.username](data.md#user-username) assignees. |
-| `ticket_tags` | Array<String> | Optional | Array of [Tag.id](data.md#tag-id) values. |
+| `ticket_assignees` | Array(String) | Yes | Array of [User.username](data.md#user-username) assignees. |
+| `ticket_tags` | Array(String) | Optional | Array of [Tag.id](data.md#tag-id) values. |
 
 Example (job error):
 
@@ -399,7 +399,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `users` | Array<String> | Optional | Array of [User.username](data.md#user-username) values to email. |
+| `users` | Array(String) | Optional | Array of [User.username](data.md#user-username) values to email. |
 | `email` | String | Optional | One or more additional recipients, comma-separated. |
 | `web_hook` | String | Optional | [WebHook.id](data.md#webhook-id) to fire on suspension. |
 | `text` | String | Optional | Extra text appended to the suspension web hook message. |

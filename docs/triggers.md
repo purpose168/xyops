@@ -86,12 +86,12 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `years` | Array<Number> | Optional | One or more years in YYYY format. |
-| `months` | Array<Number> | Optional | Months 1-12 (Jan=1 ... Dec=12). |
-| `days` | Array<Number> | Optional | Month days 1-31, or reverse month days −1 to −7 (−1 = last day, −2 = second-to-last, etc.). |
-| `weekdays` | Array<Number> | Optional | Weekdays 0-6 (Sun=0 ... Sat=6). |
-| `hours` | Array<Number> | Optional | Hours 0-23 (24-hour clock). |
-| `minutes` | Array<Number> | Optional | Minutes 0-59. |
+| `years` | Array(Number) | Optional | One or more years in YYYY format. |
+| `months` | Array(Number) | Optional | Months 1-12 (Jan=1 ... Dec=12). |
+| `days` | Array(Number) | Optional | Month days 1-31, or reverse month days −1 to −7 (−1 = last day, −2 = second-to-last, etc.). |
+| `weekdays` | Array(Number) | Optional | Weekdays 0-6 (Sun=0 ... Sat=6). |
+| `hours` | Array(Number) | Optional | Hours 0-23 (24-hour clock). |
+| `minutes` | Array(Number) | Optional | Minutes 0-59. |
 | `timezone` | String | Optional | IANA timezone for evaluating the schedule (defaults to server timezone). |
 
 Notes:
@@ -323,7 +323,7 @@ Parameters:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `seconds` | Array<Number> | Yes | One or more second offsets within 0-59. |
+| `seconds` | Array(Number) | Yes | One or more second offsets within 0-59. |
 
 Notes:
 

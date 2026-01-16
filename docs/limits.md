@@ -73,8 +73,8 @@ Parameters:
 |------|------|----------|-------------|
 | `type` | String | Yes | Set to `time` for max run time. |
 | `duration` | Number | Yes | Maximum runtime in seconds. |
-| `tags` | Array<String> | Optional | Apply these [Tag.id](data.md#tag-id) values when exceeded. |
-| `users` | Array<String> | Optional | Email these [User.username](data.md#user-username) users. |
+| `tags` | Array(String) | Optional | Apply these [Tag.id](data.md#tag-id) values when exceeded. |
+| `users` | Array(String) | Optional | Email these [User.username](data.md#user-username) users. |
 | `email` | String | Optional | Additional comma-separated email addresses. |
 | `web_hook` | String | Optional | Fire this [WebHook.id](data.md#webhook-id) when exceeded. |
 | `text` | String | Optional | Custom text appended to the web hook message. |
@@ -134,8 +134,8 @@ Parameters:
 |------|------|----------|-------------|
 | `type` | String | Yes | Set to `log` for max output size. |
 | `amount` | Number | Yes | Maximum bytes of output/log content. |
-| `tags` | Array<String> | Optional | Apply these tags when exceeded. |
-| `users` | Array<String> | Optional | Email these users. |
+| `tags` | Array(String) | Optional | Apply these tags when exceeded. |
+| `users` | Array(String) | Optional | Email these users. |
 | `email` | String | Optional | Additional comma-separated email addresses. |
 | `web_hook` | String | Optional | Fire this web hook. |
 | `text` | String | Optional | Custom text appended to the web hook message. |
@@ -165,8 +165,8 @@ Parameters:
 | `type` | String | Yes | Set to `mem` for max memory limit. |
 | `amount` | Number | Yes | Maximum memory in bytes. |
 | `duration` | Number | Yes | Sustain time in seconds over the limit before triggering. |
-| `tags` | Array<String> | Optional | Apply these tags when exceeded. |
-| `users` | Array<String> | Optional | Email these users. |
+| `tags` | Array(String) | Optional | Apply these tags when exceeded. |
+| `users` | Array(String) | Optional | Email these users. |
 | `email` | String | Optional | Additional comma-separated email addresses. |
 | `web_hook` | String | Optional | Fire this web hook. |
 | `text` | String | Optional | Custom text appended to the web hook message. |
@@ -198,8 +198,8 @@ Parameters:
 | `type` | String | Yes | Set to `cpu` for max CPU limit. |
 | `amount` | Number | Yes | CPU percentage, where `100` equals one core fully utilized. |
 | `duration` | Number | Yes | Sustain time in seconds over the limit before triggering. |
-| `tags` | Array<String> | Optional | Apply these tags when exceeded. |
-| `users` | Array<String> | Optional | Email these users. |
+| `tags` | Array(String) | Optional | Apply these tags when exceeded. |
+| `users` | Array(String) | Optional | Email these users. |
 | `email` | String | Optional | Additional comma-separated email addresses. |
 | `web_hook` | String | Optional | Fire this web hook. |
 | `text` | String | Optional | Custom text appended to the web hook message. |

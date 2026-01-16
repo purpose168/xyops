@@ -1015,6 +1015,8 @@ body.dark div.box_unit {
 
 /* Misc */
 
+object { display: none; }
+
 div.header_title.error {
 	font-size: 27px;
 	color: var(--red);

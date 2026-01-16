@@ -709,7 +709,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `items` | Array<Object> | **(Required)** Array of objects, each with an `id` and the new `sort_order`. |
+| `items` | Array(Object) | **(Required)** Array of objects, each with an `id` and the new `sort_order`. |
 
 Example request:
 
@@ -1681,7 +1681,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `items` | Array<Object> | **(Required)** Array of objects, each with an `id` and the new `sort_order`. |
+| `items` | Array(Object) | **(Required)** Array of objects, each with an `id` and the new `sort_order`. |
 
 Example request:
 
@@ -1908,7 +1908,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `ids` | Array<String> | **(Required)** Array of [Job.id](data.md#job-id) values. |
+| `ids` | Array(String) | **(Required)** Array of [Job.id](data.md#job-id) values. |
 | `verbose` | Boolean | Optional. If `true`, includes heavy fields; otherwise they are pruned. |
 
 Example request:
@@ -2170,7 +2170,7 @@ Parameters:
 | Property Name | Type | Description |
 |---------------|------|-------------|
 | `id` | String | **(Required)** The [Job.id](data.md#job-id). |
-| `tags` | Array<String> | **(Required)** Full replacement list of tags for the job. |
+| `tags` | Array(String) | **(Required)** Full replacement list of tags for the job. |
 
 Example request:
 
@@ -2482,7 +2482,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `items` | Array<Object> | **(Required)** Array of objects, each with an `id` and the new `sort_order`. |
+| `items` | Array(Object) | **(Required)** Array of objects, each with an `id` and the new `sort_order`. |
 
 Example request:
 
@@ -3354,6 +3354,10 @@ Example response:
 ```
 
 In addition to the [Standard Response Format](#standard-response-format), this will include an `items` array containing per-day records with `epoch`, human-readable `date`, and the selected `data` subtree, plus a `list` object containing list metadata.
+
+### bulk_search_export
+
+
 
 ### marketplace
 
@@ -5282,10 +5286,10 @@ Parameters (choose either the high-level selectors or a custom `items` array):
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `lists` | Array<String> or String | List IDs from `config.ui.list_list` or the literal string `"all"`. Each exports the corresponding `global/NAME` list and pages. |
-| `indexes` | Array<String> or String | Database index IDs from `config.ui.database_list` or `"all"`. Exports matching DB records (newest to oldest). |
-| `extras` | Array<String> or String | Optional extras or `"all"`. Supported: `user_avatars`, `job_files`, `job_logs`, `monitor_data`, `stat_data`. |
-| `items` | Array<Object> | Advanced mode. Array of export items such as `{ type: "list", key }`, `{ type: "index", index, query?, max_rows? }`, `{ type: "users", avatars? }`, `{ type: "jobFiles", query?, max_rows?, max_size?, logs?, files? }`, `{ type: "monitorData", query? }`, `{ type: "bucketData" }`, `{ type: "bucketFiles", max_size? }`, `{ type: "secretData" }`. |
+| `lists` | Array(String) or String | List IDs from `config.ui.list_list` or the literal string `"all"`. Each exports the corresponding `global/NAME` list and pages. |
+| `indexes` | Array(String) or String | Database index IDs from `config.ui.database_list` or `"all"`. Exports matching DB records (newest to oldest). |
+| `extras` | Array(String) or String | Optional extras or `"all"`. Supported: `user_avatars`, `job_files`, `job_logs`, `monitor_data`, `stat_data`. |
+| `items` | Array(Object) | Advanced mode. Array of export items such as `{ type: "list", key }`, `{ type: "index", index, query?, max_rows? }`, `{ type: "users", avatars? }`, `{ type: "jobFiles", query?, max_rows?, max_size?, logs?, files? }`, `{ type: "monitorData", query? }`, `{ type: "bucketData" }`, `{ type: "bucketFiles", max_size? }`, `{ type: "secretData" }`. |
 | `token` | String | Single-use token from [get_transfer_token](#get_transfer_token). When present, parameters from the token are applied and the token is invalidated. |
 
 Response: A `200 OK` streaming gzip file. The content is NDJSON containing a mix of:
@@ -5312,7 +5316,7 @@ Parameters:
 
 | Property Name | Type | Description |
 |---------------|------|-------------|
-| `items` | Array<Object> | **(Required)** Array of delete actions. Supported types: `{ type: "list", key }`, `{ type: "index", index, query? }`, `{ type: "users" }`, `{ type: "bucketData" }`, `{ type: "bucketFiles" }`, `{ type: "secretData" }`. |
+| `items` | Array(Object) | **(Required)** Array of delete actions. Supported types: `{ type: "list", key }`, `{ type: "index", index, query? }`, `{ type: "users" }`, `{ type: "bucketData" }`, `{ type: "bucketFiles" }`, `{ type: "secretData" }`. |
 
 Example request:
 
