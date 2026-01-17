@@ -3386,6 +3386,77 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		return { x: node.x - scroll.x, y: node.y - scroll.y };
 	}
 	
+	getWFParamPreviewHTML(fields, params) {
+		// get HTML presentation for set of event fields, plugin params, or toolset fields
+		var self = this;
+		var none = '<span>(None)</span>';
+		var html = '';
+		
+		(fields || []).forEach( function(param, idx) {
+			var elem_value = (param.id in params) ? params[param.id] : param.value;
+			var elem_icon = config.ui.control_type_icons[param.type];
+			var append_html = '';
+			if (param.type == 'hidden') return;
+			
+			html += '<div>'; // grid unit
+			html += '<div class="info_label">' + (param.locked ? '<i class="mdi mdi-lock-outline">&nbsp;</i>' : '') + strip_html(param.title) + '</div>';
+			html += '<div class="info_value">';
+			
+			switch (param.type) {
+				case 'text':
+				case 'textarea':
+					if (elem_value.toString().length) {
+						html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
+						html += strip_html( elem_value );
+					}
+					else html += none;
+				break;
+				
+				case 'code':
+					if (elem_value.toString().length) {
+						html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
+						html += '<span class="monospace">' + strip_html(elem_value) + '</span>';
+					}
+					else html += none;
+				break;
+				
+				case 'json':
+					elem_value = JSON.stringify( elem_value || {} );
+					// html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
+					html += '<span class="monospace">' + strip_html(elem_value) + '</span>';
+				break;
+				
+				case 'checkbox':
+					elem_icon = elem_value ? 'checkbox-marked-outline' : 'checkbox-blank-outline';
+					html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
+					if (elem_value) html += 'Yes';
+					else html += '<span>No</span>'; 
+				break;
+				
+				case 'select':
+					html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
+					html += strip_html( elem_value.toString().replace(/\,.*$/, '') );
+				break;
+				
+				case 'toolset':
+					html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
+					var tool = find_object( param.data.tools, { id: elem_value } );
+					if (tool) {
+						html += tool.title;
+						append_html += self.getWFParamPreviewHTML( tool.fields, params );
+					}
+					else html += 'n/a';
+				break;
+			} // switch type
+			
+			html += '</div>'; // info_value
+			html += '</div>'; // grid unit
+			html += append_html;
+		} );
+		
+		return html;
+	}
+	
 	getWF_event(node, workflow) {
 		// get HTML for single workflow node of type event
 		var html = '';
@@ -3402,7 +3473,6 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		var params = node.data.params;
 		var default_icon = (event.type == 'workflow') ? 'clipboard-flow-outline' : config.ui.data_types.event.icon;
 		var icon = event.icon || default_icon;
-		var none = '<span>(None)</span>';
 		
 		html += `<div id="d_wfn_${node.id}" class="${classes.join(' ')}" style="left:${pos.x}px; top:${pos.y}px;" aria-label="${encode_attrib_entities(event.title)}">
 			<div class="wf_event_title"><i class="mdi mdi-drag"></i><i class="mdi mdi-${icon}"></i>${event.title}</div>
@@ -3441,49 +3511,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			html += '<div class="summary_grid single">';
 		}
 		
-		(event.fields || []).forEach( function(param, idx) {
-			var elem_value = (param.id in params) ? params[param.id] : param.value;
-			var elem_icon = config.ui.control_type_icons[param.type];
-			if (param.type == 'hidden') return;
-			
-			html += '<div>'; // grid unit
-			html += '<div class="info_label">' + (param.locked ? '<i class="mdi mdi-lock-outline">&nbsp;</i>' : '') + strip_html(param.title) + '</div>';
-			html += '<div class="info_value">';
-			
-			switch (param.type) {
-				case 'text':
-				case 'textarea':
-					if (elem_value.toString().length) {
-						html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-						html += strip_html( elem_value );
-					}
-					else html += none;
-				break;
-				
-				case 'code':
-					if (elem_value.toString().length) {
-						html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-						html += '<span class="monospace">' + strip_html(elem_value) + '</span>';
-					}
-					else html += none;
-				break;
-				
-				case 'checkbox':
-					elem_icon = elem_value ? 'checkbox-marked-outline' : 'checkbox-blank-outline';
-					html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-					if (elem_value) html += 'Yes';
-					else html += '<span>No</span>'; 
-				break;
-				
-				case 'select':
-					html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-					html += strip_html( elem_value.toString().replace(/\,.*$/, '') );
-				break;
-			} // switch type
-			
-			html += '</div>'; // info_value
-			html += '</div>'; // grid unit
-		} );
+		html += this.getWFParamPreviewHTML(event.fields, params);
 		
 		html += '</div>'; // summary_grid
 		html += '</div>'; // wf_body
@@ -3513,7 +3541,6 @@ Page.PageUtils = class PageUtils extends Page.Base {
 		var params = node.data.params;
 		var title = node.data.label || plugin.title;
 		var icon = plugin.icon || config.ui.data_types.plugin.icon;
-		var none = '<span>(None)</span>';
 		
 		html += `<div id="d_wfn_${node.id}" class="${classes.join(' ')}" style="left:${pos.x}px; top:${pos.y}px;" aria-label="${encode_attrib_entities(title)}">
 			<div class="wf_event_title"><i class="mdi mdi-drag"></i><i class="mdi mdi-${icon}"></i>${title}</div>
@@ -3551,49 +3578,7 @@ Page.PageUtils = class PageUtils extends Page.Base {
 			html += '<div class="summary_grid single">';
 		}
 		
-		(plugin.params || []).forEach( function(param, idx) {
-			var elem_value = (param.id in params) ? params[param.id] : param.value;
-			var elem_icon = config.ui.control_type_icons[param.type];
-			if (param.type == 'hidden') return;
-			
-			html += '<div>'; // grid unit
-			html += '<div class="info_label">' + (param.locked ? '<i class="mdi mdi-lock-outline">&nbsp;</i>' : '') + strip_html(param.title) + '</div>';
-			html += '<div class="info_value">';
-			
-			switch (param.type) {
-				case 'text':
-				case 'textarea':
-					if (elem_value.toString().length) {
-						html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-						html += strip_html(elem_value);
-					}
-					else html += none;
-				break;
-				
-				case 'code':
-					if (elem_value.toString().length) {
-						html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-						html += '<span class="monospace">' + strip_html(elem_value) + '</span>';
-					}
-					else html += none;
-				break;
-				
-				case 'checkbox':
-					elem_icon = elem_value ? 'checkbox-marked-outline' : 'checkbox-blank-outline';
-					html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-					if (elem_value) html += 'Yes';
-					else html += '<span>No</span>'; 
-				break;
-				
-				case 'select':
-					html += '<i class="mdi mdi-' + elem_icon + '">&nbsp;</i>';
-					html += strip_html( elem_value.toString().replace(/\,.*$/, '') );
-				break;
-			} // switch type
-			
-			html += '</div>'; // info_value
-			html += '</div>'; // grid unit
-		} );
+		html += this.getWFParamPreviewHTML(plugin.params, params);
 		
 		html += '</div>'; // summary_grid
 		html += '</div>'; // wf_body
