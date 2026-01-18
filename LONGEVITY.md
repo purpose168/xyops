@@ -1,84 +1,84 @@
-# xyOps Longevity Pledge
+# xyOps 长期承诺书
 
-This document describes the long-term commitments that PixlCore LLC and I, Joseph Huckaby, make regarding the stewardship, licensing, and future of the xyOps project. It supplements, but does not replace, the legal terms defined in the LICENSE file. Your actual enforceable rights come from that license; this pledge explains the principles we commit to follow as maintainers.
+本文档描述了 PixlCore LLC 和我（Joseph Huckaby）关于 xyOps 项目的管理、许可和未来的长期承诺。它是对 LICENSE 文件中定义的法律条款的补充，而非替代。您的实际可执行权利来自该许可证；本承诺书解释了我们作为维护者承诺遵循的原则。
 
-## 1. Licensing & Openness
+## 1. 许可与开放性
 
-xyOps is and will remain released under an OSI-approved open-source license.  We commit that:
+xyOps 现在并将继续在 OSI（开源促进会）批准的开源许可证下发布。我们承诺：
 
-- xyOps will not be superseded by a proprietary fork that has a different or more advanced feature set.
-- The open-source version of xyOps will continue to receive ongoing development, security fixes, and enhancements.
-- No relicensing will occur that removes rights already granted under previous releases.
+- xyOps 不会被具有不同或更高级功能集的专有分叉版本所取代。
+- xyOps 的开源版本将继续持续开发、安全修复和增强。
+- 不会发生取消先前版本已授予权利的重新许可。
 
-Once released, versions under an open-source license cannot be revoked. Users will always be able to fork, modify, and redistribute xyOps under the terms of that license.
+一旦在开源许可证下发布，版本就无法撤销。用户将始终能够根据该许可证的条款分叉、修改和重新分发 xyOps。
 
-## 2. No Feature-Restricted Editions
+## 2. 无功能限制版本
 
-We will not create a "premium," "enterprise-only," or otherwise feature-restricted edition of xyOps that reduces the capability of the open-source version.
+我们不会创建"高级版"、"企业专用版"或其他功能限制版本的 xyOps，从而降低开源版本的能力。
 
-Commercial offerings, such as hosted services, support plans, integrations, or optional convenience tooling, may exist, but they will not contain *core xyOps features* that are unavailable to the community edition. The open source xyOps project will remain fully functional and complete.
+商业产品（如托管服务、支持计划、集成或可选的便捷工具）可能存在，但不会包含社区版本无法使用的 *核心 xyOps 功能*。开源 xyOps 项目将保持完全功能完整。
 
-## 3. No Hidden or Undocumented Functionality
+## 3. 无隐藏或未记录的功能
 
-xyOps will not include hidden enterprise flags, private APIs, or closed-source modules. All functionality shipping with xyOps will be part of the public codebase. Any paid services will exist *outside* the core xyOps repository.
+xyOps 不会包含隐藏的企业标志、私有 API（应用程序编程接口）或闭源模块。随 xyOps 提供的所有功能都将是公共代码库的一部分。任何付费服务都将存在于 *核心 xyOps 仓库之外*。
 
-## 4. Continuity Through Ownership Changes
+## 4. 所有权变更的连续性
 
-If PixlCore LLC is ever acquired, merged, or transitions ownership, our intent is that:
+如果 PixlCore LLC 被收购、合并或转让所有权，我们的意图是：
 
-- xyOps will remain open source under an OSI-approved license.
-- The acquiring party will be publicly informed that continued open-source stewardship is an expected condition of the project.
-- Any planned changes to xyOps governance, licensing, or openness will be communicated transparently to the community prior to taking effect.
+- xyOps 将在 OSI 批准的许可证下保持开源。
+- 收购方将被公开告知，持续的开源管理是项目的预期条件。
+- 任何计划中的 xyOps 治理、许可或开放性变更都将在生效前向社区透明地传达。
 
-This pledge itself is not a contract, but we commit to treating it as an ethical and operational guideline in any future business transactions.
+本承诺本身不是合同，但我们承诺在任何未来的商业交易中将其视为道德和运营指南。
 
-## 5. Dependency Licensing
+## 5. 依赖许可
 
-We will make every reasonable effort to ensure that all software dependencies used by xyOps have licenses compatible with xyOps's open-source license.
+我们将尽一切合理努力，确保 xyOps 使用的所有软件依赖项的许可证与 xyOps 的开源许可证兼容。
 
-If any dependency changes its license in a way that is incompatible or concerning, we will:
+如果任何依赖项的许可证以不兼容或令人担忧的方式变更，我们将：
 
-- version-lock the last compatible release, and  
-- begin evaluating or developing a replacement.
+- 版本锁定最后一个兼容的版本，并且
+- 开始评估或开发替代品。
 
-## 6. Stewardship, Transparency & Bus-Factor Reduction
+## 6. 管理、透明度和单点故障（Bus-Factor）风险降低
 
-To ensure xyOps remains sustainable and viable long-term:
+为确保 xyOps 长期保持可持续性和可行性：
 
-- The project is fully open-source, with complete commit history and issue tracking publicly available.
-- Releases are tagged and permanent, allowing anyone to fork or maintain independent versions.
-- The project will be periodically submitted to independent archival services (e.g., Software Heritage Foundation) to ensure permanent public availability.
-- We intend, over time, to move toward a governance model that includes additional maintainers beyond the original author, to distribute responsibility and reduce single-maintainer risk.
+- 该项目完全开源，具有完整的提交历史和公开可用的问题跟踪。
+- 发布版本已标记并永久保存，允许任何人分叉或维护独立版本。
+- 该项目将定期提交给独立的归档服务（例如：软件遗产基金会），以确保永久公开可用。
+- 我们打算随着时间的推移，转向包含原作者以外额外维护者的治理模式，以分散责任并降低单一维护者的风险。
 
-The goal is that xyOps remains usable, buildable, and maintainable even if PixlCore or I were no longer able to develop it.
+目标是即使 PixlCore 或我不再能够开发 xyOps，它仍然可用、可构建和可维护。
 
-## 7. Commitment to Transparency
+## 7. 透明度承诺
 
-If our intentions, direction, commercial strategy, or governance approach ever change in ways that materially affect the community, we will communicate those changes openly. Surprises, sudden pivots, and unilateral rug-pulls are incompatible with the purpose of this pledge.
+如果我们的意图、方向、商业战略或治理方法发生对社区产生重大影响的变更，我们将公开传达这些变更。意外、突然转向和单方面的撤回（rug-pulls）与本承诺的目的不符。
 
-You are encouraged to fork the project if you ever feel that xyOps has drifted away from its stated principles. This is a fundamental right preserved by the open-source license itself.
+如果您觉得 xyOps 偏离了其既定原则，我们鼓励您分叉该项目。这是开源许可证本身保留的基本权利。
 
-## 8. Archival & Preservation
+## 8. 归档与保存
 
-To support long-term continuity:
+为了支持长期连续性：
 
-- xyOps source code and documentation will be mirrored to independent archival services such as Software Heritage.  
-- Official releases will remain available indefinitely.
+- xyOps 源代码和文档将镜像到独立的归档服务，如软件遗产（Software Heritage）。
+- 官方发布版本将无限期保持可用。
 
-These archives ensure xyOps survives beyond any single company, repository, or platform.
+这些归档确保 xyOps 能够超越任何单一公司、仓库或平台而存在。
 
-## 9. Identity & Accountability
+## 9. 身份与责任
 
-This pledge is issued by:
+本承诺书由以下人员发布：
 
-- **Joseph Huckaby**  
-- Founder, PixlCore LLC  
-- GPG Key Fingerprint: `3F74 C09B 4E73 D69A 93C3  723A 9DC6 51BD 8A8E 13F9`
+- **Joseph Huckaby**
+- PixlCore LLC 创始人
+- GPG 密钥指纹：`3F74 C09B 4E73 D69A 93C3  723A 9DC6 51BD 8A8E 13F9`
 
-By attaching my real identity to this project, I acknowledge the reputational stakes involved. The integrity of xyOps, and the trust of its users, is central to its success.
+通过将我的真实身份附加到这个项目，我承认其中涉及的声誉风险。xyOps 的完整性和用户的信任是其成功的关键。
 
-## 10. Important Note
+## 10. 重要说明
 
-This pledge is not a legal contract, and does not confer additional legal rights beyond those granted by the LICENSE. Instead, it documents the principles and commitments that guide the long-term stewardship of xyOps. You should rely on the open-source license for enforceable guarantees, and view this pledge as a transparent statement of intent and philosophy.
+本承诺书不是法律合同，除了 LICENSE 授予的权利外，不授予额外的法律权利。相反，它记录了指导 xyOps 长期管理的原则和承诺。您应该依赖开源许可证来获得可执行的保证，并将本承诺书视为意图和哲学的透明声明。
 
-If you have questions, concerns, or suggestions for improving this pledge, please open a GitHub Issue so the discussion can happen publicly and benefit the entire community.
+如果您对本承诺书有疑问、担忧或改进建议，请提交 GitHub Issue，以便讨论可以公开进行并造福整个社区。
